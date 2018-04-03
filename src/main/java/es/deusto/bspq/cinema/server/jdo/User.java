@@ -58,4 +58,3 @@ public class User {
 	    return "User: login --> " + this.login + ", password -->  " + this.password + ", messages --> [" + messagesStr + "]";
 	}
 }
-

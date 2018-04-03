@@ -1,6 +1,5 @@
 package es.deusto.bspq.cinema.client;
 
-
 import es.deusto.bspq.cinema.server.IServer;
 
 public class Client {
