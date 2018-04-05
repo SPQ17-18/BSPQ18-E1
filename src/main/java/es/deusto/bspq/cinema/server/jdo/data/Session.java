@@ -79,5 +79,28 @@ public class Session {
 		this.tickets = tickets;
 	}
 	
+	
+	
+	public Film getFilm() {
+		return film;
+	}
 
+	public void setFilm(Film film) {
+		this.film = film;
+	}
+
+	public void copySession(Session s) {
+		
+		this.date = s.getDate();
+		this.hour = s.getHour();
+		this.price = s.getPrice();
+		this.room.copyRoom(s.getRoom());
+		this.film.copyFilm(s.getFilm());
+		
+		for (int i = 0; i < s.getTickets().size(); i++) {
+			this.tickets.add(new Ticket());
+			this.tickets.get(i).copyTicket(s.getTickets().get(i));
+		}
+		
+	}
 }

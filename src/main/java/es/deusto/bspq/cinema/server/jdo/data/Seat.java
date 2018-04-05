@@ -30,6 +30,19 @@ public class Seat {
 	
 	
 	
-	
+	public Ticket getTicket() {
+		return ticket;
+	}
+
+	public void setTicket(Ticket ticket) {
+		this.ticket = ticket;
+	}
+
+	public void copySeat(Seat s) {
+		
+		this.seatCode = s.getSeatCode();
+		this.ticket.copyTicket(s.getTicket());
+		
+	}
 
 }

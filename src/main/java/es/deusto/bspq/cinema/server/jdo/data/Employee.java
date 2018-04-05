@@ -66,7 +66,15 @@ public class Employee {
 		this.salary = salary;
 	}
 	
-	
+	public void copyEmployee(Employee e) {
+		
+		this.username = e.getUsername();
+		this.name = e.getName();
+		this.surname = e.getSurname();
+		this.password = e.getPassword();
+		this.salary = e.getSalary();
+		
+	}
 	
 	
 	
