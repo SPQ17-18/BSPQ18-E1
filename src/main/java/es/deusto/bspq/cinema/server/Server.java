@@ -12,8 +12,8 @@ import javax.jdo.Transaction;
 public class Server extends UnicastRemoteObject implements IServer {
 
 	private static final long serialVersionUID = 1L;
-	private PersistenceManager pm=null;
-	private Transaction tx=null;
+	private PersistenceManager pm = null;
+	private Transaction tx = null;
 
 	protected Server() throws RemoteException {
 		super();
