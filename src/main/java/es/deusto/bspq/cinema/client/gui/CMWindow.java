@@ -1,35 +1,20 @@
 package es.deusto.bspq.cinema.client.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
+import javax.swing.JFrame;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import es.deusto.bspq.cinema.client.controller.CMController;
 
-public class CMWindow extends javax.swing.JFrame {
+public class CMWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private CMController controller;
@@ -66,7 +51,7 @@ public class CMWindow extends javax.swing.JFrame {
 	
 	private ArrayList<String> seatNumberList = new ArrayList<String>();
 	private ArrayList<String> userList = new ArrayList<String>();
-	private javax.swing.DefaultListModel<String> reservationList;
+	private javax.swing.DefaultListModel<String> seatList;
 	
 	private List<Object> sessions;
 	private javax.swing.DefaultListModel<String> sessionsList;
@@ -77,9 +62,9 @@ public class CMWindow extends javax.swing.JFrame {
 		this.controller = controller;
 		initComponents();
 		sessionsList = new DefaultListModel<String>();
-		reservationList = new DefaultListModel<String>();
+		seatList = new DefaultListModel<String>();
 		sessionsList1.setModel(sessionsList);
-		seatsList1.setModel(reservationList);
+		seatsList1.setModel(seatList);
 	}
 
 	private void initComponents() {
