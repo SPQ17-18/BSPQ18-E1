@@ -253,15 +253,15 @@ public class CMWindow extends JFrame {
 	}
 
 	private void updateLists(List<Object> sessions) {
-		
+		/* Update current sessions */
 	}
 
 	private void cleanSearchDetails() {
-	
+		/* Clean search configuration details */
 	}
 
 	private void cleanTicketDetails() {
-
+		/* Clean ticket configuration details */
 	}
 
 	public static void main(String[] args) throws RemoteException {
