@@ -173,6 +173,7 @@ public class CMWindow extends JFrame {
 		panelButtonsP1.add(buttonSearchAll);
 		panelControlP.add(panelButtonsP1, java.awt.BorderLayout.SOUTH);
 		panelSessions.add(panelControlP);
+		// Add sessions panel
 		getContentPane().add(panelSessions);
 
 		panelTickets.setLayout(new java.awt.GridLayout(1, 2));
@@ -217,9 +218,9 @@ public class CMWindow extends JFrame {
 		
 		panelButton.add(buttonAddSeat);
 		panelButton.add(buttonBuy);
-		
 		panelControlM.add(panelButton);
 		panelTickets.add(panelControlM);
+		// Add tickets panel
 		getContentPane().add(panelTickets);
 
 		pack();
