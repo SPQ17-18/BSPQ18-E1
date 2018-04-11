@@ -17,6 +17,7 @@ import es.deusto.bspq.cinema.client.controller.CMController;
 public class CMWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	// App controller
 	private CMController controller;
 
 	private javax.swing.JButton buttonBuy;
