@@ -19,11 +19,18 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import org.apache.log4j.Logger;
+
 import es.deusto.bspq.cinema.client.controller.CMController;
 
 public class LoginWindow extends JDialog {
 	
+	final static Logger logger = Logger.getLogger(LoginWindow.class);
+	
 	private static final long serialVersionUID = 1L;
+	
+	// App controller
+	private CMController controller;
 	
 	private JTextField tfUsername;
     private JPasswordField pfPassword;
@@ -33,10 +40,15 @@ public class LoginWindow extends JDialog {
     private JButton btnCancel;
     private boolean succeeded;
     private boolean employee = false;
-    
-    private CMController controller;
  
-    public LoginWindow(CMController controller) {
+    public LoginWindow(String args[]) {
+    	
+    	try {
+			controller = new CMController(args);
+		} catch (RemoteException e) {
+			logger.error("Remote exception: " + e.getMessage());
+			e.printStackTrace();
+		}
     	
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints cs = new GridBagConstraints();
@@ -70,47 +82,42 @@ public class LoginWindow extends JDialog {
  
         btnLogin = new JButton("Sign in");
         btnLogin.addActionListener(new ActionListener() {
- 
-            public void actionPerformed(ActionEvent e) {
+        	public void actionPerformed(ActionEvent e) {
 	        	String user = getUsername();
-//                if (controller.identify(user, getPassword())) {
+//              if (controller.identify(user, getPassword())) {
 	//	        	if (userIsEmployee) {
-		                JOptionPane.showMessageDialog(LoginWindow.this,
-		                        "Hi " + getUsername() + "! You have successfully logged in Cinema Manager as a employee.",
-		                        "Login",
-		                        JOptionPane.INFORMATION_MESSAGE);
-		                succeeded = true;
-		                employee = true;
-	//	        	}
-	//	        	else {
-		                JOptionPane.showMessageDialog(LoginWindow.this,
-		                        "Hi " + getUsername() + "! You have successfully logged in Cinema Manager as a member.",
-		                        "Login",
-		                        JOptionPane.INFORMATION_MESSAGE);
-		                succeeded = true;
-	//	        	}
-//                } else {
+			                JOptionPane.showMessageDialog(LoginWindow.this,
+			                        "Hi " + getUsername() + "! You have successfully logged in Cinema Manager as a employee.",
+			                        "Login",
+			                        JOptionPane.INFORMATION_MESSAGE);
+			                succeeded = true;
+			                employee = true;
+			                logger.info("Successfully logged as a user.");
+	//	      		}
+	//	            else {
+			                JOptionPane.showMessageDialog(LoginWindow.this,
+			                        "Hi " + getUsername() + "! You have successfully logged in Cinema Manager as a member.",
+			                        "Login",
+			                        JOptionPane.INFORMATION_MESSAGE);
+			                succeeded = true;
+			                logger.info("Successfully logged as a member.");
+    //	        	}
+//              else {
 	                JOptionPane.showMessageDialog(LoginWindow.this,
 	                        "Invalid username or password",
 	                        "Login",
 	                        JOptionPane.ERROR_MESSAGE);
+	                logger.info("Invalid username and password.");
 	                // reset username and password
 	                tfUsername.setText("");
 	                pfPassword.setText("");
 	                succeeded = false;
-//                }
-//	              if (employee) {
-	            	// launch CMAWindow  
-//	              }
-//	              else {
-	            	// launch CMWindow
-//	              }
-            }
+//              }
+	        }
         });
         
         btnCancel = new JButton("Cancel");
         btnCancel.addActionListener(new ActionListener() {
- 
             public void actionPerformed(ActionEvent e) {
                 dispose();
             }
@@ -142,7 +149,7 @@ public class LoginWindow extends JDialog {
     }
  
     public static void main(String[] args) throws RemoteException {
-		final LoginWindow window = new LoginWindow(new CMController(args));
+		final LoginWindow window = new LoginWindow(args);
 		window.centreWindow();
 		window.setVisible(true);
 	}

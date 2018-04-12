@@ -1,12 +1,15 @@
 package es.deusto.bspq.cinema.client;
 
-import es.deusto.bspq.cinema.server.IServer;
+import org.apache.log4j.Logger;
+import es.deusto.bspq.cinema.client.gui.LoginWindow;
 
 public class Client {
+	
+	final static Logger logger = Logger.getLogger(LoginWindow.class);
 
 	public static void main(String[] args) {
 		if (args.length != 3) {
-//			System.out.println("Use: java [policy] [codebase] Client.Client [host] [port] [server]");
+			logger.error("Use: java [policy] [codebase] Client.Client [host] [port] [server]");
 			System.exit(0);
 		}
 
@@ -14,12 +17,9 @@ public class Client {
 			System.setSecurityManager(new SecurityManager());
 		}
 
-		try {
-			String name = "//" + args[0] + ":" + args[1] + "/" + args[2];
-			IServer server = (IServer) java.rmi.Naming.lookup(name);
-		} catch (Exception e) {
-//			System.err.println("RMI Example exception: " + e.getMessage());
-			e.printStackTrace();
-		}
+		final LoginWindow loginWindow = new LoginWindow(args);
+		loginWindow.centreWindow();
+		loginWindow.setVisible(true);
 	}
+	
 }
