@@ -1,26 +1,37 @@
 package es.deusto.bspq.cinema.server.jdo.data;
 
+import java.util.ArrayList;
+
+import es.deusto.bspq.cinema.server.jdo.DAO.ManagerDAO;
+
 public class Assembler {
-private ManagerDAO dao;
+
+	private ManagerDAO dao;
 	
 	public Assembler() {
 		this.dao = new ManagerDAO();
 	}
 
-	public Reservation disassembleReservation(ReservationDTO reservDTO) {
-		int codReserva = this.dao.getLastReservation();
-		Reservation r = new Reservation(codReserva, reservDTO.getDate());
-		Flight f = this.dao.getFlight(reservDTO.getFlightCode());
-		r.setFlight(f);
+	public Ticket disassembleTicket(TicketDTO ticketDTO) {
 		
-		ArrayList<String> seatCode = reservDTO.getSeatCodList();	
-		ArrayList<String> nameList = reservDTO.getFullnameList();
+		Ticket t = new Ticket();
+		
+		Member m = this.dao.getMember(ticketDTO.getEmail());
+		
+		t.setMember(m);
+		
+		Session s = this.dao.getSession(ticketDTO.getTitleFilm(), ticketDTO.getDate(), ticketDTO.getHour());
+		t.setSession(s);
+		
+		
+		ArrayList<String> seatCode = ticketDTO.getListSeats();
+		
 					
-		for (int i = 0; i < nameList.size(); i++) {
-			r.addSeat(new Seat(seatCode.get(i), nameList.get(i)));
+		for (int i = 0; i < seatCode.size(); i++) {
+			t.addSeat(new Seat(seatCode.get(i)));
 		}
 		
-		return r;	
+		return t;	
 	}
 	
 	

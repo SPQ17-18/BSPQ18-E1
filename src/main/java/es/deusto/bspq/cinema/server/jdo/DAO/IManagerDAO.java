@@ -21,7 +21,7 @@ public interface IManagerDAO {
 	public ArrayList<Member> getMembers();
 	public Member getMember (String email);
 	public ArrayList<Session> getSessions();
-	public Session getSession (Date date, Time hour);
+	public Session getSession (String film,String date, String hour);
 	public ArrayList<Employee> getEmployees();
 	public Employee getEmployee (String username);
 	

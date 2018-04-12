@@ -1,8 +1,6 @@
 package es.deusto.bspq.cinema.server.jdo.data;
 
 
-import java.sql.Date;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +11,8 @@ import javax.jdo.annotations.Persistent;
 @PersistenceCapable(detachable = "true")
 public class Session {
 	
-	private Date date;
-	private Time hour;
+	private String date;
+	private String hour;
 	private float price;
 	
 	@Persistent(defaultFetchGroup="true")
@@ -31,7 +29,7 @@ public class Session {
 		
 	}
 
-	public Session(Date date, Time hour, float price, Room room) {
+	public Session(String date, String hour, float price, Room room) {
 		super();
 		this.date = date;
 		this.hour = hour;
@@ -39,19 +37,19 @@ public class Session {
 		this.room = room;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
-	public Time getHour() {
+	public String getHour() {
 		return hour;
 	}
 
-	public void setHour(Time hour) {
+	public void setHour(String hour) {
 		this.hour = hour;
 	}
 

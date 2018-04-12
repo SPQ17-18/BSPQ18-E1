@@ -1,6 +1,6 @@
 package es.deusto.bspq.cinema.server.jdo.DAO;
 
-import java.sql.Time;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -485,7 +485,7 @@ private PersistenceManagerFactory pmf;
 	}
 
 	@Override
-	public Session getSession(java.sql.Date date, Time hour) {
+	public Session getSession(String film,String date, String hour) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		
 		Transaction tx = pm.currentTransaction();
