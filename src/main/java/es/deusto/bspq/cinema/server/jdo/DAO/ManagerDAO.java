@@ -495,7 +495,7 @@ private PersistenceManagerFactory pmf;
 		
 		try {
 	    	tx.begin();
-	    	Query <?> query = pm.newQuery("SELECT FROM " + Session.class.getName() + " WHERE date == '" + date + "' AND hour=='"+hour+"'");
+	    	Query <?> query = pm.newQuery("SELECT FROM " + Session.class.getName() + " WHERE date == '" + date + "' AND hour=='"+hour+"' AND film.title='"+session.getFilm().getTitle()+"'");
 	    	query.setUnique(true);
 	    	Session result = (Session) query.execute();
 	    	session.copySession(result);
@@ -653,6 +653,69 @@ private PersistenceManagerFactory pmf;
 			}
 		}
 		
+	}
+
+
+	public ArrayList <Session> getSessions(String film) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		
+		Transaction tx = pm.currentTransaction();
+		ArrayList <Session> sessions = new ArrayList<Session>();
+		
+		pm.getFetchPlan().setMaxFetchDepth(3);
+		
+		try {
+			tx.begin();			
+			Query<?> q = pm.newQuery("SELECT FROM " + Session.class.getName()+" WHERE film.title='"+film+"'");
+			List <Session> result = (List<Session>) q.execute();
+			
+			System.out.println("All sessions retrieved from the film: "+film);
+			
+			for (int i = 0; i < result.size(); i++) {
+				sessions.add(new Session());
+				sessions.get(i).copySession(result.get(i));
+			}
+			
+			tx.commit();			
+		} catch (Exception ex) {
+	    	System.out.println("   $ Error retrieving all sessions from the film: " + ex.getMessage());
+	    } finally {
+	    	if (tx != null && tx.isActive()) {
+	    		tx.rollback();
+	    	}
+    		pm.close(); 
+	    }
+	    				
+		return sessions;
+		
+	}
+
+	@Override
+	public Session getSession(Session s) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		
+		Transaction tx = pm.currentTransaction();
+		Session session = new Session();
+	    
+		pm.getFetchPlan().setMaxFetchDepth(3);
+		
+		try {
+	    	tx.begin();
+	    	Query <?> query = pm.newQuery("SELECT FROM " + Session.class.getName() + " WHERE date == '" + session.getDate() + "' AND hour=='"+session.getHour()+"' AND film.title='"+session.getFilm().getTitle()+"'");
+	    	query.setUnique(true);
+	    	Session result = (Session) query.execute();
+	    	session.copySession(result);
+ 	    	tx.commit();
+	     } catch (Exception ex) {
+	    	 System.out.println("   $ Error retrieving a session: " + ex.getMessage());
+	     } finally {
+		   	if (tx != null && tx.isActive()) {
+		   		tx.rollback();
+		 }
+	   		pm.close();
+	     }
+		
+	    return session;
 	}
 
 }

@@ -77,6 +77,11 @@ public class Session {
 		this.tickets = tickets;
 	}
 	
+	public void addTicket(Ticket ticket) {
+		tickets.add(ticket);
+		
+	}
+
 	
 	
 	public Film getFilm() {

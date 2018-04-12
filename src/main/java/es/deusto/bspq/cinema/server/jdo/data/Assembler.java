@@ -1,6 +1,8 @@
 package es.deusto.bspq.cinema.server.jdo.data;
 
+
 import java.util.ArrayList;
+
 
 import es.deusto.bspq.cinema.server.jdo.DAO.ManagerDAO;
 
@@ -35,21 +37,48 @@ public class Assembler {
 	}
 	
 	
-	public ArrayList<FlightDTO> assembleFlights(ArrayList<Flight> flights) {
-		ArrayList<FlightDTO> arrDTO = new ArrayList<FlightDTO>();
+	public ArrayList<FilmDTO> assembleFilm(ArrayList<Film> films) {
+		ArrayList<FilmDTO> filmDTO = new ArrayList<FilmDTO>();
 		
-		for (Flight flight : flights) {
-			ArrayList <String> remainingSeats = flight.getFreeSeats();
+		for (Film film : films) {
+	
+			ArrayList <String> actors = (ArrayList)film.getActors();
 			
-			int num = remainingSeats.size();
-			
-			FlightDTO fDTO = new FlightDTO(flight.getOrigin(), flight.getDestination(), 
-					flight.getFlightDate(), flight.getArrivalTime(), flight.getDepartureTime(),
-					flight.getFlightCode(), remainingSeats, num, flight.getPrice());
-			arrDTO.add(fDTO);
+			FilmDTO fDTO = new FilmDTO(film.getTitle(),film.getDirector(),film.getRating(),film.getDuration(),film.getCountry(),actors);
+			filmDTO.add(fDTO);
 		}
 		
-		return arrDTO;
+		return filmDTO;
+	}
+	
+	public ArrayList<SessionDTO> assembleSession(ArrayList<Session> sessions) {
+		ArrayList<SessionDTO> sessionDTO = new ArrayList<SessionDTO>();
+		
+		for (Session session : sessions) {
+	
+			ArrayList<String> seats = obtainSeats (session);
+			
+			SessionDTO sDTO = new SessionDTO(session.getDate(),session.getHour(),session.getPrice(),session.getRoom().getRoomNumber(),session.getRoom().getNumberSeats(),session.getFilm().getTitle(),seats);
+			sessionDTO.add(sDTO);
+		}
+		
+		return sessionDTO;
 	}
 
+	private ArrayList <String> obtainSeats (Session session){
+		
+		ArrayList <String> seats = new ArrayList<String>();
+		
+		for (int i=0;i<session.getTickets().size();i++) {
+			
+			for (int j=0;j<session.getTickets().get(i).getSeats().size();j++) {
+				
+				seats.add(session.getTickets().get(i).getSeats().get(j).getSeatCode());
+			}
+			
+		}
+		
+		return seats;
+		
+	}
 }

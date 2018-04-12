@@ -21,7 +21,7 @@ private static final long serialVersionUID = 1L;
 	
 	//Data of the tickets
 	
-	private ArrayList<String> remainingSeatsCode;
+	private ArrayList<String> SeatsCode;
 	
 	
 
@@ -30,7 +30,7 @@ private static final long serialVersionUID = 1L;
 	}
 
 	public SessionDTO(String date, String hour, float price, int room, int numberSeats, String titleFilm,
-			ArrayList<String> remainingSeatsCode) {
+			ArrayList<String> SeatsCode) {
 		super();
 		this.date = date;
 		this.hour = hour;
@@ -38,7 +38,7 @@ private static final long serialVersionUID = 1L;
 		this.room = room;
 		this.numberSeats = numberSeats;
 		this.titleFilm = titleFilm;
-		this.remainingSeatsCode = remainingSeatsCode;
+		this.SeatsCode = SeatsCode;
 	}
 
 	public String getDate() {
@@ -90,11 +90,11 @@ private static final long serialVersionUID = 1L;
 	}
 
 	public ArrayList<String> getRemainingSeatsCode() {
-		return remainingSeatsCode;
+		return SeatsCode;
 	}
 
-	public void setRemainingSeatsCode(ArrayList<String> remainingSeatsCode) {
-		this.remainingSeatsCode = remainingSeatsCode;
+	public void setRemainingSeatsCode(ArrayList<String> SeatsCode) {
+		this.SeatsCode = SeatsCode;
 	}
 	
 	
