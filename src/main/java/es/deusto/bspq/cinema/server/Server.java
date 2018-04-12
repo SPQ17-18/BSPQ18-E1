@@ -9,25 +9,13 @@ import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.JDOHelper;
 import javax.jdo.Transaction;
 
-public class Server extends UnicastRemoteObject implements IServer {
+import es.deusto.bspq.cinema.server.remote.IRemoteFacade;
+import es.deusto.bspq.cinema.server.remote.RemoteFacade;
+
+public class Server{
 
 	private static final long serialVersionUID = 1L;
-	private PersistenceManager pm = null;
-	private Transaction tx = null;
-
-	protected Server() throws RemoteException {
-		super();
-		PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
-		this.pm = pmf.getPersistenceManager();
-		this.tx = pm.currentTransaction();
-	}
 	
-	protected void finalize () throws Throwable {
-		if (tx.isActive()) {
-            tx.rollback();
-        }
-        pm.close();
-	}
 
 	public static void main(String[] args) {
 		if (args.length != 3) {
@@ -42,9 +30,9 @@ public class Server extends UnicastRemoteObject implements IServer {
 		String name = "//" + args[0] + ":" + args[1] + "/" + args[2];
 
 		try {
-			IServer objServer = new Server();
-			Naming.rebind(name, objServer);
-//			System.out.println("Server '" + name + "' active and waiting...");
+			IRemoteFacade facade = new RemoteFacade();
+			Naming.rebind(name, facade);
+			System.out.println("Server '" + name + "' active and waiting...");
 			java.io.InputStreamReader inputStreamReader = new java.io.InputStreamReader (System.in);
 			java.io.BufferedReader stdin = new java.io.BufferedReader (inputStreamReader);
 			@SuppressWarnings("unused")
