@@ -1,7 +1,5 @@
 package es.deusto.bspq.cinema.server.jdo.DAO;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.util.ArrayList;
 
 import es.deusto.bspq.cinema.server.jdo.data.Employee;
