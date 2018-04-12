@@ -6,7 +6,7 @@ import es.deusto.bspq.cinema.client.gui.LoginWindow;
 
 public class CMServiceLocator {
 	
-	final static Logger logger = Logger.getLogger(LoginWindow.class);
+	final static Logger logger = Logger.getLogger(CMServiceLocator.class);
 
 //	private ICinemaManager cinemaManagerService;
 

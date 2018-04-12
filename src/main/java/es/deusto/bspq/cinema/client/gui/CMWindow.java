@@ -3,7 +3,7 @@ package es.deusto.bspq.cinema.client.gui;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
-import java.rmi.RemoteException;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +18,7 @@ import es.deusto.bspq.cinema.client.controller.CMController;
 
 public class CMWindow extends JFrame {
 	
-	final static Logger logger = Logger.getLogger(LoginWindow.class);
+	final static Logger logger = Logger.getLogger(CMWindow.class);
 
 	private static final long serialVersionUID = 1L;
 	
@@ -255,7 +255,7 @@ public class CMWindow extends JFrame {
 	}
 
 	/** Exit the Application */
-	private void exitForm(java.awt.event.WindowEvent evt) {
+	private void exitForm(WindowEvent evt) {
 		controller.exit();
 	}
 
@@ -269,12 +269,6 @@ public class CMWindow extends JFrame {
 
 	private void cleanTicketDetails() {
 		/* Clean ticket configuration details */
-	}
-
-	public static void main(String[] args) throws RemoteException {
-		final CMWindow window = new CMWindow(new CMController(args));
-		window.centreWindow();
-		window.setVisible(true);
 	}
 	
 }
