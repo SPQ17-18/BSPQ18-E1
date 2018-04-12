@@ -12,11 +12,17 @@ import javax.swing.JFrame;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.apache.log4j.Logger;
+
 import es.deusto.bspq.cinema.client.controller.CMController;
 
 public class CMWindow extends JFrame {
+	
+	final static Logger logger = Logger.getLogger(LoginWindow.class);
 
 	private static final long serialVersionUID = 1L;
+	
+	// App controller
 	private CMController controller;
 
 	private javax.swing.JButton buttonBuy;
@@ -173,6 +179,7 @@ public class CMWindow extends JFrame {
 		panelButtonsP1.add(buttonSearchAll);
 		panelControlP.add(panelButtonsP1, java.awt.BorderLayout.SOUTH);
 		panelSessions.add(panelControlP);
+		// Add sessions panel
 		getContentPane().add(panelSessions);
 
 		panelTickets.setLayout(new java.awt.GridLayout(1, 2));
@@ -217,9 +224,9 @@ public class CMWindow extends JFrame {
 		
 		panelButton.add(buttonAddSeat);
 		panelButton.add(buttonBuy);
-		
 		panelControlM.add(panelButton);
 		panelTickets.add(panelControlM);
+		// Add tickets panel
 		getContentPane().add(panelTickets);
 
 		pack();
