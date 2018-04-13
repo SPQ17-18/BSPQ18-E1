@@ -1,7 +1,6 @@
 package es.deusto.bspq.cinema.server.jdo.data;
 
 import java.util.List;
-import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.jdo.annotations.Join;
@@ -17,7 +16,7 @@ public class Member {
 	private String name;
 	private String surname;
 	private String password;
-	private Date birthday;
+	private String birthday;
 	private int points;
 	
 	@Persistent(defaultFetchGroup = "true", mappedBy = "member", dependentElement = "true")
@@ -28,7 +27,7 @@ public class Member {
 		
 	}
 
-	public Member(String email, String name, String surname, String password, Date birthday, int points,
+	public Member(String email, String name, String surname, String password, String birthday, int points,
 			List<Ticket> tickets) {
 		super();
 		this.email = email;
@@ -72,11 +71,11 @@ public class Member {
 		this.password = password;
 	}
 
-	public Date getBirthday() {
+	public String getBirthday() {
 		return birthday;
 	}
 
-	public void setBirthday(Date birthday) {
+	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
 

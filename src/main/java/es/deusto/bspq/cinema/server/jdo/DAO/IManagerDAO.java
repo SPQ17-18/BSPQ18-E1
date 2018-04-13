@@ -1,7 +1,5 @@
 package es.deusto.bspq.cinema.server.jdo.DAO;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.util.ArrayList;
 
 import es.deusto.bspq.cinema.server.jdo.data.Employee;
@@ -21,7 +19,9 @@ public interface IManagerDAO {
 	public ArrayList<Member> getMembers();
 	public Member getMember (String email);
 	public ArrayList<Session> getSessions();
-	public Session getSession (Date date, Time hour);
+	public Session getSession (Session s);
+	public Session getSession (String film,String date, String hour);
+	public ArrayList <Session>  getSessions (String film);
 	public ArrayList<Employee> getEmployees();
 	public Employee getEmployee (String username);
 	

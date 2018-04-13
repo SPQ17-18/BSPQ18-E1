@@ -101,6 +101,11 @@ public class Film {
 		this.actors = actors;
 	}
 	
+	public void addActor(Actor actor) {
+		actors.add(actor);
+		actor.getFilms().add(this);
+	}
+	
 	public void copyFilm(Film f) {
 		
 		this.title = f.getTitle();
