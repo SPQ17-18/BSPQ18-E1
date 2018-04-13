@@ -7,6 +7,7 @@ import java.rmi.RemoteException;
 import javax.swing.JFrame;
 
 import es.deusto.bspq.cinema.client.controller.CMController;
+
 import java.awt.BorderLayout;
 import javax.swing.JComboBox;
 import java.awt.GridLayout;
@@ -16,10 +17,17 @@ import javax.swing.JTabbedPane;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowListener;
 
 public class CMAWindow extends JFrame {
 
 	private String[] foo = {"Item 1", "Item 2", "Item 3", "Item 4"};
+	
+	private InsertSessionWindow insertSessionWindow;
+	private InsertFilmWindow insertFilmWindow;
+	private UpdateSessionWindow updateSessionWindow;
+	private UpdateFilmWindow updateFilmWindow;
 	
 	private static final long serialVersionUID = 1L;
 	private CMController controller;
@@ -66,18 +74,20 @@ public class CMAWindow extends JFrame {
 		btnInsertSession.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				//Go to InsertSessionWindow
+				//TODO Go to InsertSessionWindow
+				insertSessionWindow = new InsertSessionWindow();
 			}
 		});
 		
 		panelInsertSession.add(btnInsertSession);
-		panelInsertSession.setPreferredSize(new java.awt.Dimension(320, 100));
+		panelInsertSession.setPreferredSize(new java.awt.Dimension(280, 100));
 		
 		tabbedPaneInsert.addTab("Film", null, panelInsertFilm, null);
 		btnInsertFilm.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				//Go to InsertFilmWindow
+				//TODO Go to InsertFilmWindow
+				insertFilmWindow = new InsertFilmWindow();
 			}
 		});
 		
@@ -94,12 +104,13 @@ public class CMAWindow extends JFrame {
 		btnUpdateSession.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				//Go to UpdateSessionWindow
+				//TODO Go to UpdateSessionWindow
+				updateSessionWindow = new UpdateSessionWindow();
 			}
 		});
 		
 		panelUpdateSession.add(btnUpdateSession);
-		panelUpdateSession.setPreferredSize(new java.awt.Dimension(320, 100));
+		panelUpdateSession.setPreferredSize(new java.awt.Dimension(280, 100));
 		
 		tabbedPaneUpdate.addTab("Film", null, panelUpdateFilm, null);
 		
@@ -107,7 +118,8 @@ public class CMAWindow extends JFrame {
 		btnUpdateFilm.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				//Go to UpdateFilmWindow
+				//TODO Go to UpdateFilmWindow
+				updateFilmWindow = new UpdateFilmWindow();
 			}
 		});
 		
@@ -124,12 +136,12 @@ public class CMAWindow extends JFrame {
 		btnDeleteSession.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				//Delete Session
+				//TODO Delete Session
 			}
 		});
 		
 		panelDeleteSession.add(btnDeleteSession);
-		panelDeleteSession.setPreferredSize(new java.awt.Dimension(320, 100));
+		panelDeleteSession.setPreferredSize(new java.awt.Dimension(280, 100));
 		
 		tabbedPaneDelete.addTab("Film", null, panelDeleteFilm, null);
 		
@@ -137,7 +149,7 @@ public class CMAWindow extends JFrame {
 		btnDeleteFilm.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				//Delete Film
+				//TODO Delete Film
 			}
 		});
 		
@@ -165,5 +177,7 @@ public class CMAWindow extends JFrame {
 		window.centreWindow();
 		window.setVisible(true);
 	}
+	
+	
 	
 }
