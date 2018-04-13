@@ -18,6 +18,7 @@ import es.deusto.bspq.cinema.server.jdo.data.Employee;
 import es.deusto.bspq.cinema.server.jdo.data.Film;
 import es.deusto.bspq.cinema.server.jdo.data.Member;
 import es.deusto.bspq.cinema.server.jdo.data.Room;
+import es.deusto.bspq.cinema.server.jdo.data.Seat;
 import es.deusto.bspq.cinema.server.jdo.data.Session;
 
 
@@ -767,6 +768,8 @@ private PersistenceManagerFactory pmf;
 		f1.addActor(aD);
 		f1.addActor(aE);
 		
+		
+		
 		Employee e1 = new Employee("e1", "Juan", "Garcia Perez", "e1", 1500);
 		Employee e2 = new Employee("e2", "Maria", "Martin Gomez", "e2", 1700);
 		Employee e3 = new Employee("e3", "Paco", "Perez Gomez", "e3", 1300);
@@ -779,6 +782,79 @@ private PersistenceManagerFactory pmf;
 		Room r3 = new Room(3, 57);
 		Room r4 = new Room(4, 59);
 		Room r5 = new Room(5, 60);
+		
+		Seat s1 = new Seat("G3");
+		Seat s2 = new Seat("G4");
+		Seat s3 = new Seat("G5");
+		Seat s4 = new Seat("E10");
+		Seat s5 = new Seat("E9");
+		Seat s6 = new Seat("E8");
+		Seat s7 = new Seat("D5");
+		Seat s8 = new Seat("D6");
+		Seat s9 = new Seat("H7");
+		Seat sA = new Seat("B8");
+		Seat sB = new Seat("B9");
+		Seat sC = new Seat("B10");
+		Seat sD = new Seat("G3");
+		Seat sE = new Seat("G4");
+		Seat sF = new Seat("G5");
+		
+		
+		
+		Session s1 = new Session("13-04-2018", "17:00",(float) 8.90, r1);
+		Session s2 = new Session("13-04-2018", "18:00",(float) 8.90, r2);
+		Session s3 = new Session("13-04-2018", "19:00",(float) 5.90, r3);
+		
+		f1.addSession(s1);
+		f1.addSession(s2);
+		f1.addSession(s3);
+		
+		
+		Session s4 = new Session("14-04-2018", "17:00",(float) 8.90, r1);
+		Session s5 = new Session("14-04-2018", "20:00",(float) 7.50, r4);
+		Session s6 = new Session("14-04-2018", "22:00",(float) 10.90, r5);
+		
+		f2.addSession(s4);
+		f2.addSession(s5);
+		f2.addSession(s6);
+		
+		Session s7 = new Session("15-04-2018", "17:00",(float) 5.80, r4);
+		Session s8 = new Session("15-04-2018", "19:00",(float) 6.60, r3);
+		Session s9 = new Session("15-04-2018", "22:00",(float) 4.40, r2);
+		
+		f3.addSession(s7);
+		f3.addSession(s8);
+		f3.addSession(s9);
+		
+		Session sA = new Session("13-04-2018", "16:00",(float) 12.90, r4);
+		Session sB = new Session("13-04-2018", "18:00",(float) 8.90, r5);
+		Session sC = new Session("13-04-2018", "20:00",(float) 6.90, r1);
+		
+		f4.addSession(sA);
+		f4.addSession(sB);
+		f4.addSession(sC);
+		
+		Session sD = new Session("15-04-2018", "16:00",(float) 12.90, r1);
+		Session sE = new Session("15-04-2018", "18:00",(float) 8.90, r5);
+		Session sF = new Session("15-04-2018", "20:00",(float) 6.90, r4);
+		
+		f4.addSession(sD);
+		f4.addSession(sE);
+		f4.addSession(sF);
+		
+		
+		Member m1 = new Member("ariane.fernandez@opendeusto.es", "Ariane", "Fernandez", "ariane", "26-04-1997", 0);
+		Member m2 = new Member("unai.bermejo@opendeusto.es", "Unai", "Bermejo", "unai", "23-08-1997", 0);
+		Member m3 = new Member("ander.arguinano@opendeusto.es", "Ander", "Arguinano", "ander", "26-10-1997", 0);
+		Member m4 = new Member("inigo.garcia@opendeusto.es", "Inigo", "Garcia", "inigo", "10-02-1997", 0);
+		Member m5 = new Member("fischer.wolfgang@opendeusto.es", "Wolfgang ", "Fischer", "wolfgang", "05-09-1997", 0);
+		
+		
+		dao.storeMember(m1);
+		dao.storeMember(m2);
+		dao.storeMember(m3);
+		dao.storeMember(m4);
+		dao.storeMember(m5);
 		
 		dao.storeFilm(f1);
 		dao.storeFilm(f2);

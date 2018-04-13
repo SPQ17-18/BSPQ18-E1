@@ -79,7 +79,7 @@ public class Session {
 	
 	public void addTicket(Ticket ticket) {
 		tickets.add(ticket);
-		
+		ticket.setSession(this);
 	}
 
 	

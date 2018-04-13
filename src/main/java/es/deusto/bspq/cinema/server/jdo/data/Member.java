@@ -27,6 +27,17 @@ public class Member {
 		
 	}
 
+	public Member(String email, String name, String surname, String password, String birthday, int points) {
+		super();
+		this.email = email;
+		this.name = name;
+		this.surname = surname;
+		this.password = password;
+		this.birthday = birthday;
+		this.points = points;
+		this.tickets = new ArrayList<Ticket>();
+	}
+	
 	public Member(String email, String name, String surname, String password, String birthday, int points,
 			List<Ticket> tickets) {
 		super();

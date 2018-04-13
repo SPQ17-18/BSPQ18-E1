@@ -103,7 +103,12 @@ public class Film {
 	
 	public void addActor(Actor actor) {
 		actors.add(actor);
-		actor.getFilms().add(this);
+		actor.addFilm(this);
+	}
+	
+	public void addSession(Session session) {
+		sessions.add(session);
+		session.setFilm(this);
 	}
 	
 	public void copyFilm(Film f) {
