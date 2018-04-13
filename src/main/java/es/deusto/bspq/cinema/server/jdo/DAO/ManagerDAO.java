@@ -1,6 +1,5 @@
 package es.deusto.bspq.cinema.server.jdo.DAO;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,17 +12,15 @@ import javax.jdo.Transaction;
 
 import org.datanucleus.api.jdo.JDOQuery;
 
-import es.deusto.bspq.cinema.server.jdo.data.Actor;
 import es.deusto.bspq.cinema.server.jdo.data.Employee;
 import es.deusto.bspq.cinema.server.jdo.data.Film;
 import es.deusto.bspq.cinema.server.jdo.data.Member;
 import es.deusto.bspq.cinema.server.jdo.data.Room;
 import es.deusto.bspq.cinema.server.jdo.data.Session;
 
-
 public class ManagerDAO implements IManagerDAO {
 	
-private PersistenceManagerFactory pmf;
+	private PersistenceManagerFactory pmf;
 	
 	public ManagerDAO() {
 		pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
@@ -37,7 +34,7 @@ private PersistenceManagerFactory pmf;
 	       pm.makePersistent(object);
 	       tx.commit();
 	    } catch (Exception ex) {
-	    	System.out.println("   $ Error storing an object: " + ex.getMessage());
+	    	ex.printStackTrace();
 	    } finally {
 	    	if (tx != null && tx.isActive()) {
 	    		tx.rollback();
@@ -173,7 +170,7 @@ private PersistenceManagerFactory pmf;
 	
 	public void storeSession(Session session) {
 		System.out.println("   * Storing a session: " + session.getRoom().getRoomNumber()+" - "+session.getDate().toString()+" "+session.getHour().toString());
-		 this.storeObject(session);
+		this.storeObject(session);
 	}
 
 	
@@ -436,11 +433,12 @@ private PersistenceManagerFactory pmf;
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	public ArrayList<Session> getSessions() {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		
 		Transaction tx = pm.currentTransaction();
-		ArrayList <Session> sessions = new ArrayList<Session>();
+		ArrayList <Session> sessionsA = new ArrayList<Session>();
 		
 		pm.getFetchPlan().setMaxFetchDepth(3);
 		
@@ -452,8 +450,8 @@ private PersistenceManagerFactory pmf;
 			System.out.println("All sessions retrieved.");
 			
 			for (int i = 0; i < result.size(); i++) {
-				sessions.add(new Session());
-				sessions.get(i).copySession(result.get(i));
+				sessionsA.add(new Session());
+				sessionsA.get(i).copySession(result.get(i));
 			}
 			
 			tx.commit();			
@@ -466,7 +464,7 @@ private PersistenceManagerFactory pmf;
     		pm.close(); 
 	    }
 	    				
-		return sessions;
+		return sessionsA;
 	}
 
 	@Override
@@ -706,95 +704,15 @@ private PersistenceManagerFactory pmf;
 	public static void main(String[] args) {
 		IManagerDAO dao= new ManagerDAO();
 		
-		if (args.length != 3) {
-			System.out.println("Attention: arguments missing");
-			System.exit(0);
-		}
-
-		if (System.getSecurityManager() == null) {
-			System.setSecurityManager(new SecurityManager());
-		}
+		Film film = new Film("A", "B", 1, 2, "C");
+		Room room = new Room(1, 25);
+		Session session = new Session("D", "E", "F", 5);
+		session.setFilm(film);
+		session.setRoom(room);
 		
-		Film f1 = new Film("Inmersion", "Wim Wenders", 12, 111, "EE.UU.");
-		Film f2 = new Film("Pacific Rim: Insurrecion", "Steven S. DeKnight", 7, 110, "EE.UU.");
-		Film f3 = new Film("Leo Da Vinci", "Sergio Manfio", 0, 85, "Italia");
-		Film f4 = new Film("Campeones", "Javier Fesser", 7, 100, "España");
-		Film f5 = new Film("Ready Player One", "Steven Spielberg", 7, 140, "EE.UU.");
-		Film f6 = new Film("Un pliegue en el tiempo", "Ava DuVernay", 7, 109, "EE.UU.");
-		Film f7 = new Film("Tomb Raider", "Roar Uthaug", 7, 122, "EE.UU.");
+		dao.storeSession(session);
 		
-		Actor a1 = new Actor("Reese", "Witherspoon", "EE.UU.");
-		Actor a2 = new Actor("Chris", "Pine", "EE.UU.");
-		
-		f6.addActor(a1);
-		f6.addActor(a2);
-		
-		Actor a3 = new Actor("Alicia", "Vikander", "EE.UU.");
-		Actor a4 = new Actor("Walton", "Goggins", "EE.UU.");
-		
-		f7.addActor(a3);
-		f7.addActor(a4);
-		
-	
-		Actor a5 = new Actor("Tye", "Sheridan", "EE.UU.");
-		Actor a6 = new Actor("Olivia", "Cooke", "EE.UU.");
-		
-		f5.addActor(a5);
-		f5.addActor(a6);
-		
-		
-		Actor a7 = new Actor("Javier", "Gutiérrez", "España");
-		Actor a8 = new Actor("Juan", "Margallo", "España");
-		
-		f4.addActor(a7);
-		f4.addActor(a8);
-		
-		Actor a9 = new Actor("Juan", "Garcia", "Italia");
-		Actor aA = new Actor("Paolo", "Linares", "Italia");
-		
-		f3.addActor(a9);
-		f3.addActor(aA);
-		
-		Actor aB = new Actor("Scott", "Eastwood", "EE.UU.");
-		Actor aC = new Actor("John", "Boyega", "EE.UU.");
-		
-		f2.addActor(aB);
-		f2.addActor(aC);
-		
-		Actor aD = new Actor("James", "McAvoy", "EE.UU.");
-		Actor aE = new Actor("Alicia", "Vikander", "EE.UU.");
-		
-		f1.addActor(aD);
-		f1.addActor(aE);
-		
-		Employee e1 = new Employee("e1", "Juan", "Garcia Perez", "e1", 1500);
-		Employee e2 = new Employee("e2", "Maria", "Martin Gomez", "e2", 1700);
-		Employee e3 = new Employee("e3", "Paco", "Perez Gomez", "e3", 1300);
-		Employee e4 = new Employee("e4", "Luis", "Lozano Esteban", "e4", 1800);
-		Employee e5 = new Employee("e5", "Andrea", "Hernandez Sarria", "e5", 1500);
-		
-		
-		Room r1 = new Room(1, 58);
-		Room r2 = new Room(2, 56);
-		Room r3 = new Room(3, 57);
-		Room r4 = new Room(4, 59);
-		Room r5 = new Room(5, 60);
-		
-		dao.storeFilm(f1);
-		dao.storeFilm(f2);
-		dao.storeFilm(f3);
-		dao.storeFilm(f4);
-		dao.storeFilm(f5);
-		dao.storeFilm(f6);
-		dao.storeFilm(f7);
-		
-		dao.storeEmployee(e1);
-		dao.storeEmployee(e2);
-		dao.storeEmployee(e3);
-		dao.storeEmployee(e4);
-		dao.storeEmployee(e5);
-		
-		
-		
+		ArrayList<Session> sessions = dao.getSessions();
+		System.out.println(sessions.get(0).getDate());
 	}
 }
