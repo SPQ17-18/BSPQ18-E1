@@ -66,7 +66,6 @@ public class Session {
 
 	public void setRoom(Room room) {
 		this.room = room;
-		room.addSession(this);
 	}
 
 	
@@ -76,7 +75,7 @@ public class Session {
 
 	public void setFilm(Film film) {
 		this.film = film;
-		film.addSession(this);
+		
 	}
 	
 	public String getSession() {

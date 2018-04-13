@@ -737,72 +737,85 @@ public class ManagerDAO implements IManagerDAO {
 		Room r4 = new Room(4, 59);
 		Room r5 = new Room(5, 60);
 		
-		Seat se1 = new Seat("G3");
-		Seat se2 = new Seat("G4");
-		Seat se3 = new Seat("G5");
-		Seat se4 = new Seat("E10");
-		Seat se5 = new Seat("E9");
-		Seat se6 = new Seat("E8");
-		Seat se7 = new Seat("D5");
-		Seat se8 = new Seat("D6");
-		Seat se9 = new Seat("H7");
-		Seat seA = new Seat("B8");
-		Seat seB = new Seat("B9");
-		Seat seC = new Seat("B10");
-		Seat seD = new Seat("G3");
-		Seat seE = new Seat("G4");
-		Seat seF = new Seat("G5");
-		
+//		Seat se1 = new Seat("G3");
+//		Seat se2 = new Seat("G4");
+//		Seat se3 = new Seat("G5");
+//		Seat se4 = new Seat("E10");
+//		Seat se5 = new Seat("E9");
+//		Seat se6 = new Seat("E8");
+//		Seat se7 = new Seat("D5");
+//		Seat se8 = new Seat("D6");
+//		Seat se9 = new Seat("H7");
+//		Seat seA = new Seat("B8");
+//		Seat seB = new Seat("B9");
+//		Seat seC = new Seat("B10");
+//		Seat seD = new Seat("G3");
+//		Seat seE = new Seat("G4");
+//		Seat seF = new Seat("G5");
+//		
 		
 		
 		Session s1 = new Session("S1","13-04-2018", "17:00",(float) 8.90);
 		Session s2 = new Session("S2","13-04-2018", "18:00",(float) 8.90);
 		Session s3 = new Session("S3","13-04-2018", "19:00",(float) 5.90);
 		
-		s1.setRoom(r1);
-		s2.setRoom(r2);
-		s3.setRoom(r3);
+		r1.addSession(s1);
+		r2.addSession(s2);
+		r3.addSession(s3);
 		
 		
 		f1.addSession(s1);
 		f1.addSession(s2);
 		f1.addSession(s3);
 		
-		
-		
-		
+			
 		Session s4 = new Session("S4","14-04-2018", "17:00",(float) 8.90);
 		Session s5 = new Session("S5","14-04-2018", "20:00",(float) 7.50);
 		Session s6 = new Session("S6","14-04-2018", "22:00",(float) 10.90);
 		
+		r4.addSession(s4);
+		r5.addSession(s5);
+		r1.addSession(s6);
 		
 		f2.addSession(s4);
 		f2.addSession(s5);
 		f2.addSession(s6);
 		
-		Session s7 = new Session("15-04-2018", "17:00",(float) 5.80, r4);
-		Session s8 = new Session("15-04-2018", "19:00",(float) 6.60, r3);
-		Session s9 = new Session("15-04-2018", "22:00",(float) 4.40, r2);
+		Session s7 = new Session("S7","15-04-2018", "17:00",(float) 5.80);
+		Session s8 = new Session("S8","15-04-2018", "19:00",(float) 6.60);
+		Session s9 = new Session("S9","15-04-2018", "22:00",(float) 4.40);
+		
+		r2.addSession(s7);
+		r3.addSession(s8);
+		r4.addSession(s9);
 		
 		f3.addSession(s7);
 		f3.addSession(s8);
 		f3.addSession(s9);
 		
-		Session sA = new Session("13-04-2018", "16:00",(float) 12.90, r4);
-		Session sB = new Session("13-04-2018", "18:00",(float) 8.90, r5);
-		Session sC = new Session("13-04-2018", "20:00",(float) 6.90, r1);
+		Session sA = new Session("S10","13-04-2018", "16:00",(float) 12.90);
+		Session sB = new Session("S11","13-04-2018", "18:00",(float) 8.90);
+		Session sC = new Session("S12","13-04-2018", "20:00",(float) 6.90);
+		
+		r5.addSession(sA);
+		r1.addSession(sB);
+		r2.addSession(sC);
 		
 		f4.addSession(sA);
 		f4.addSession(sB);
 		f4.addSession(sC);
 		
-		Session sD = new Session("15-04-2018", "16:00",(float) 12.90, r1);
-		Session sE = new Session("15-04-2018", "18:00",(float) 8.90, r5);
-		Session sF = new Session("15-04-2018", "20:00",(float) 6.90, r4);
+		Session sD = new Session("S13","15-04-2018", "16:00",(float) 12.90);
+		Session sE = new Session("S14","15-04-2018", "18:00",(float) 8.90);
+		Session sF = new Session("S15","15-04-2018", "20:00",(float) 6.90);
 		
-		f4.addSession(sD);
-		f4.addSession(sE);
-		f4.addSession(sF);
+		r3.addSession(sD);
+		r4.addSession(sE);
+		r5.addSession(sF);
+		
+		f5.addSession(sD);
+		f5.addSession(sE);
+		f5.addSession(sF);
 		
 		
 		Member m1 = new Member("ariane.fernandez@opendeusto.es", "Ariane", "Fernandez", "ariane", "26-04-1997", 0);
@@ -819,12 +832,12 @@ public class ManagerDAO implements IManagerDAO {
 		dao.storeMember(m5);
 		
 		dao.storeFilm(f1);
-		dao.storeFilm(f2);
-		dao.storeFilm(f3);
-		dao.storeFilm(f4);
-		dao.storeFilm(f5);
-		dao.storeFilm(f6);
-		dao.storeFilm(f7);
+//		dao.storeFilm(f2);
+//		dao.storeFilm(f3);
+//		dao.storeFilm(f4);
+//		dao.storeFilm(f5);
+//		dao.storeFilm(f6);
+//		dao.storeFilm(f7);
 		
 		dao.storeEmployee(e1);
 		dao.storeEmployee(e2);
@@ -833,7 +846,9 @@ public class ManagerDAO implements IManagerDAO {
 		dao.storeEmployee(e5);
 		
 		
-		ArrayList<Session> sessions = dao.getSessions();
-		System.out.println(sessions.get(0).getDate());
+		
+//		
+//		ArrayList<Session> sessions = dao.getSessions();
+//		System.out.println(sessions.get(0).getDate());
 	}
 }

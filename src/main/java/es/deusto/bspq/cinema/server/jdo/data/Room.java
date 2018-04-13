@@ -62,6 +62,7 @@ public class Room {
 	
 	public void addSession(Session session) {
 		sessions.add(session);
+		session.setRoom(this);
 	}
 	
 	public void copyRoom(Room r) {
