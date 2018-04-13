@@ -50,6 +50,8 @@ public class LoginWindow extends JDialog {
 			e.printStackTrace();
 		}
     	
+        setResizable(false);
+    	
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints cs = new GridBagConstraints();
  
@@ -83,24 +85,27 @@ public class LoginWindow extends JDialog {
         btnLogin = new JButton("Sign in");
         btnLogin.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-	        	String user = getUsername();
-//              if (controller.identify(user, getPassword())) {
+//              if (controller.identify(getUsername(), getPassword())) {
 	//	        	if (userIsEmployee) {
-			                JOptionPane.showMessageDialog(LoginWindow.this,
-			                        "Hi " + getUsername() + "! You have successfully logged in Cinema Manager as a employee.",
-			                        "Login",
-			                        JOptionPane.INFORMATION_MESSAGE);
-			                succeeded = true;
-			                employee = true;
-			                logger.info("Successfully logged as a user.");
+		                JOptionPane.showMessageDialog(LoginWindow.this,
+		                        "Hi " + getUsername() + "! You have successfully logged in Cinema Manager as a employee.",
+		                        "Login",
+		                        JOptionPane.INFORMATION_MESSAGE);
+		                succeeded = true;
+		                employee = true;
+		                logger.info("Successfully logged as a user.");
+		                CMWindow cmWindow = new CMWindow(controller);
+		                cmWindow.centreWindow();
+		                cmWindow.setVisible(true);
+		                dispose();
 	//	      		}
 	//	            else {
-			                JOptionPane.showMessageDialog(LoginWindow.this,
-			                        "Hi " + getUsername() + "! You have successfully logged in Cinema Manager as a member.",
-			                        "Login",
-			                        JOptionPane.INFORMATION_MESSAGE);
-			                succeeded = true;
-			                logger.info("Successfully logged as a member.");
+		                JOptionPane.showMessageDialog(LoginWindow.this,
+		                        "Hi " + getUsername() + "! You have successfully logged in Cinema Manager as a member.",
+		                        "Login",
+		                        JOptionPane.INFORMATION_MESSAGE);
+		                succeeded = true;
+		                logger.info("Successfully logged as a member.");
     //	        	}
 //              else {
 	                JOptionPane.showMessageDialog(LoginWindow.this,
@@ -131,7 +136,6 @@ public class LoginWindow extends JDialog {
         getContentPane().add(bp, BorderLayout.PAGE_END);
  
         pack();
-        setResizable(false);
     }
     
     public void centreWindow() {
@@ -147,11 +151,5 @@ public class LoginWindow extends JDialog {
     public String getPassword() {
         return new String(pfPassword.getPassword());
     }
- 
-    public static void main(String[] args) throws RemoteException {
-		final LoginWindow window = new LoginWindow(args);
-		window.centreWindow();
-		window.setVisible(true);
-	}
     
 }
