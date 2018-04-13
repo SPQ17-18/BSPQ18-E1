@@ -1,6 +1,5 @@
 package es.deusto.bspq.cinema.server.jdo.DAO;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,7 +12,6 @@ import javax.jdo.Transaction;
 
 import org.datanucleus.api.jdo.JDOQuery;
 
-import es.deusto.bspq.cinema.server.jdo.data.Actor;
 import es.deusto.bspq.cinema.server.jdo.data.Employee;
 import es.deusto.bspq.cinema.server.jdo.data.Film;
 import es.deusto.bspq.cinema.server.jdo.data.Member;
@@ -21,10 +19,9 @@ import es.deusto.bspq.cinema.server.jdo.data.Room;
 import es.deusto.bspq.cinema.server.jdo.data.Seat;
 import es.deusto.bspq.cinema.server.jdo.data.Session;
 
-
 public class ManagerDAO implements IManagerDAO {
 	
-private PersistenceManagerFactory pmf;
+	private PersistenceManagerFactory pmf;
 	
 	public ManagerDAO() {
 		pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
@@ -38,7 +35,7 @@ private PersistenceManagerFactory pmf;
 	       pm.makePersistent(object);
 	       tx.commit();
 	    } catch (Exception ex) {
-	    	System.out.println("   $ Error storing an object: " + ex.getMessage());
+	    	ex.printStackTrace();
 	    } finally {
 	    	if (tx != null && tx.isActive()) {
 	    		tx.rollback();
@@ -174,7 +171,7 @@ private PersistenceManagerFactory pmf;
 	
 	public void storeSession(Session session) {
 		System.out.println("   * Storing a session: " + session.getRoom().getRoomNumber()+" - "+session.getDate().toString()+" "+session.getHour().toString());
-		 this.storeObject(session);
+		this.storeObject(session);
 	}
 
 	
@@ -437,11 +434,12 @@ private PersistenceManagerFactory pmf;
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	public ArrayList<Session> getSessions() {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		
 		Transaction tx = pm.currentTransaction();
-		ArrayList <Session> sessions = new ArrayList<Session>();
+		ArrayList <Session> sessionsA = new ArrayList<Session>();
 		
 		pm.getFetchPlan().setMaxFetchDepth(3);
 		
@@ -453,8 +451,8 @@ private PersistenceManagerFactory pmf;
 			System.out.println("All sessions retrieved.");
 			
 			for (int i = 0; i < result.size(); i++) {
-				sessions.add(new Session());
-				sessions.get(i).copySession(result.get(i));
+				sessionsA.add(new Session());
+				sessionsA.get(i).copySession(result.get(i));
 			}
 			
 			tx.commit();			
@@ -467,7 +465,7 @@ private PersistenceManagerFactory pmf;
     		pm.close(); 
 	    }
 	    				
-		return sessions;
+		return sessionsA;
 	}
 
 	@Override
@@ -707,6 +705,7 @@ private PersistenceManagerFactory pmf;
 	public static void main(String[] args) {
 		IManagerDAO dao= new ManagerDAO();
 		
+
 		if (args.length != 3) {
 			System.out.println("Attention: arguments missing");
 			System.exit(0);
@@ -724,51 +723,6 @@ private PersistenceManagerFactory pmf;
 		Film f6 = new Film("Un pliegue en el tiempo", "Ava DuVernay", 7, 109, "EE.UU.");
 		Film f7 = new Film("Tomb Raider", "Roar Uthaug", 7, 122, "EE.UU.");
 		
-		Actor a1 = new Actor("Reese", "Witherspoon", "EE.UU.");
-		Actor a2 = new Actor("Chris", "Pine", "EE.UU.");
-		
-		f6.addActor(a1);
-		f6.addActor(a2);
-		
-		Actor a3 = new Actor("Alicia", "Vikander", "EE.UU.");
-		Actor a4 = new Actor("Walton", "Goggins", "EE.UU.");
-		
-		f7.addActor(a3);
-		f7.addActor(a4);
-		
-	
-		Actor a5 = new Actor("Tye", "Sheridan", "EE.UU.");
-		Actor a6 = new Actor("Olivia", "Cooke", "EE.UU.");
-		
-		f5.addActor(a5);
-		f5.addActor(a6);
-		
-		
-		Actor a7 = new Actor("Javier", "Gutiérrez", "España");
-		Actor a8 = new Actor("Juan", "Margallo", "España");
-		
-		f4.addActor(a7);
-		f4.addActor(a8);
-		
-		Actor a9 = new Actor("Juan", "Garcia", "Italia");
-		Actor aA = new Actor("Paolo", "Linares", "Italia");
-		
-		f3.addActor(a9);
-		f3.addActor(aA);
-		
-		Actor aB = new Actor("Scott", "Eastwood", "EE.UU.");
-		Actor aC = new Actor("John", "Boyega", "EE.UU.");
-		
-		f2.addActor(aB);
-		f2.addActor(aC);
-		
-		Actor aD = new Actor("James", "McAvoy", "EE.UU.");
-		Actor aE = new Actor("Alicia", "Vikander", "EE.UU.");
-		
-		f1.addActor(aD);
-		f1.addActor(aE);
-		
-		
 		
 		Employee e1 = new Employee("e1", "Juan", "Garcia Perez", "e1", 1500);
 		Employee e2 = new Employee("e2", "Maria", "Martin Gomez", "e2", 1700);
@@ -783,36 +737,44 @@ private PersistenceManagerFactory pmf;
 		Room r4 = new Room(4, 59);
 		Room r5 = new Room(5, 60);
 		
-		Seat s1 = new Seat("G3");
-		Seat s2 = new Seat("G4");
-		Seat s3 = new Seat("G5");
-		Seat s4 = new Seat("E10");
-		Seat s5 = new Seat("E9");
-		Seat s6 = new Seat("E8");
-		Seat s7 = new Seat("D5");
-		Seat s8 = new Seat("D6");
-		Seat s9 = new Seat("H7");
-		Seat sA = new Seat("B8");
-		Seat sB = new Seat("B9");
-		Seat sC = new Seat("B10");
-		Seat sD = new Seat("G3");
-		Seat sE = new Seat("G4");
-		Seat sF = new Seat("G5");
+		Seat se1 = new Seat("G3");
+		Seat se2 = new Seat("G4");
+		Seat se3 = new Seat("G5");
+		Seat se4 = new Seat("E10");
+		Seat se5 = new Seat("E9");
+		Seat se6 = new Seat("E8");
+		Seat se7 = new Seat("D5");
+		Seat se8 = new Seat("D6");
+		Seat se9 = new Seat("H7");
+		Seat seA = new Seat("B8");
+		Seat seB = new Seat("B9");
+		Seat seC = new Seat("B10");
+		Seat seD = new Seat("G3");
+		Seat seE = new Seat("G4");
+		Seat seF = new Seat("G5");
 		
 		
 		
-		Session s1 = new Session("13-04-2018", "17:00",(float) 8.90, r1);
-		Session s2 = new Session("13-04-2018", "18:00",(float) 8.90, r2);
-		Session s3 = new Session("13-04-2018", "19:00",(float) 5.90, r3);
+		Session s1 = new Session("S1","13-04-2018", "17:00",(float) 8.90);
+		Session s2 = new Session("S2","13-04-2018", "18:00",(float) 8.90);
+		Session s3 = new Session("S3","13-04-2018", "19:00",(float) 5.90);
+		
+		s1.setRoom(r1);
+		s2.setRoom(r2);
+		s3.setRoom(r3);
+		
 		
 		f1.addSession(s1);
 		f1.addSession(s2);
 		f1.addSession(s3);
 		
 		
-		Session s4 = new Session("14-04-2018", "17:00",(float) 8.90, r1);
-		Session s5 = new Session("14-04-2018", "20:00",(float) 7.50, r4);
-		Session s6 = new Session("14-04-2018", "22:00",(float) 10.90, r5);
+		
+		
+		Session s4 = new Session("S4","14-04-2018", "17:00",(float) 8.90);
+		Session s5 = new Session("S5","14-04-2018", "20:00",(float) 7.50);
+		Session s6 = new Session("S6","14-04-2018", "22:00",(float) 10.90);
+		
 		
 		f2.addSession(s4);
 		f2.addSession(s5);
@@ -871,6 +833,7 @@ private PersistenceManagerFactory pmf;
 		dao.storeEmployee(e5);
 		
 		
-		
+		ArrayList<Session> sessions = dao.getSessions();
+		System.out.println(sessions.get(0).getDate());
 	}
 }

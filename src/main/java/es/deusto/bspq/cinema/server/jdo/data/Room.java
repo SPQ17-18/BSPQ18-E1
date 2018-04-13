@@ -17,25 +17,19 @@ public class Room {
 	
 	private int numberSeats;
 	
-	
 	@Persistent(defaultFetchGroup="true", mappedBy="room", dependentElement = "true")
 	@Join
 	private List<Session> sessions = new ArrayList<>();
 
-
 	public Room() {
 	
 	}
-
-	
 
 	public Room(int roomNumber, int numberSeats) {
 		super();
 		this.roomNumber = roomNumber;
 		this.numberSeats = numberSeats;
 	}
-
-
 
 	public int getRoomNumber() {
 		return roomNumber;
@@ -66,21 +60,17 @@ public class Room {
 		this.sessions = sessions;
 	}
 	
+	public void addSession(Session session) {
+		sessions.add(session);
+	}
 	
 	public void copyRoom(Room r) {
-		
-		this.roomNumber=r.getRoomNumber();
+		this.roomNumber = r.getRoomNumber();
 		this.numberSeats = r.getNumberSeats();
-		
-		
 		for (int i = 0; i < r.getSessions().size(); i++) {
 			this.sessions.add(new Session());
 			this.sessions.get(i).copySession(r.getSessions().get(i));
 		}
-		
 	}
-	
-	
-	
 	
 }

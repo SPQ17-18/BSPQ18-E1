@@ -6,11 +6,14 @@ import java.util.ArrayList;
 import javax.jdo.annotations.Join;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable(detachable = "true")
 public class Film {
 
+	@PrimaryKey
 	private String title;
+	
 	private String director;
 	private int rating;
 	private long duration;
@@ -20,16 +23,11 @@ public class Film {
 	@Join
 	private List<Session> sessions = new ArrayList<>();
 	
-	@Persistent(defaultFetchGroup = "true", mappedBy = "films", dependentElement = "true")
-	@Join
-	private List<Actor> actors = new ArrayList<>();
-
+	
 	public Film() {
 
 	}
 	
-	
-
 	public Film(String title, String director, int rating, long duration, String country) {
 		super();
 		this.title = title;
@@ -38,8 +36,6 @@ public class Film {
 		this.duration = duration;
 		this.country = country;
 	}
-
-
 
 	public String getTitle() {
 		return title;
@@ -88,45 +84,23 @@ public class Film {
 	public void setSessions(List<Session> sessions) {
 		this.sessions = sessions;
 	}
-
-
-
-	public List<Actor> getActors() {
-		return actors;
-	}
-
-
-
-	public void setActors(List<Actor> actors) {
-		this.actors = actors;
-	}
 	
-	public void addActor(Actor actor) {
-		actors.add(actor);
-		actor.addFilm(this);
-	}
 	
 	public void addSession(Session session) {
 		sessions.add(session);
 		session.setFilm(this);
+
 	}
 	
 	public void copyFilm(Film f) {
-		
 		this.title = f.getTitle();
 		this.director = f.getDirector();
 		this.rating = f.getRating();
 		this.duration = f.getDuration();
 		this.country = f.getCountry();
-		
 		for (int i = 0; i < f.getSessions().size(); i++) {
 			this.sessions.add(new Session());
 			this.sessions.get(i).copySession(f.getSessions().get(i));
-		}
-		
-		for (int j = 0; j < f.getActors().size(); j++) {
-			this.actors.add(new Actor());
-			this.actors.get(j).copyActor(f.getActors().get(j));
 		}
 	}
 

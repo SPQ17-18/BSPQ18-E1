@@ -8,6 +8,7 @@ public class Employee {
 	
 	@PrimaryKey
 	private String username;
+	
 	private String name;
 	private String surname;
 	private String password;
@@ -76,7 +77,4 @@ public class Employee {
 		
 	}
 	
-	
-	
-
 }
