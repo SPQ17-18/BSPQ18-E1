@@ -51,7 +51,7 @@ public class ManagerDAO implements IManagerDAO {
 		Transaction tx = pm.currentTransaction();
 		ArrayList <Film> films = new ArrayList<Film>();
 		
-		pm.getFetchPlan().setMaxFetchDepth(3);
+		pm.getFetchPlan().setMaxFetchDepth(5);
 		
 		try {
 			tx.begin();			
@@ -279,19 +279,19 @@ public class ManagerDAO implements IManagerDAO {
 		try {		
 			tx.begin();
 
-			Query<Session> query = pm.newQuery(Session.class, "hour =='"+session.getHour()+"'");
+			Query<Session> query = pm.newQuery(Session.class, "session =='"+session.getSession()+"'");
 
 			Collection<?> result = (Collection<?>) query.execute();
 
-			Film f = (Film) result.iterator().next();
+			Session s = (Session) result.iterator().next();
 
 			query.close(result);
 
-			pm.deletePersistent(f);
+			pm.deletePersistent(s);
 			   
 			tx.commit();
 		} catch (Exception ex) {
-			System.out.println("   $ Error cleaning a film: " + ex.getMessage());
+			System.out.println("   $ Error cleaning a session: " + ex.getMessage());
 			ex.printStackTrace();
 		} finally {
 			if (tx != null && tx.isActive()) {
@@ -676,18 +676,19 @@ public class ManagerDAO implements IManagerDAO {
 		
 	}
 
-	@Override
+	
 	public Session getSession(Session s) {
+		
 		PersistenceManager pm = pmf.getPersistenceManager();
 		
 		Transaction tx = pm.currentTransaction();
 		Session session = new Session();
 	    
-		pm.getFetchPlan().setMaxFetchDepth(3);
+		pm.getFetchPlan().setMaxFetchDepth(5);
 		
 		try {
 	    	tx.begin();
-	    	Query <?> query = pm.newQuery("SELECT FROM " + Session.class.getName() + " WHERE date == '" + session.getDate() + "' AND hour=='"+session.getHour()+"' AND film.title='"+session.getFilm().getTitle()+"'");
+	    	Query <?> query = pm.newQuery("SELECT FROM " + Session.class.getName() + " WHERE session == '" + s.getSession() + "'");
 	    	query.setUnique(true);
 	    	Session result = (Session) query.execute();
 	    	session.copySession(result);
@@ -702,11 +703,12 @@ public class ManagerDAO implements IManagerDAO {
 	     }
 		
 	    return session;
+	
 	}
 
 	public static void main(String[] args) {
-		IManagerDAO dao= new ManagerDAO();
 		
+		IManagerDAO dao= new ManagerDAO();
 
 		if (args.length != 3) {
 			System.out.println("Attention: arguments missing");
@@ -848,36 +850,98 @@ public class ManagerDAO implements IManagerDAO {
 		dao.storeEmployee(e5);
 		
 		
+		
+		ArrayList <Member> members = dao.getMembers();
+		
+		for (int i=0;i<members.size();i++) {
+			System.out.println("Member "+(i+1));
+			System.out.println("Name: "+members.get(i).getName());
+			System.out.println("Surname: "+members.get(i).getSurname());
+			System.out.println("Birthday: "+members.get(i).getBirthday());
+		}
+		
+	
+		
+		ArrayList <Employee> employees = dao.getEmployees();
+		
+		for (int i=0;i<employees.size();i++) {
+			System.out.println("Employee "+(i+1));
+			System.out.println("Name: "+employees.get(i).getName());
+			System.out.println("Surname: "+employees.get(i).getSurname());
+			System.out.println("Salary: "+employees.get(i).getSalary());
+		}
+		
+		
+		
+		ArrayList <Film> films = dao.getFilms();
+		
+		
+		for (int i = 0; i<films.size();i++) {
+			System.out.println("Film "+(i+1));
+			System.out.println("Name: "+films.get(i).getTitle());
+			System.out.println("Country: "+films.get(i).getCountry());
+			System.out.println("Duration: "+films.get(i).getDuration());
+			System.out.println("Estas son las sesiones de la pelicula: ");
+			
+			for (int j = 0;j<films.get(i).getSessions().size();j++) {
+				System.out.println("Session "+ (j+1)+": "+films.get(i).getSessions().get(j).getDate()+" - "+films.get(i).getSessions().get(j).getHour()+" - "+films.get(i).getSessions().get(j).getRoom().getRoomNumber());
+				
+			}
+			
+		}
+		
+		Film prueba = dao.getFilm("Leo Da Vinci");
+		
+		System.out.println("PRUEBA");
+		
+		
+		System.out.println("Name: "+prueba.getTitle());
+		System.out.println("Country: "+prueba.getCountry());
+		System.out.println("Duration: "+prueba.getDuration());
+		System.out.println("Estas son las sesiones de la pelicula: ");
+		
+		for (int j = 0;j<prueba.getSessions().size();j++) {
+			System.out.println("Session "+ (j+1)+": "+prueba.getSessions().get(j).getDate()+" - "+prueba.getSessions().get(j).getHour()+" - "+prueba.getSessions().get(j).getRoom().getRoomNumber());
+			
+		}
+		
+		Session sessions = dao.getSession("Leo Da Vinci","15-04-2018", "17:00");
+		
+		
+			System.out.println("Session : "+sessions.getDate()+" - "+sessions.getHour()+" - "+sessions.getRoom().getRoomNumber());
+			
+		
+		
 
-		Film film1 = new Film("G", "H", 1, 2, "I");
-		Room room1 = new Room(2, 25);
-		Session session1 = new Session("J", "K", "L", 5);
-		session1.setFilm(film1);
-		session1.setRoom(room1);
-		
-		Film film2 = new Film("M", "N", 1, 2, "O");
-		Room room2 = new Room(3, 25);
-		Session session2 = new Session("P", "Q", "R", 5);
-		session2.setFilm(film2);
-		session2.setRoom(room2);
-		
-		Film film3 = new Film("S", "T", 1, 2, "U");
-		Room room3 = new Room(4, 25);
-		Session session3 = new Session("V", "W", "X", 5);
-		session3.setFilm(film3);
-		session3.setRoom(room3);
-		
-		Film film4 = new Film("Y", "Z", 1, 2, "AA");
-		Room room4 = new Room(5, 25);
-		Session session4 = new Session("BB", "CC", "DD", 5);
-		session4.setFilm(film4);
-		session4.setRoom(room4);
-		
-
-		dao.storeSession(session1);
-		dao.storeSession(session2);
-		dao.storeSession(session3);
-		dao.storeSession(session4);
+//		Film film1 = new Film("G", "H", 1, 2, "I");
+//		Room room1 = new Room(2, 25);
+//		Session session1 = new Session("J", "K", "L", 5);
+//		session1.setFilm(film1);
+//		session1.setRoom(room1);
+//		
+//		Film film2 = new Film("M", "N", 1, 2, "O");
+//		Room room2 = new Room(3, 25);
+//		Session session2 = new Session("P", "Q", "R", 5);
+//		session2.setFilm(film2);
+//		session2.setRoom(room2);
+//		
+//		Film film3 = new Film("S", "T", 1, 2, "U");
+//		Room room3 = new Room(4, 25);
+//		Session session3 = new Session("V", "W", "X", 5);
+//		session3.setFilm(film3);
+//		session3.setRoom(room3);
+//		
+//		Film film4 = new Film("Y", "Z", 1, 2, "AA");
+//		Room room4 = new Room(5, 25);
+//		Session session4 = new Session("BB", "CC", "DD", 5);
+//		session4.setFilm(film4);
+//		session4.setRoom(room4);
+//		
+//
+//		dao.storeSession(session1);
+//		dao.storeSession(session2);
+//		dao.storeSession(session3);
+//		dao.storeSession(session4);
 
 	}
 }

@@ -98,7 +98,11 @@ public class Film {
 		this.rating = f.getRating();
 		this.duration = f.getDuration();
 		this.country = f.getCountry();
-		this.sessions = f.getSessions();
+		
+		for (int i = 0; i < f.getSessions().size(); i++) {
+			this.sessions.add(new Session());
+			this.sessions.get(i).copySession(f.getSessions().get(i));
+		}
 	}
 
 }

@@ -68,7 +68,8 @@ public class Room {
 	public void copyRoom(Room r) {
 		this.roomNumber = r.getRoomNumber();
 		this.numberSeats = r.getNumberSeats();
-		this.sessions = r.getSessions();
+		
+
 	}
 	
 }

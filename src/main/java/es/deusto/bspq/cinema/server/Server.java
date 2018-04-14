@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import es.deusto.bspq.cinema.server.jdo.DAO.IManagerDAO;
 import es.deusto.bspq.cinema.server.jdo.DAO.ManagerDAO;
 import es.deusto.bspq.cinema.server.jdo.data.Assembler;
+import es.deusto.bspq.cinema.server.jdo.data.Film;
+import es.deusto.bspq.cinema.server.jdo.data.FilmDTO;
 import es.deusto.bspq.cinema.server.jdo.data.Session;
 import es.deusto.bspq.cinema.server.jdo.data.SessionDTO;
 import es.deusto.bspq.cinema.server.jdo.data.TicketDTO;
@@ -25,9 +27,9 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		assembler = new Assembler();	
 	}
 
-	public ArrayList<SessionDTO> getSessions() throws RemoteException {
-		ArrayList<Session> sessions = dao.getSessions();
-		System.out.println(sessions.get(0).getDate());
+	public ArrayList<FilmDTO> getFilms() throws RemoteException {
+		ArrayList<Film> films = dao.getFilms();
+	
 		return assembler.assembleSessionS(sessions);
 	}
 

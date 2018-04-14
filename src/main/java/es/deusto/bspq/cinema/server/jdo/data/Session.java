@@ -25,6 +25,7 @@ public class Session {
 	
 
 	public Session() {
+		this.film = new Film();
 		
 	}
 
@@ -94,8 +95,9 @@ public class Session {
 		this.date = s.getDate();
 		this.hour = s.getHour();
 		this.price = s.getPrice();
-		// this.room.copyRoom(s.getRoom());
-		// this.film.copyFilm(s.getFilm());
+		this.room=new Room();
+		this.room.copyRoom(s.getRoom());
+		
 	}
 	
 }

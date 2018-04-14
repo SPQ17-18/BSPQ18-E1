@@ -21,6 +21,8 @@ public class SessionDTO implements Serializable {
 	
 	//Data of the tickets
 	private ArrayList<String> seatsCode;
+	
+	
 
 	public SessionDTO() {
 
