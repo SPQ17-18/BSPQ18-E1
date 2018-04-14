@@ -447,16 +447,18 @@ public class ManagerDAO implements IManagerDAO {
 			Query<?> q = pm.newQuery("SELECT FROM " + Session.class.getName());
 			List <Session> result = (List<Session>) q.execute();
 			
-			System.out.println("All sessions retrieved.");
+			System.out.println("All sessions retrieved: " +result.size());
 			
 			for (int i = 0; i < result.size(); i++) {
-				sessionsA.add(new Session());
-				sessionsA.get(i).copySession(result.get(i));
+				Session s = new Session();
+				s.copySession(result.get(i));
+				sessionsA.add(s);
 			}
 			
 			tx.commit();			
 		} catch (Exception ex) {
 	    	System.out.println("   $ Error retrieving all sessions: " + ex.getMessage());
+	    	ex.printStackTrace();
 	    } finally {
 	    	if (tx != null && tx.isActive()) {
 	    		tx.rollback();
@@ -710,9 +712,34 @@ public class ManagerDAO implements IManagerDAO {
 		session.setFilm(film);
 		session.setRoom(room);
 		
-		dao.storeSession(session);
+		Film film1 = new Film("G", "H", 1, 2, "I");
+		Room room1 = new Room(2, 25);
+		Session session1 = new Session("J", "K", "L", 5);
+		session1.setFilm(film1);
+		session1.setRoom(room1);
 		
-		ArrayList<Session> sessions = dao.getSessions();
-		System.out.println(sessions.get(0).getDate());
+		Film film2 = new Film("M", "N", 1, 2, "O");
+		Room room2 = new Room(3, 25);
+		Session session2 = new Session("P", "Q", "R", 5);
+		session2.setFilm(film2);
+		session2.setRoom(room2);
+		
+		Film film3 = new Film("S", "T", 1, 2, "U");
+		Room room3 = new Room(4, 25);
+		Session session3 = new Session("V", "W", "X", 5);
+		session3.setFilm(film3);
+		session3.setRoom(room3);
+		
+		Film film4 = new Film("Y", "Z", 1, 2, "AA");
+		Room room4 = new Room(5, 25);
+		Session session4 = new Session("BB", "CC", "DD", 5);
+		session4.setFilm(film4);
+		session4.setRoom(room4);
+		
+		dao.storeSession(session);
+		dao.storeSession(session1);
+		dao.storeSession(session2);
+		dao.storeSession(session3);
+		dao.storeSession(session4);
 	}
 }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class SessionDTO implements Serializable {
 
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	
 	//Data of the session
 	private String date;
@@ -20,17 +20,14 @@ private static final long serialVersionUID = 1L;
 	private String titleFilm;
 	
 	//Data of the tickets
-	
-	private ArrayList<String> SeatsCode;
-	
-	
+	private ArrayList<String> seatsCode;
 
 	public SessionDTO() {
 
 	}
 
 	public SessionDTO(String date, String hour, float price, int room, int numberSeats, String titleFilm,
-			ArrayList<String> SeatsCode) {
+			ArrayList<String> seatsCode) {
 		super();
 		this.date = date;
 		this.hour = hour;
@@ -38,7 +35,7 @@ private static final long serialVersionUID = 1L;
 		this.room = room;
 		this.numberSeats = numberSeats;
 		this.titleFilm = titleFilm;
-		this.SeatsCode = SeatsCode;
+		this.seatsCode = seatsCode;
 	}
 
 	public String getDate() {
@@ -90,14 +87,11 @@ private static final long serialVersionUID = 1L;
 	}
 
 	public ArrayList<String> getRemainingSeatsCode() {
-		return SeatsCode;
+		return seatsCode;
 	}
 
 	public void setRemainingSeatsCode(ArrayList<String> SeatsCode) {
-		this.SeatsCode = SeatsCode;
+		this.seatsCode = SeatsCode;
 	}
-	
-	
-	
-	
+
 }
