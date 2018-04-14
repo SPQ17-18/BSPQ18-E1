@@ -94,8 +94,8 @@ public class Session {
 		this.date = s.getDate();
 		this.hour = s.getHour();
 		this.price = s.getPrice();
-		this.room.copyRoom(s.getRoom());
-		this.film.copyFilm(s.getFilm());
+		// this.room.copyRoom(s.getRoom());
+		// this.film.copyFilm(s.getFilm());
 	}
 	
 }
