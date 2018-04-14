@@ -26,8 +26,9 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 	}
 
 	public ArrayList<SessionDTO> getSessions() throws RemoteException {
-		ArrayList<Session> session = dao.getSessions();		
-		return assembler.assembleSession(session);
+		ArrayList<Session> sessions = dao.getSessions();
+		System.out.println(sessions.get(0).getDate());
+		return assembler.assembleSessionS(sessions);
 	}
 
 	public boolean buyTickets(TicketDTO ticketDTO) throws RemoteException {
@@ -49,6 +50,10 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 			IRemoteFacade server = new Server();
 			Naming.rebind(name, server);
 			System.out.println("Server '" + name + "' active and waiting...");
+			java.io.InputStreamReader inputStreamReader = new java.io.InputStreamReader (System.in);
+  			java.io.BufferedReader stdin = new java.io.BufferedReader (inputStreamReader);
+  			@SuppressWarnings("unused")
+ 			String line  = stdin.readLine();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

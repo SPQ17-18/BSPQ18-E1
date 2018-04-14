@@ -67,10 +67,7 @@ public class Room {
 	public void copyRoom(Room r) {
 		this.roomNumber = r.getRoomNumber();
 		this.numberSeats = r.getNumberSeats();
-		for (int i = 0; i < r.getSessions().size(); i++) {
-			this.sessions.add(new Session());
-			this.sessions.get(i).copySession(r.getSessions().get(i));
-		}
+		this.sessions = r.getSessions();
 	}
 	
 }

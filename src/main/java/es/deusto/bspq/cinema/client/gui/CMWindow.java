@@ -188,7 +188,7 @@ public class CMWindow extends JFrame {
 		sessionsList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		sessionsList1.setFocusable(false);
 		sessionsList1.setEnabled(true);
-		scrollSeats.setViewportView(sessionsList1);
+		scrollSeats.setViewportView(seatList1);
 		panelSeats.add(scrollSeats, java.awt.BorderLayout.CENTER);
 		panelTickets.add(panelSeats);
 
