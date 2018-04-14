@@ -1,29 +1,31 @@
 package es.deusto.bspq.cinema.client.remote;
 
-public class CMServiceLocator {
+import org.apache.log4j.Logger;
 
-//	private ICinemaManager cinemaManagerService;
+import es.deusto.bspq.cinema.server.remote.IRemoteFacade;
+
+public class CMServiceLocator {
+	
+	final static Logger logger = Logger.getLogger(CMServiceLocator.class);
+
+	private IRemoteFacade cinemaManagerService;
 
 	public CMServiceLocator() {
 
 	}
 
 	public void setServices(String args0, String args1, String args2) {
+		String service = "//" + args0 + ":" + args1 + "/" + args2;
 		try {
-
-			String service = "//" + args0 + ":" + args1 + "/" + args2;
-
-//			cinemaManagerService = (ICinemaManager) java.rmi.Naming.lookup(service);
-			
-//			System.out.println("Cinema Manager Service OK.");
-
+			IRemoteFacade server = (IRemoteFacade) java.rmi.Naming.lookup(service);
+			logger.info("Server OK: " + service);
 		} catch (Exception e) {
-//			System.out.println("Error trying to set Cinema Manager Service.");
+			logger.error("Error trying to set Server: " + service);
 		}
 	}
 
-//	public ICinemaManager getService() {
-//		return cinemaManagerService;
-//	}
+	public IRemoteFacade getService() {
+		return cinemaManagerService;
+	}
 
 }

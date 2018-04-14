@@ -3,7 +3,7 @@ package es.deusto.bspq.cinema.client.gui;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
-import java.rmi.RemoteException;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,11 +12,18 @@ import javax.swing.JFrame;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.apache.log4j.Logger;
+
 import es.deusto.bspq.cinema.client.controller.CMController;
+import es.deusto.bspq.cinema.server.jdo.data.SessionDTO;
 
 public class CMWindow extends JFrame {
+	
+	final static Logger logger = Logger.getLogger(CMWindow.class);
 
 	private static final long serialVersionUID = 1L;
+	
+	// App controller
 	private CMController controller;
 
 	private javax.swing.JButton buttonBuy;
@@ -28,7 +35,7 @@ public class CMWindow extends JFrame {
 	private javax.swing.JLabel jLabel4;
 	private javax.swing.JTextField film;
 	private javax.swing.JList<String> sessionsList1;
-	private javax.swing.JList<String> seatsList1;
+	private javax.swing.JList<String> seatList1;
 	private javax.swing.JTextField hour;
 	private javax.swing.JTextField date;
 	private javax.swing.JPanel panelButton;
@@ -50,21 +57,18 @@ public class CMWindow extends JFrame {
 	private javax.swing.JTextArea seatUser;
 	
 	private ArrayList<String> seatNumberList = new ArrayList<String>();
-	private ArrayList<String> userList = new ArrayList<String>();
 	private javax.swing.DefaultListModel<String> seatList;
 	
-	private List<Object> sessions;
+	private List<SessionDTO> sessions;
 	private javax.swing.DefaultListModel<String> sessionsList;
-	
-	private String userTicket;
-	
+
 	public CMWindow(CMController controller) {
 		this.controller = controller;
 		initComponents();
 		sessionsList = new DefaultListModel<String>();
 		seatList = new DefaultListModel<String>();
 		sessionsList1.setModel(sessionsList);
-		seatsList1.setModel(seatList);
+		seatList1.setModel(seatList);
 	}
 
 	private void initComponents() {
@@ -89,7 +93,7 @@ public class CMWindow extends JFrame {
 		panelTickets = new javax.swing.JPanel();
 		panelSeats = new javax.swing.JPanel();
 		scrollSeats = new javax.swing.JScrollPane();
-		seatsList1 = new javax.swing.JList<String>();
+		seatList1 = new javax.swing.JList<String>();
 		panelControlM = new javax.swing.JPanel();
 		panelUserTicketFields = new javax.swing.JPanel();
 		panelButton = new javax.swing.JPanel();
@@ -173,6 +177,7 @@ public class CMWindow extends JFrame {
 		panelButtonsP1.add(buttonSearchAll);
 		panelControlP.add(panelButtonsP1, java.awt.BorderLayout.SOUTH);
 		panelSessions.add(panelControlP);
+		// Add sessions panel
 		getContentPane().add(panelSessions);
 
 		panelTickets.setLayout(new java.awt.GridLayout(1, 2));
@@ -217,9 +222,9 @@ public class CMWindow extends JFrame {
 		
 		panelButton.add(buttonAddSeat);
 		panelButton.add(buttonBuy);
-		
 		panelControlM.add(panelButton);
 		panelTickets.add(panelControlM);
+		// Add tickets panel
 		getContentPane().add(panelTickets);
 
 		pack();
@@ -244,30 +249,31 @@ public class CMWindow extends JFrame {
 	}
 	
 	private void buttonSearchAllActionPerformed(ActionEvent evt) {
-		
+		sessions = controller.getAllSessions();
+		updateLists(sessions);
+		cleanSearchDetails();
 	}
 
 	/** Exit the Application */
-	private void exitForm(java.awt.event.WindowEvent evt) {
+	private void exitForm(WindowEvent evt) {
 		controller.exit();
 	}
 
-	private void updateLists(List<Object> sessions) {
-		/* Update current sessions */
+	private void updateLists(List<SessionDTO> sessions) {
+		sessionsList.clear();
+		for (int i = 0; i < sessions.size(); i++) {
+			SessionDTO session = (SessionDTO) sessions.get(i);
+			sessionsList.addElement(session.getTitleFilm() + " HOUR: " + session.getHour() + " DATE: " + session.getDate());
+		}
+		sessionsList1.setSelectedIndex(0);
+		seatList.clear();
+		seatList1.setSelectedIndex(0);
 	}
 
 	private void cleanSearchDetails() {
-		/* Clean search configuration details */
-	}
-
-	private void cleanTicketDetails() {
-		/* Clean ticket configuration details */
-	}
-
-	public static void main(String[] args) throws RemoteException {
-		final CMWindow window = new CMWindow(new CMController(args));
-		window.centreWindow();
-		window.setVisible(true);
+		film.setText("");
+		hour.setText("");
+		date.setText("");
 	}
 	
 }

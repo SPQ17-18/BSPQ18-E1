@@ -1,6 +1,5 @@
 package es.deusto.bspq.cinema.server.jdo.DAO;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -16,12 +15,12 @@ import org.datanucleus.api.jdo.JDOQuery;
 import es.deusto.bspq.cinema.server.jdo.data.Employee;
 import es.deusto.bspq.cinema.server.jdo.data.Film;
 import es.deusto.bspq.cinema.server.jdo.data.Member;
+import es.deusto.bspq.cinema.server.jdo.data.Room;
 import es.deusto.bspq.cinema.server.jdo.data.Session;
-
 
 public class ManagerDAO implements IManagerDAO {
 	
-private PersistenceManagerFactory pmf;
+	private PersistenceManagerFactory pmf;
 	
 	public ManagerDAO() {
 		pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
@@ -35,7 +34,7 @@ private PersistenceManagerFactory pmf;
 	       pm.makePersistent(object);
 	       tx.commit();
 	    } catch (Exception ex) {
-	    	System.out.println("   $ Error storing an object: " + ex.getMessage());
+	    	ex.printStackTrace();
 	    } finally {
 	    	if (tx != null && tx.isActive()) {
 	    		tx.rollback();
@@ -162,23 +161,6 @@ private PersistenceManagerFactory pmf;
 	}
 	
 	
-	
-	public static void main(String[] args) {
-		IManagerDAO dao= new ManagerDAO();
-		
-		if (args.length != 3) {
-			System.out.println("Attention: arguments missing");
-			System.exit(0);
-		}
-
-		if (System.getSecurityManager() == null) {
-			System.setSecurityManager(new SecurityManager());
-		}
-		
-		
-	}
-
-	
 	public void storeFilm(Film film) {
 		System.out.println("   * Storing a film: " + film.getTitle());
 		 this.storeObject(film);
@@ -188,7 +170,7 @@ private PersistenceManagerFactory pmf;
 	
 	public void storeSession(Session session) {
 		System.out.println("   * Storing a session: " + session.getRoom().getRoomNumber()+" - "+session.getDate().toString()+" "+session.getHour().toString());
-		 this.storeObject(session);
+		this.storeObject(session);
 	}
 
 	
@@ -451,11 +433,12 @@ private PersistenceManagerFactory pmf;
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	public ArrayList<Session> getSessions() {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		
 		Transaction tx = pm.currentTransaction();
-		ArrayList <Session> sessions = new ArrayList<Session>();
+		ArrayList <Session> sessionsA = new ArrayList<Session>();
 		
 		pm.getFetchPlan().setMaxFetchDepth(3);
 		
@@ -467,8 +450,8 @@ private PersistenceManagerFactory pmf;
 			System.out.println("All sessions retrieved.");
 			
 			for (int i = 0; i < result.size(); i++) {
-				sessions.add(new Session());
-				sessions.get(i).copySession(result.get(i));
+				sessionsA.add(new Session());
+				sessionsA.get(i).copySession(result.get(i));
 			}
 			
 			tx.commit();			
@@ -481,11 +464,11 @@ private PersistenceManagerFactory pmf;
     		pm.close(); 
 	    }
 	    				
-		return sessions;
+		return sessionsA;
 	}
 
 	@Override
-	public Session getSession(java.sql.Date date, Time hour) {
+	public Session getSession(String film,String date, String hour) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		
 		Transaction tx = pm.currentTransaction();
@@ -495,7 +478,7 @@ private PersistenceManagerFactory pmf;
 		
 		try {
 	    	tx.begin();
-	    	Query <?> query = pm.newQuery("SELECT FROM " + Session.class.getName() + " WHERE date == '" + date + "' AND hour=='"+hour+"'");
+	    	Query <?> query = pm.newQuery("SELECT FROM " + Session.class.getName() + " WHERE date == '" + date + "' AND hour=='"+hour+"' AND film.title='"+session.getFilm().getTitle()+"'");
 	    	query.setUnique(true);
 	    	Session result = (Session) query.execute();
 	    	session.copySession(result);
@@ -655,4 +638,81 @@ private PersistenceManagerFactory pmf;
 		
 	}
 
+
+	public ArrayList <Session> getSessions(String film) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		
+		Transaction tx = pm.currentTransaction();
+		ArrayList <Session> sessions = new ArrayList<Session>();
+		
+		pm.getFetchPlan().setMaxFetchDepth(3);
+		
+		try {
+			tx.begin();			
+			Query<?> q = pm.newQuery("SELECT FROM " + Session.class.getName()+" WHERE film.title='"+film+"'");
+			List <Session> result = (List<Session>) q.execute();
+			
+			System.out.println("All sessions retrieved from the film: "+film);
+			
+			for (int i = 0; i < result.size(); i++) {
+				sessions.add(new Session());
+				sessions.get(i).copySession(result.get(i));
+			}
+			
+			tx.commit();			
+		} catch (Exception ex) {
+	    	System.out.println("   $ Error retrieving all sessions from the film: " + ex.getMessage());
+	    } finally {
+	    	if (tx != null && tx.isActive()) {
+	    		tx.rollback();
+	    	}
+    		pm.close(); 
+	    }
+	    				
+		return sessions;
+		
+	}
+
+	@Override
+	public Session getSession(Session s) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		
+		Transaction tx = pm.currentTransaction();
+		Session session = new Session();
+	    
+		pm.getFetchPlan().setMaxFetchDepth(3);
+		
+		try {
+	    	tx.begin();
+	    	Query <?> query = pm.newQuery("SELECT FROM " + Session.class.getName() + " WHERE date == '" + session.getDate() + "' AND hour=='"+session.getHour()+"' AND film.title='"+session.getFilm().getTitle()+"'");
+	    	query.setUnique(true);
+	    	Session result = (Session) query.execute();
+	    	session.copySession(result);
+ 	    	tx.commit();
+	     } catch (Exception ex) {
+	    	 System.out.println("   $ Error retrieving a session: " + ex.getMessage());
+	     } finally {
+		   	if (tx != null && tx.isActive()) {
+		   		tx.rollback();
+		 }
+	   		pm.close();
+	     }
+		
+	    return session;
+	}
+
+	public static void main(String[] args) {
+		IManagerDAO dao= new ManagerDAO();
+		
+		Film film = new Film("A", "B", 1, 2, "C");
+		Room room = new Room(1, 25);
+		Session session = new Session("D", "E", "F", 5);
+		session.setFilm(film);
+		session.setRoom(room);
+		
+		dao.storeSession(session);
+		
+		ArrayList<Session> sessions = dao.getSessions();
+		System.out.println(sessions.get(0).getDate());
+	}
 }

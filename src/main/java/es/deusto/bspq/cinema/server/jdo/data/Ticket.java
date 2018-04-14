@@ -55,6 +55,11 @@ public class Ticket {
 		this.seats = seats;
 	}
 	
+	public void addSeat(Seat seat) {
+		seats.add(seat);
+		seat.setTicket(this);
+	}
+
 	
 	public void copyTicket(Ticket t) {
 		
