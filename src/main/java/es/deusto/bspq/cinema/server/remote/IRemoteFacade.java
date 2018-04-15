@@ -15,5 +15,5 @@ public interface IRemoteFacade extends Remote{
 	public ArrayList<FilmDTO> getFilms() throws RemoteException;
 	public ArrayList<SessionDTO> getSessions() throws RemoteException;
 	public boolean buyTickets(TicketDTO ticketDTO) throws RemoteException;
-	
+
 }

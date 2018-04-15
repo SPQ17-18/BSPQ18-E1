@@ -6,7 +6,11 @@ import java.rmi.RemoteException;
 
 import javax.swing.JFrame;
 
+
 import es.deusto.bspq.cinema.client.controller.CMController;
+import es.deusto.bspq.cinema.server.jdo.data.FilmDTO;
+import es.deusto.bspq.cinema.server.jdo.data.SessionDTO;
+
 
 import java.awt.BorderLayout;
 import javax.swing.JComboBox;
@@ -18,17 +22,36 @@ import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+
 import java.awt.event.WindowEvent;
+
 
 import java.awt.GridBagLayout;
 import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JSpinner;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import javax.swing.event.ChangeListener;
+
+import org.apache.log4j.Logger;
+
+import javax.swing.event.ChangeEvent;
+import javax.swing.SpinnerNumberModel;
 
 public class CMAWindow extends JFrame {
+	
+	final static Logger logger = Logger.getLogger(CMWindow.class);
 
-	private String[] foo = {"Item 1", "Item 2", "Item 3", "Item 4"};
+	private static String[] foo = {"Item 1", "Item 2", "Item 3", "Item 4"};
+	
+	private SessionDTO insertSessionDTO;
+	private FilmDTO insertFilmDTO;
 	
 	private static final long serialVersionUID = 1L;
 	private CMController controller;
@@ -59,16 +82,12 @@ public class CMAWindow extends JFrame {
 	private final JPanel panelInsertButton = new JPanel();
 	private final JButton btnInsert = new JButton("Insert");
 	private final JPanel panelInsertSession = new JPanel();
-	private final JTextField textField_8 = new JTextField();
-	private final JComboBox comboBox_1 = new JComboBox(foo);
-	private final JTextField textField_9 = new JTextField();
-	private final JComboBox comboBox_2 = new JComboBox(foo);
-	private final JTextField textField_10 = new JTextField();
-	private final JTextField textField_11 = new JTextField();
-	private final JTextField textField_12 = new JTextField();
-	private final JTextField textField_13 = new JTextField();
-	private final JTextField textField_14 = new JTextField();
-	private final JTextField textField_15 = new JTextField();
+	private final JTextField textFieldInsertSessionFilm = new JTextField();
+	private final JComboBox comboBoxInsertSessionFilm = new JComboBox(foo);
+	private final JTextField textFieldInsertSessionRoom = new JTextField();
+	private final JTextField textFieldInsertSessionDate = new JTextField();
+	private final JTextField textFieldInsertSessionHour = new JTextField();
+	private final JTextField textFieldInsertSessionPrice = new JTextField();
 	private final JPanel panelUpdateSession = new JPanel();
 	private final JComboBox comboBoxUpdateSession_SelectSession = new JComboBox(foo);
 	private final JTextField textFieldUpdateSessionFilm = new JTextField();
@@ -95,8 +114,17 @@ public class CMAWindow extends JFrame {
 	private final JTextField textFieldUpdateFilmCountry_Edit = new JTextField();
 	private final JPanel panelUpdateButton = new JPanel();
 	private final JButton btnUpdate = new JButton("Update");
+	private final JPanel panelInsertSessionPrice = new JPanel();
+	private final JSpinner spinnerInsertFilmPrice = new JSpinner();
+	private final JPanel panelInsertSessionHour = new JPanel();
+	private final JSpinner spinnerInsertSessionHourHs = new JSpinner();
+	private final JSpinner spinnerInsertSessionHourMins = new JSpinner();
+	private final JTextField textFieldInsertSessionDate_Edit = new JTextField();
+	private final JSpinner spinnerInsertSessionRoom = new JSpinner();
 	
+
 	public CMAWindow(CMController controller) {
+		textFieldInsertSessionDate_Edit.setColumns(10);
 		setResizable(false);
 		setTitle("CMAWindow");
 		this.controller = controller;
@@ -109,8 +137,142 @@ public class CMAWindow extends JFrame {
 		panelCentral.add(panelInsert);
 		panelCentral.setMaximumSize(new java.awt.Dimension(1200, 120));
 		panelInsert.setLayout(new BorderLayout(0, 0));
+		tabbedPaneInsert.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				enableButtonInsert();
+			}
+		});
 		
 		panelInsert.add(tabbedPaneInsert);
+		panelInsertSession.setBorder(null);
+		
+		tabbedPaneInsert.addTab("Session", null, panelInsertSession, null);
+		GridBagLayout gbl_panelInsertSession = new GridBagLayout();
+		gbl_panelInsertSession.columnWidths = new int[]{86, 158, 0};
+		gbl_panelInsertSession.rowHeights = new int[]{20, 20, 20, 20, 20, 0};
+		gbl_panelInsertSession.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_panelInsertSession.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
+		panelInsertSession.setLayout(gbl_panelInsertSession);
+		
+		GridBagConstraints gbc_textFieldInsertSessionFilm = new GridBagConstraints();
+		gbc_textFieldInsertSessionFilm.anchor = GridBagConstraints.NORTH;
+		gbc_textFieldInsertSessionFilm.insets = new Insets(0, 0, 5, 5);
+		gbc_textFieldInsertSessionFilm.gridx = 0;
+		gbc_textFieldInsertSessionFilm.gridy = 0;
+		textFieldInsertSessionFilm.setText("Film");
+		textFieldInsertSessionFilm.setEditable(false);
+		textFieldInsertSessionFilm.setColumns(10);
+		panelInsertSession.add(textFieldInsertSessionFilm, gbc_textFieldInsertSessionFilm);
+		
+		GridBagConstraints gbc_comboBoxInsertSessionFilm = new GridBagConstraints();
+		gbc_comboBoxInsertSessionFilm.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBoxInsertSessionFilm.anchor = GridBagConstraints.NORTH;
+		gbc_comboBoxInsertSessionFilm.insets = new Insets(0, 0, 5, 0);
+		gbc_comboBoxInsertSessionFilm.gridx = 1;
+		gbc_comboBoxInsertSessionFilm.gridy = 0;
+		comboBoxInsertSessionFilm.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				enableButtonInsert();
+			}
+		});
+		panelInsertSession.add(comboBoxInsertSessionFilm, gbc_comboBoxInsertSessionFilm);
+		
+		GridBagConstraints gbc_textFieldInsertSessionRoom = new GridBagConstraints();
+		gbc_textFieldInsertSessionRoom.anchor = GridBagConstraints.NORTH;
+		gbc_textFieldInsertSessionRoom.insets = new Insets(0, 0, 5, 5);
+		gbc_textFieldInsertSessionRoom.gridx = 0;
+		gbc_textFieldInsertSessionRoom.gridy = 1;
+		textFieldInsertSessionRoom.setText("Room");
+		textFieldInsertSessionRoom.setEditable(false);
+		textFieldInsertSessionRoom.setColumns(10);
+		panelInsertSession.add(textFieldInsertSessionRoom, gbc_textFieldInsertSessionRoom);
+		
+		GridBagConstraints gbc_spinnerInsertSessionRoom = new GridBagConstraints();
+		gbc_spinnerInsertSessionRoom.insets = new Insets(0, 0, 5, 0);
+		gbc_spinnerInsertSessionRoom.gridx = 1;
+		gbc_spinnerInsertSessionRoom.gridy = 1;
+		spinnerInsertSessionRoom.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				enableButtonInsert();
+			}
+		});
+		spinnerInsertSessionRoom.setModel(new SpinnerNumberModel(1, 1, 5, 1));
+		panelInsertSession.add(spinnerInsertSessionRoom, gbc_spinnerInsertSessionRoom);
+		
+		GridBagConstraints gbc_textFieldInsertSessionDate = new GridBagConstraints();
+		gbc_textFieldInsertSessionDate.anchor = GridBagConstraints.NORTH;
+		gbc_textFieldInsertSessionDate.insets = new Insets(0, 0, 5, 5);
+		gbc_textFieldInsertSessionDate.gridx = 0;
+		gbc_textFieldInsertSessionDate.gridy = 2;
+		textFieldInsertSessionDate.setText("Date");
+		textFieldInsertSessionDate.setEditable(false);
+		textFieldInsertSessionDate.setColumns(10);
+		panelInsertSession.add(textFieldInsertSessionDate, gbc_textFieldInsertSessionDate);
+		
+		GridBagConstraints gbc_textFieldInsertSessionDate_Edit = new GridBagConstraints();
+		gbc_textFieldInsertSessionDate_Edit.insets = new Insets(0, 0, 5, 0);
+		gbc_textFieldInsertSessionDate_Edit.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textFieldInsertSessionDate_Edit.gridx = 1;
+		gbc_textFieldInsertSessionDate_Edit.gridy = 2;
+		panelInsertSession.add(textFieldInsertSessionDate_Edit, gbc_textFieldInsertSessionDate_Edit);
+		
+		GridBagConstraints gbc_textFieldInsertSessionHour = new GridBagConstraints();
+		gbc_textFieldInsertSessionHour.anchor = GridBagConstraints.NORTH;
+		gbc_textFieldInsertSessionHour.insets = new Insets(0, 0, 5, 5);
+		gbc_textFieldInsertSessionHour.gridx = 0;
+		gbc_textFieldInsertSessionHour.gridy = 3;
+		textFieldInsertSessionHour.setText("Hour");
+		textFieldInsertSessionHour.setEditable(false);
+		textFieldInsertSessionHour.setColumns(10);
+		panelInsertSession.add(textFieldInsertSessionHour, gbc_textFieldInsertSessionHour);
+		
+		GridBagConstraints gbc_panelInsertSessionHour = new GridBagConstraints();
+		gbc_panelInsertSessionHour.insets = new Insets(0, 0, 5, 0);
+		gbc_panelInsertSessionHour.fill = GridBagConstraints.BOTH;
+		gbc_panelInsertSessionHour.gridx = 1;
+		gbc_panelInsertSessionHour.gridy = 3;
+		panelInsertSession.add(panelInsertSessionHour, gbc_panelInsertSessionHour);
+		spinnerInsertSessionHourHs.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				enableButtonInsert();
+			}
+		});
+		spinnerInsertSessionHourHs.setModel(new SpinnerNumberModel(0, 0, 23, 1));
+		
+		panelInsertSessionHour.add(spinnerInsertSessionHourHs);
+		spinnerInsertSessionHourMins.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				enableButtonInsert();
+			}
+		});
+		spinnerInsertSessionHourMins.setModel(new SpinnerNumberModel(0, 0, 59, 1));
+		
+		panelInsertSessionHour.add(spinnerInsertSessionHourMins);
+		
+		GridBagConstraints gbc_textFieldInsertSessionPrice = new GridBagConstraints();
+		gbc_textFieldInsertSessionPrice.anchor = GridBagConstraints.NORTH;
+		gbc_textFieldInsertSessionPrice.insets = new Insets(0, 0, 0, 5);
+		gbc_textFieldInsertSessionPrice.gridx = 0;
+		gbc_textFieldInsertSessionPrice.gridy = 4;
+		textFieldInsertSessionPrice.setText("Price");
+		textFieldInsertSessionPrice.setEditable(false);
+		textFieldInsertSessionPrice.setColumns(10);
+		panelInsertSession.add(textFieldInsertSessionPrice, gbc_textFieldInsertSessionPrice);
+		
+		GridBagConstraints gbc_panelInsertSessionPrice = new GridBagConstraints();
+		gbc_panelInsertSessionPrice.fill = GridBagConstraints.BOTH;
+		gbc_panelInsertSessionPrice.gridx = 1;
+		gbc_panelInsertSessionPrice.gridy = 4;
+		panelInsertSession.add(panelInsertSessionPrice, gbc_panelInsertSessionPrice);
+		spinnerInsertFilmPrice.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				enableButtonInsert();
+			}
+		});
+		spinnerInsertFilmPrice.setModel(new SpinnerNumberModel(new Float(1), new Float(1), new Float(99), new Float(1)));
+		
+		panelInsertSessionPrice.add(spinnerInsertFilmPrice);
 		panelInsertFilm.setBorder(null);
 		
 		tabbedPaneInsert.addTab("Film", null, panelInsertFilm, null);
@@ -135,6 +297,12 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldInsertFilmTitle_Edit.insets = new Insets(0, 0, 5, 0);
 		gbc_textFieldInsertFilmTitle_Edit.gridx = 1;
 		gbc_textFieldInsertFilmTitle_Edit.gridy = 0;
+		textFieldInsertFilmTitle_Edit.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				enableButtonInsert();
+			}
+		});
 		textFieldInsertFilmTitle_Edit.setColumns(10);
 		panelInsertFilm.add(textFieldInsertFilmTitle_Edit, gbc_textFieldInsertFilmTitle_Edit);
 		
@@ -152,6 +320,12 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldInsertFilmDirector_Edit.insets = new Insets(0, 0, 5, 0);
 		gbc_textFieldInsertFilmDirector_Edit.gridx = 1;
 		gbc_textFieldInsertFilmDirector_Edit.gridy = 1;
+		textFieldInsertFilmDirector_Edit.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				enableButtonInsert();
+			}
+		});
 		textFieldInsertFilmDirector_Edit.setColumns(10);
 		panelInsertFilm.add(textFieldInsertFilmDirector_Edit, gbc_textFieldInsertFilmDirector_Edit);
 		
@@ -185,6 +359,12 @@ public class CMAWindow extends JFrame {
 		gbc_spinnerInsertFilmDuration.insets = new Insets(0, 0, 5, 0);
 		gbc_spinnerInsertFilmDuration.gridx = 1;
 		gbc_spinnerInsertFilmDuration.gridy = 3;
+		spinnerInsertFilmDuration.setModel(new SpinnerNumberModel(1, 1, 360, 1));
+		spinnerInsertFilmDuration.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				enableButtonInsert();
+			}
+		});
 		panelInsertFilm.add(spinnerInsertFilmDuration, gbc_spinnerInsertFilmDuration);
 		
 		GridBagConstraints gbc_textFieldInsertFilmCountry = new GridBagConstraints();
@@ -200,111 +380,25 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldInsertFilmCountry_Edit.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textFieldInsertFilmCountry_Edit.gridx = 1;
 		gbc_textFieldInsertFilmCountry_Edit.gridy = 4;
+		textFieldInsertFilmCountry_Edit.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				enableButtonInsert();
+			}
+		});
 		textFieldInsertFilmCountry_Edit.setColumns(10);
 		panelInsertFilm.add(textFieldInsertFilmCountry_Edit, gbc_textFieldInsertFilmCountry_Edit);
-		panelInsertSession.setBorder(null);
-		
-		tabbedPaneInsert.addTab("Session", null, panelInsertSession, null);
-		GridBagLayout gbl_panelInsertSession = new GridBagLayout();
-		gbl_panelInsertSession.columnWidths = new int[]{86, 158, 0};
-		gbl_panelInsertSession.rowHeights = new int[]{20, 20, 20, 20, 20, 0};
-		gbl_panelInsertSession.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_panelInsertSession.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		panelInsertSession.setLayout(gbl_panelInsertSession);
-		
-		GridBagConstraints gbc_textField_8 = new GridBagConstraints();
-		gbc_textField_8.anchor = GridBagConstraints.NORTH;
-		gbc_textField_8.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_8.gridx = 0;
-		gbc_textField_8.gridy = 0;
-		textField_8.setText("Film");
-		textField_8.setEditable(false);
-		textField_8.setColumns(10);
-		panelInsertSession.add(textField_8, gbc_textField_8);
-		
-		GridBagConstraints gbc_comboBox_1 = new GridBagConstraints();
-		gbc_comboBox_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBox_1.anchor = GridBagConstraints.NORTH;
-		gbc_comboBox_1.insets = new Insets(0, 0, 5, 0);
-		gbc_comboBox_1.gridx = 1;
-		gbc_comboBox_1.gridy = 0;
-		panelInsertSession.add(comboBox_1, gbc_comboBox_1);
-		
-		GridBagConstraints gbc_textField_9 = new GridBagConstraints();
-		gbc_textField_9.anchor = GridBagConstraints.NORTH;
-		gbc_textField_9.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_9.gridx = 0;
-		gbc_textField_9.gridy = 1;
-		textField_9.setText("Room");
-		textField_9.setEditable(false);
-		textField_9.setColumns(10);
-		panelInsertSession.add(textField_9, gbc_textField_9);
-		
-		GridBagConstraints gbc_comboBox_2 = new GridBagConstraints();
-		gbc_comboBox_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBox_2.anchor = GridBagConstraints.NORTH;
-		gbc_comboBox_2.insets = new Insets(0, 0, 5, 0);
-		gbc_comboBox_2.gridx = 1;
-		gbc_comboBox_2.gridy = 1;
-		panelInsertSession.add(comboBox_2, gbc_comboBox_2);
-		
-		GridBagConstraints gbc_textField_10 = new GridBagConstraints();
-		gbc_textField_10.anchor = GridBagConstraints.NORTH;
-		gbc_textField_10.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_10.gridx = 0;
-		gbc_textField_10.gridy = 2;
-		textField_10.setText("Date");
-		textField_10.setEditable(false);
-		textField_10.setColumns(10);
-		panelInsertSession.add(textField_10, gbc_textField_10);
-		
-		GridBagConstraints gbc_textField_11 = new GridBagConstraints();
-		gbc_textField_11.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_11.anchor = GridBagConstraints.NORTH;
-		gbc_textField_11.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_11.gridx = 1;
-		gbc_textField_11.gridy = 2;
-		textField_11.setColumns(10);
-		panelInsertSession.add(textField_11, gbc_textField_11);
-		
-		GridBagConstraints gbc_textField_12 = new GridBagConstraints();
-		gbc_textField_12.anchor = GridBagConstraints.NORTH;
-		gbc_textField_12.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_12.gridx = 0;
-		gbc_textField_12.gridy = 3;
-		textField_12.setText("Hour");
-		textField_12.setEditable(false);
-		textField_12.setColumns(10);
-		panelInsertSession.add(textField_12, gbc_textField_12);
-		
-		GridBagConstraints gbc_textField_13 = new GridBagConstraints();
-		gbc_textField_13.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_13.anchor = GridBagConstraints.NORTH;
-		gbc_textField_13.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_13.gridx = 1;
-		gbc_textField_13.gridy = 3;
-		textField_13.setColumns(10);
-		panelInsertSession.add(textField_13, gbc_textField_13);
-		
-		GridBagConstraints gbc_textField_14 = new GridBagConstraints();
-		gbc_textField_14.anchor = GridBagConstraints.NORTH;
-		gbc_textField_14.insets = new Insets(0, 0, 0, 5);
-		gbc_textField_14.gridx = 0;
-		gbc_textField_14.gridy = 4;
-		textField_14.setText("Price");
-		textField_14.setEditable(false);
-		textField_14.setColumns(10);
-		panelInsertSession.add(textField_14, gbc_textField_14);
-		
-		GridBagConstraints gbc_textField_15 = new GridBagConstraints();
-		gbc_textField_15.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_15.anchor = GridBagConstraints.NORTH;
-		gbc_textField_15.gridx = 1;
-		gbc_textField_15.gridy = 4;
-		textField_15.setColumns(10);
-		panelInsertSession.add(textField_15, gbc_textField_15);
 		
 		panelInsert.add(panelInsertButton, BorderLayout.SOUTH);
+		btnInsert.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				enableButtonInsert();
+			}
+		});
+		btnInsert.setEnabled(false);
 		
 		panelInsertButton.add(btnInsert);
 		
@@ -571,10 +665,27 @@ public class CMAWindow extends JFrame {
 		controller.exit();
 	}
 
+
 	public static void main(String[] args) throws RemoteException {
-		final CMAWindow window = new CMAWindow(new CMController(args));
+		final CMAWindow window = new CMAWindow(new CMController(foo));
 		window.centreWindow();
 		window.setVisible(true);
 	}
 	
+	private void enableButtonInsert() {
+		if(tabbedPaneInsert.getSelectedIndex() == 0) {
+			if(textFieldInsertSessionDate_Edit.getText().equals("")) {
+				btnInsert.setEnabled(false);
+			} else {
+				btnInsert.setEnabled(true);
+			}
+		} else if(tabbedPaneInsert.getSelectedIndex() == 1) {
+			if(textFieldInsertFilmCountry_Edit.getText().equals("") || textFieldInsertFilmDirector_Edit.getText().equals("") || textFieldInsertFilmTitle_Edit.getText().equals("")) {
+				btnInsert.setEnabled(false);
+			} else {
+				btnInsert.setEnabled(true);
+			}
+		}
+	}
+
 }

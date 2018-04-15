@@ -96,6 +96,8 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		}
 		
 	}
+	
+	
 
 	public static void main(String[] args) {
 		if (args.length != 3) {
