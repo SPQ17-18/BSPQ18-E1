@@ -16,7 +16,11 @@ public class Assembler {
 //			SessionDTO sDTO = new SessionDTO(session.getDate(),session.getHour(),session.getPrice(),
 //					session.getRoom().getRoomNumber(),session.getRoom().getNumberSeats(),
 //					session.getFilm().getTitle(),session.getSeats());
-			SessionDTO sDTO = new SessionDTO("A","B",1,2,3,"C",new ArrayList<String>());
+			ArrayList<String> a = new ArrayList<String>();
+			a.add("S1");
+			a.add("S2");
+			a.add("S3");
+			SessionDTO sDTO = new SessionDTO("A","B",1,2,3,"C",a);
 			sessionsDTO.add(sDTO);
 		}
 		
