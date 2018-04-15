@@ -12,6 +12,7 @@ public class Assembler {
 		this.dao = new ManagerDAO();
 	}
 
+
 	public Ticket disassembleTicket(TicketDTO ticketDTO) {
 
 		Ticket t = new Ticket();
@@ -27,6 +28,7 @@ public class Assembler {
 
 		for (int i = 0; i < seatCode.size(); i++) {
 			t.addSeat(new Seat(seatCode.get(i)));
+
 		}
 
 		return t;

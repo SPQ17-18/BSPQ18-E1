@@ -17,8 +17,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowListener;
+
+import java.awt.event.WindowEvent;
+
 import java.awt.GridBagLayout;
 import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
@@ -565,8 +566,8 @@ public class CMAWindow extends JFrame {
 		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
 	}
 
-	// Exit the Application 
-	private void exitForm(java.awt.event.WindowEvent evt) {
+	/** Exit the Application */
+	private void exitForm(WindowEvent evt) {
 		controller.exit();
 	}
 
@@ -575,7 +576,5 @@ public class CMAWindow extends JFrame {
 		window.centreWindow();
 		window.setVisible(true);
 	}
-	
-	
 	
 }

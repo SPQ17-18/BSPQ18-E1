@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 
 import es.deusto.bspq.cinema.client.controller.CMController;
 import es.deusto.bspq.cinema.server.jdo.data.SessionDTO;
+import es.deusto.bspq.cinema.server.jdo.data.TicketDTO;
 
 public class CMWindow extends JFrame {
 	
@@ -32,7 +33,6 @@ public class CMWindow extends JFrame {
 	private javax.swing.JLabel jLabel1;
 	private javax.swing.JLabel jLabel2;
 	private javax.swing.JLabel jLabel3;
-	private javax.swing.JLabel jLabel4;
 	private javax.swing.JTextField film;
 	private javax.swing.JList<String> sessionsList1;
 	private javax.swing.JList<String> seatList1;
@@ -54,7 +54,6 @@ public class CMWindow extends JFrame {
 	private javax.swing.JScrollPane scrollSeats;
 	private javax.swing.JTabbedPane tabsTable;
 	private javax.swing.JButton buttonAddSeat;
-	private javax.swing.JTextArea seatUser;
 	
 	private ArrayList<String> seatNumberList = new ArrayList<String>();
 	private javax.swing.DefaultListModel<String> seatList;
@@ -99,8 +98,6 @@ public class CMWindow extends JFrame {
 		panelButton = new javax.swing.JPanel();
 		buttonBuy = new javax.swing.JButton();
 		buttonAddSeat = new javax.swing.JButton();
-		jLabel4 = new javax.swing.JLabel();
-		seatUser = new javax.swing.JTextArea();
 
 		getContentPane().setLayout(new java.awt.GridLayout(2, 1));
 
@@ -117,8 +114,16 @@ public class CMWindow extends JFrame {
 		sessionsList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		ListSelectionListener listSelectionListener = new ListSelectionListener() {
 		      public void valueChanged(ListSelectionEvent listSelectionEvent) {
-		    	
-		    	
+		    	  try {
+		    		  seatNumberList.clear();
+		    		  seatList.clear();
+		    		  for (int i = 0; i < sessions.get(sessionsList1.getSelectedIndex()).getRemainingSeatsCode().size(); i++) {
+		    			  seatList.addElement(sessions.get(sessionsList1.getSelectedIndex()).getRemainingSeatsCode().get(i));
+		    		  }
+		    		  seatList1.setSelectedIndex(0);
+		    	  } catch (Exception e) {
+		    		  logger.error("Error updating seat list.");
+		    	  }
 		      }
 		};
 		sessionsList1.addListSelectionListener(listSelectionListener);
@@ -194,12 +199,6 @@ public class CMWindow extends JFrame {
 
 		panelControlM.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.TitledBorder(""), "Buy a Ticket"));
 		panelControlM.setLayout(new java.awt.GridLayout(1, 2));
-		
-		jLabel4.setText("Seat User: ");
-		panelUserTicketFields.add(jLabel4);
-
-		seatUser.setColumns(10);
-		panelUserTicketFields.add(seatUser);
 
 		panelUserTicketFields.setPreferredSize(new java.awt.Dimension(250, 60));
 
@@ -237,11 +236,21 @@ public class CMWindow extends JFrame {
 	}
 	
 	private void buttonAddSeatActionPerformed(ActionEvent evt) {
-		
+		seatNumberList.add(seatList.get(seatList1.getSelectedIndex()));
+		sessions.get(sessionsList1.getSelectedIndex()).getRemainingSeatsCode().remove(seatList.get(seatList1.getSelectedIndex()));
+		seatList.remove(seatList1.getSelectedIndex());
+		logger.info("Seat added.");
 	}
 	
 	private void buttonBuyActionPerformed(ActionEvent evt) {
-		
+		SessionDTO session = sessions.get(sessionsList1.getSelectedIndex());
+		//TODO Email will be inserted in login features
+		TicketDTO ticket = new TicketDTO("unai.bermejo@opendeusto.es", session.getTitleFilm(),
+				session.getDate(), session.getHour(), seatNumberList);
+		controller.buyTicket(ticket);
+		logger.info("Ticket bought with " + ticket.getListSeats().size() + " seats for film: " + ticket.getTitleFilm());
+		seatNumberList.clear();
+		seatList.clear();
 	}
 
 	private void buttonSearchActionPerformed(ActionEvent evt) {
@@ -252,6 +261,7 @@ public class CMWindow extends JFrame {
 		sessions = controller.getAllSessions();
 		updateLists(sessions);
 		cleanSearchDetails();
+		logger.info("All sessions retrieved.");
 	}
 
 	/** Exit the Application */
@@ -267,6 +277,9 @@ public class CMWindow extends JFrame {
 		}
 		sessionsList1.setSelectedIndex(0);
 		seatList.clear();
+		for (int i = 0; i < sessions.get(sessionsList1.getSelectedIndex()).getRemainingSeatsCode().size(); i++) {
+			seatList.addElement(sessions.get(sessionsList1.getSelectedIndex()).getRemainingSeatsCode().get(i));
+		}
 		seatList1.setSelectedIndex(0);
 	}
 
