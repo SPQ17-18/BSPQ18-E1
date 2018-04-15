@@ -27,8 +27,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 
 	public ArrayList<SessionDTO> getSessions() throws RemoteException {
 		ArrayList<Session> sessions = dao.getSessions();
-		System.out.println(sessions.get(0).getDate());
-		return assembler.assembleSessionS(sessions);
+		return assembler.assembleSessions(sessions);
 	}
 
 	public boolean buyTickets(TicketDTO ticketDTO) throws RemoteException {

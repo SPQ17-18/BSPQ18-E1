@@ -9,7 +9,7 @@ public class Assembler {
 	public Assembler() {
 	}
 	
-	public ArrayList<SessionDTO> assembleSessionS(ArrayList<Session> sessions) {
+	public ArrayList<SessionDTO> assembleSessions(ArrayList<Session> sessions) {
 		ArrayList<SessionDTO> sessionsDTO = new ArrayList<SessionDTO>();
 		
 		for (Session session : sessions) {
