@@ -11,6 +11,8 @@ import es.deusto.bspq.cinema.server.jdo.data.Ticket;
 
 public interface IManagerDAO {
 	
+	
+	
 	public void storeFilm(Film film);
 	public void storeSession(Session session);
 	public void storeMember(Member member);

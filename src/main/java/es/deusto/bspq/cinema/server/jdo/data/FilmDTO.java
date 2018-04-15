@@ -11,9 +11,7 @@ public class FilmDTO implements Serializable{
 	private int rating;
 	private long duration;
 	private String country;
-	
-	
-	
+
 	
 
 	public FilmDTO(String title, String director, int rating, long duration, String country) {
