@@ -61,6 +61,11 @@ public class Actor {
 		this.films = films;
 	}
 	
+	public void addFilm(Film film) {
+		films.add(film);
+		
+	}
+	
 	public void copyActor(Actor a) {
 		
 		this.name = a.getName();

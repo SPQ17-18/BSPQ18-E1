@@ -2,6 +2,7 @@ package es.deusto.bspq.cinema.server.jdo.DAO;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.jdo.JDOHelper;
@@ -16,7 +17,9 @@ import es.deusto.bspq.cinema.server.jdo.data.Employee;
 import es.deusto.bspq.cinema.server.jdo.data.Film;
 import es.deusto.bspq.cinema.server.jdo.data.Member;
 import es.deusto.bspq.cinema.server.jdo.data.Room;
+import es.deusto.bspq.cinema.server.jdo.data.Seat;
 import es.deusto.bspq.cinema.server.jdo.data.Session;
+import es.deusto.bspq.cinema.server.jdo.data.Ticket;
 
 public class ManagerDAO implements IManagerDAO {
 	
@@ -32,9 +35,10 @@ public class ManagerDAO implements IManagerDAO {
 	    try {
 	       tx.begin();
 	       pm.makePersistent(object);
+	       pm.detachCopy(object);
 	       tx.commit();
 	    } catch (Exception ex) {
-	    	ex.printStackTrace();
+	    //	ex.printStackTrace();
 	    } finally {
 	    	if (tx != null && tx.isActive()) {
 	    		tx.rollback();
@@ -50,7 +54,7 @@ public class ManagerDAO implements IManagerDAO {
 		Transaction tx = pm.currentTransaction();
 		ArrayList <Film> films = new ArrayList<Film>();
 		
-		pm.getFetchPlan().setMaxFetchDepth(3);
+		pm.getFetchPlan().setMaxFetchDepth(5);
 		
 		try {
 			tx.begin();			
@@ -147,6 +151,7 @@ public class ManagerDAO implements IManagerDAO {
 	    	query.setUnique(true);
 	    	Film result = (Film) query.execute();
 	    	film.copyFilm(result);
+	 
  	    	tx.commit();
 	     } catch (Exception ex) {
 	    	 System.out.println("   $ Error retrieving a film: " + ex.getMessage());
@@ -154,6 +159,8 @@ public class ManagerDAO implements IManagerDAO {
 		   	if (tx != null && tx.isActive()) {
 		   		tx.rollback();
 		 }
+		   	
+		   
 	   		pm.close();
 	     }
 		
@@ -173,6 +180,10 @@ public class ManagerDAO implements IManagerDAO {
 		this.storeObject(session);
 	}
 
+	public void storeTicket(Ticket ticket) {
+		System.out.println("   * Storing a ticket: " + ticket.getMember().getEmail()+"");
+		this.storeObject(ticket);
+	}
 	
 	public void storeMember(Member member) {
 		System.out.println("   * Storing a member: " + member.getEmail());
@@ -202,15 +213,22 @@ public class ManagerDAO implements IManagerDAO {
 	}
 
 	
-	public void updateSession(Session session) {
+	public void updateSession(Session session,Ticket t) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		
 	    Transaction tx = pm.currentTransaction();
 	    
 	    try {
 	    	tx.begin();
-	    	pm.makePersistent(session);
-	    	tx.commit();
+	    	Query <?> query = pm.newQuery("SELECT FROM " + Session.class.getName() + " WHERE session == '" + session.getSession() + "'");
+	    	query.setUnique(true);
+	    	Session result = (Session) query.execute();
+
+	    	result.addTicket(t);	   
+	    	 
+	    tx.commit();
+	    	 
+	    	   
 	     } catch (Exception ex) {
 	    	 System.out.println("   $ Error updating a session: " + ex.getMessage());
 	     } finally {
@@ -223,15 +241,22 @@ public class ManagerDAO implements IManagerDAO {
 	}
 
 	
-	public void updateMember(Member member) {
+	public void updateMember(Member member,Ticket t) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		
 	    Transaction tx = pm.currentTransaction();
 	    
 	    try {
 	    	tx.begin();
-	    	pm.makePersistent(member);
-	    	tx.commit();
+	    	Query <?> query = pm.newQuery("SELECT FROM " + Member.class.getName() + " WHERE  email== '" + member.getEmail() + "'");
+	    	query.setUnique(true);
+	    	Member result = (Member) query.execute();
+
+	    	result.addTicket(t);
+	    	   
+	    	   tx.commit();
+	    	 
+	    	   
 	     } catch (Exception ex) {
 	    	 System.out.println("   $ Error updating a member: " + ex.getMessage());
 	     } finally {
@@ -278,19 +303,19 @@ public class ManagerDAO implements IManagerDAO {
 		try {		
 			tx.begin();
 
-			Query<Session> query = pm.newQuery(Session.class, "hour =='"+session.getHour()+"'");
+			Query<Session> query = pm.newQuery(Session.class, "session =='"+session.getSession()+"'");
 
 			Collection<?> result = (Collection<?>) query.execute();
 
-			Film f = (Film) result.iterator().next();
+			Session s = (Session) result.iterator().next();
 
 			query.close(result);
 
-			pm.deletePersistent(f);
+			pm.deletePersistent(s);
 			   
 			tx.commit();
 		} catch (Exception ex) {
-			System.out.println("   $ Error cleaning a film: " + ex.getMessage());
+			System.out.println("   $ Error cleaning a session: " + ex.getMessage());
 			ex.printStackTrace();
 		} finally {
 			if (tx != null && tx.isActive()) {
@@ -368,6 +393,11 @@ public class ManagerDAO implements IManagerDAO {
 	public void storeEmployee(Employee employee) {
 		System.out.println("   * Storing an employee: " + employee.getUsername());
 		 this.storeObject(employee);
+	}
+
+	public void storeRoom(Room room) {
+		System.out.println("   * Storing a room: " + room.getRoomNumber());
+		 this.storeObject(room);
 	}
 
 	
@@ -580,6 +610,8 @@ public class ManagerDAO implements IManagerDAO {
 	     }
 	}
 
+
+	
 	
 	public void deleteAllEmployees() {
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -675,18 +707,19 @@ public class ManagerDAO implements IManagerDAO {
 		
 	}
 
-	@Override
+	
 	public Session getSession(Session s) {
+		
 		PersistenceManager pm = pmf.getPersistenceManager();
 		
 		Transaction tx = pm.currentTransaction();
 		Session session = new Session();
 	    
-		pm.getFetchPlan().setMaxFetchDepth(3);
+		pm.getFetchPlan().setMaxFetchDepth(5);
 		
 		try {
 	    	tx.begin();
-	    	Query <?> query = pm.newQuery("SELECT FROM " + Session.class.getName() + " WHERE date == '" + session.getDate() + "' AND hour=='"+session.getHour()+"' AND film.title='"+session.getFilm().getTitle()+"'");
+	    	Query <?> query = pm.newQuery("SELECT FROM " + Session.class.getName() + " WHERE session == '" + s.getSession() + "'");
 	    	query.setUnique(true);
 	    	Session result = (Session) query.execute();
 	    	session.copySession(result);
@@ -701,45 +734,391 @@ public class ManagerDAO implements IManagerDAO {
 	     }
 		
 	    return session;
+	
+	}
+	
+	public Room getRoom(int number) {
+		
+		PersistenceManager pm = pmf.getPersistenceManager();
+		
+		Transaction tx = pm.currentTransaction();
+		Room room = new Room();
+	    
+		pm.getFetchPlan().setMaxFetchDepth(5);
+		
+		try {
+	    	tx.begin();
+	    	Query <?> query = pm.newQuery("SELECT FROM " + Room.class.getName() + " WHERE roomNumber == " + number + "");
+	    	query.setUnique(true);
+	    	Room result = (Room) query.execute();
+	    	room.copyRoom(result);
+	 
+ 	    	tx.commit();
+	     } catch (Exception ex) {
+	    	 System.out.println("   $ Error retrieving a session: " + ex.getMessage());
+	     } finally {
+		   	if (tx != null && tx.isActive()) {
+		   		tx.rollback();
+		 }
+		   
+	   		pm.close();
+	     }
+		
+	    return room;
+	
+	}
+	
+	public void deleteRoom(int room) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		
+		Transaction tx = pm.currentTransaction();
+			
+		try {		
+			tx.begin();
+			
+			
+
+			Query<Room> query = pm.newQuery(Room.class, "roomNumber =="+room+"");
+
+			Collection<?> result = (Collection<?>) query.execute();
+
+			Room r = (Room) result.iterator().next();
+
+			query.close(result);
+
+			pm.deletePersistent(r);
+			   
+			tx.commit();
+			
+			System.out.println("Cleaned the room: "+room);
+		} catch (Exception ex) {
+			System.out.println("   $ Error cleaning a room: " + ex.getMessage());
+			ex.printStackTrace();
+		} finally {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			if (pm != null && !pm.isClosed()) {
+				pm.close();
+			}
+		}
+		
+	}
+	
+	public String getLastSessionCode() {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		
+		pm.getFetchPlan().setMaxFetchDepth(4);
+		Transaction tx = pm.currentTransaction();
+		String sessionCode = "";
+		
+		try {
+			tx.begin();			
+			Query<?> q = pm.newQuery("SELECT FROM " + Session.class.getName() + 
+                    " ORDER BY session");
+			List <Session> result = (List<Session>) q.execute();
+			
+			ArrayList <Integer> codes = new ArrayList<>();
+			for (int i=0;i<result.size();i++) {
+				codes.add(Integer.parseInt(result.get(i).getSession().substring(1, result.get(i).getSession().length())));
+			}
+			
+			Collections.sort(codes);
+			
+			int number = codes.get(codes.size()-1);
+			number++;
+			sessionCode= "S"+number;
+			tx.commit();					
+		} catch (Exception ex) {
+			System.out.println("   $ Error the last session code: " + ex.getMessage());
+	    } finally {
+	    	if (tx != null && tx.isActive()) {
+	    		tx.rollback();
+	    	}
+    		pm.close(); 
+	    }
+	    				
+		return sessionCode;
 	}
 
 	public static void main(String[] args) {
+		
 		IManagerDAO dao= new ManagerDAO();
+
+		if (args.length != 3) {
+			System.out.println("Attention: arguments missing");
+			System.exit(0);
+		}
+
+		if (System.getSecurityManager() == null) {
+			System.setSecurityManager(new SecurityManager());
+		}
 		
-		Film film = new Film("A", "B", 1, 2, "C");
-		Room room = new Room(1, 25);
-		Session session = new Session("D", "E", "F", 5);
-		session.setFilm(film);
-		session.setRoom(room);
+		Film f1 = new Film("Inmersion", "Wim Wenders", 12, 111, "EE.UU.");
+		Film f2 = new Film("Pacific Rim: Insurrecion", "Steven S. DeKnight", 7, 110, "EE.UU.");
+		Film f3 = new Film("Leo Da Vinci", "Sergio Manfio", 0, 85, "Italia");
+		Film f4 = new Film("Campeones", "Javier Fesser", 7, 100, "España");
+		Film f5 = new Film("Ready Player One", "Steven Spielberg", 7, 140, "EE.UU.");
+	
 		
-		Film film1 = new Film("G", "H", 1, 2, "I");
-		Room room1 = new Room(2, 25);
-		Session session1 = new Session("J", "K", "L", 5);
-		session1.setFilm(film1);
-		session1.setRoom(room1);
+		Employee e1 = new Employee("e1", "Juan", "Garcia Perez", "e1", 1500);
+		Employee e2 = new Employee("e2", "Maria", "Martin Gomez", "e2", 1700);
+		Employee e3 = new Employee("e3", "Paco", "Perez Gomez", "e3", 1300);
+		Employee e4 = new Employee("e4", "Luis", "Lozano Esteban", "e4", 1800);
+		Employee e5 = new Employee("e5", "Andrea", "Hernandez Sarria", "e5", 1500);
 		
-		Film film2 = new Film("M", "N", 1, 2, "O");
-		Room room2 = new Room(3, 25);
-		Session session2 = new Session("P", "Q", "R", 5);
-		session2.setFilm(film2);
-		session2.setRoom(room2);
 		
-		Film film3 = new Film("S", "T", 1, 2, "U");
-		Room room3 = new Room(4, 25);
-		Session session3 = new Session("V", "W", "X", 5);
-		session3.setFilm(film3);
-		session3.setRoom(room3);
+		Room r1 = new Room(1, 60);
+		Room r2 = new Room(2, 70);
+		Room r3 = new Room(3, 80);
+		Room r4 = new Room(4, 60);
+		Room r5 = new Room(5, 60);
 		
-		Film film4 = new Film("Y", "Z", 1, 2, "AA");
-		Room room4 = new Room(5, 25);
-		Session session4 = new Session("BB", "CC", "DD", 5);
-		session4.setFilm(film4);
-		session4.setRoom(room4);
+		Seat se1 = new Seat("A3");
+		Seat se2 = new Seat("A4");
+		Seat se3 = new Seat("A5");
+		Seat se4 = new Seat("E10");
+		Seat se5 = new Seat("E9");
+		Seat se6 = new Seat("E8");
+		Seat se7 = new Seat("D5");
+		Seat se8 = new Seat("D6");
+		Seat se9 = new Seat("C7");
+		Seat seA = new Seat("B8");
+		Seat seB = new Seat("B9");
+		Seat seC = new Seat("B10");
+		Seat seD = new Seat("F3");
+		Seat seE = new Seat("F4");
+		Seat seF = new Seat("F5");
 		
-		dao.storeSession(session);
-		dao.storeSession(session1);
-		dao.storeSession(session2);
-		dao.storeSession(session3);
-		dao.storeSession(session4);
+		ArrayList<Seat> ss1 = new ArrayList<Seat>();
+		ss1.add(se1);
+		ss1.add(se2);
+		ss1.add(se3);
+		
+		ArrayList<Seat> ss2 = new ArrayList<Seat>();
+		ss2.add(se4);
+		ss2.add(se5);
+		ss2.add(se6);
+		
+		ArrayList<Seat> ss3 = new ArrayList<Seat>();
+		ss3.add(se7);
+		ss3.add(se8);
+		
+		ArrayList<Seat> ss4 = new ArrayList<Seat>();
+		ss4.add(se9);
+		
+		ArrayList<Seat> ss5 = new ArrayList<Seat>();
+		ss5.add(seA);
+		ss5.add(seB);
+		ss5.add(seC);
+		
+		ArrayList<Seat> ss6 = new ArrayList<Seat>();
+		ss6.add(seD);
+		ss6.add(seE);
+		ss6.add(seF);
+		
+		
+		Ticket t1 = new Ticket();
+		t1.addSeats(ss1);
+		Ticket t2 = new Ticket();
+		t2.addSeats(ss2);
+		Ticket t3 = new Ticket();
+		t3.addSeats(ss3);
+		Ticket t4 = new Ticket();
+		t4.addSeats(ss4);
+		Ticket t5 = new Ticket();
+		t5.addSeats(ss5);
+		Ticket t6 = new Ticket();
+		t6.addSeats(ss6);
+		
+		
+		Member m1 = new Member("ariane.fernandez@opendeusto.es", "Ariane", "Fernandez", "ariane", "26-04-1997", 0);
+		Member m2 = new Member("unai.bermejo@opendeusto.es", "Unai", "Bermejo", "unai", "23-08-1997", 0);
+		Member m3 = new Member("ander.arguinano@opendeusto.es", "Ander", "Arguinano", "ander", "26-10-1997", 0);
+		Member m4 = new Member("inigo.garcia@opendeusto.es", "Inigo", "Garcia", "inigo", "10-02-1997", 0);
+		Member m5 = new Member("fischer.wolfgang@opendeusto.es", "Wolfgang ", "Fischer", "wolfgang", "05-09-1997", 0);
+	
+		m1.addTicket(t1);
+		m1.addTicket(t2);
+		m3.addTicket(t3);
+		m4.addTicket(t5);
+		m5.addTicket(t6);
+		m2.addTicket(t4);
+		
+		
+		
+		Session s1 = new Session("S1","13-04-2018", "17:00",(float) 8.90);
+		Session s2 = new Session("S2","13-04-2018", "18:00",(float) 8.90);
+		Session s3 = new Session("S3","13-04-2018", "19:00",(float) 5.90);
+		
+		s1.addTicket(t1);
+		s2.addTicket(t2);
+		s1.addTicket(t3);
+		s2.addTicket(t4);
+		s3.addTicket(t5);
+		s1.addTicket(t6);
+		
+		r1.addSession(s1);
+		r2.addSession(s2);
+		r3.addSession(s3);
+		
+		
+		f1.addSession(s1);
+		f1.addSession(s2);
+		f1.addSession(s3);
+		
+		
+			
+		Session s4 = new Session("S4","14-04-2018", "17:00",(float) 8.90);
+		Session s5 = new Session("S5","14-04-2018", "20:00",(float) 7.50);
+		Session s6 = new Session("S6","14-04-2018", "22:00",(float) 10.90);
+		
+		r4.addSession(s4);
+		r5.addSession(s5);
+		r1.addSession(s6);
+		
+		f2.addSession(s4);
+		f2.addSession(s5);
+		f2.addSession(s6);
+		
+		Session s7 = new Session("S7","15-04-2018", "17:00",(float) 5.80);
+		Session s8 = new Session("S8","15-04-2018", "19:00",(float) 6.60);
+		Session s9 = new Session("S9","15-04-2018", "22:00",(float) 4.40);
+		
+		r2.addSession(s7);
+		r3.addSession(s8);
+		r4.addSession(s9);
+		
+		f3.addSession(s7);
+		f3.addSession(s8);
+		f3.addSession(s9);
+		
+		Session sA = new Session("S10","13-04-2018", "16:00",(float) 12.90);
+		Session sB = new Session("S11","13-04-2018", "18:00",(float) 8.90);
+		Session sC = new Session("S12","13-04-2018", "20:00",(float) 6.90);
+		
+		r5.addSession(sA);
+		r1.addSession(sB);
+		r2.addSession(sC);
+		
+		f4.addSession(sA);
+		f4.addSession(sB);
+		f4.addSession(sC);
+		
+		Session sD = new Session("S13","15-04-2018", "16:00",(float) 12.90);
+		Session sE = new Session("S14","15-04-2018", "18:00",(float) 8.90);
+		Session sF = new Session("S15","15-04-2018", "20:00",(float) 6.90);
+		
+		r3.addSession(sD);
+		r4.addSession(sE);
+		r5.addSession(sF);
+		
+		f5.addSession(sD);
+		f5.addSession(sE);
+		f5.addSession(sF);
+		
+		
+
+		dao.storeFilm(f1);
+
+		
+		dao.storeEmployee(e1);
+		dao.storeEmployee(e2);
+		dao.storeEmployee(e3);
+		dao.storeEmployee(e4);
+		dao.storeEmployee(e5);
+		
+		
+		
+		ArrayList <Member> members = dao.getMembers();
+		
+		for (int i=0;i<members.size();i++) {
+			System.out.println("Member "+(i+1));
+			System.out.println("Name: "+members.get(i).getName());
+			System.out.println("Surname: "+members.get(i).getSurname());
+			System.out.println("Birthday: "+members.get(i).getBirthday());
+		}
+		
+	
+		
+		ArrayList <Employee> employees = dao.getEmployees();
+		
+		for (int i=0;i<employees.size();i++) {
+			System.out.println("Employee "+(i+1));
+			System.out.println("Name: "+employees.get(i).getName());
+			System.out.println("Surname: "+employees.get(i).getSurname());
+			System.out.println("Salary: "+employees.get(i).getSalary());
+		}
+		
+		
+		
+		ArrayList <Film> films = dao.getFilms();
+		
+		
+		for (int i = 0; i<films.size();i++) {
+			System.out.println("Film "+(i+1));
+			System.out.println("Name: "+films.get(i).getTitle());
+			System.out.println("Country: "+films.get(i).getCountry());
+			System.out.println("Duration: "+films.get(i).getDuration());
+			System.out.println("Estas son las sesiones de la pelicula: ");
+			
+			for (int j = 0;j<films.get(i).getSessions().size();j++) {
+				System.out.println("Session "+ (j+1)+": "+films.get(i).getSessions().get(j).getDate()+" - "+films.get(i).getSessions().get(j).getHour()+" - "+films.get(i).getSessions().get(j).getRoom().getRoomNumber());
+				
+			}
+			
+		}
+		
+		Film prueba = dao.getFilm("Leo Da Vinci");
+		
+		System.out.println("PRUEBA");
+		
+		
+		System.out.println("Name: "+prueba.getTitle());
+		System.out.println("Country: "+prueba.getCountry());
+		System.out.println("Duration: "+prueba.getDuration());
+		System.out.println("Estas son las sesiones de la pelicula: ");
+		
+		for (int j = 0;j<prueba.getSessions().size();j++) {
+			System.out.println("Session "+ (j+1)+": "+prueba.getSessions().get(j).getDate()+" - "+prueba.getSessions().get(j).getHour()+" - "+prueba.getSessions().get(j).getRoom().getRoomNumber());
+			
+		}
+		
+		
+		
+	
+		
+		
+
+//		Film film1 = new Film("G", "H", 1, 2, "I");
+//		Room room1 = new Room(2, 25);
+//		Session session1 = new Session("J", "K", "L", 5);
+//		session1.setFilm(film1);
+//		session1.setRoom(room1);
+//		
+//		Film film2 = new Film("M", "N", 1, 2, "O");
+//		Room room2 = new Room(3, 25);
+//		Session session2 = new Session("P", "Q", "R", 5);
+//		session2.setFilm(film2);
+//		session2.setRoom(room2);
+//		
+//		Film film3 = new Film("S", "T", 1, 2, "U");
+//		Room room3 = new Room(4, 25);
+//		Session session3 = new Session("V", "W", "X", 5);
+//		session3.setFilm(film3);
+//		session3.setRoom(room3);
+//		
+//		Film film4 = new Film("Y", "Z", 1, 2, "AA");
+//		Room room4 = new Room(5, 25);
+//		Session session4 = new Session("BB", "CC", "DD", 5);
+//		session4.setFilm(film4);
+//		session4.setRoom(room4);
+//		
+//
+//		dao.storeSession(session1);
+//		dao.storeSession(session2);
+//		dao.storeSession(session3);
+//		dao.storeSession(session4);
+
 	}
 }

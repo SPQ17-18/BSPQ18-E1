@@ -1,7 +1,6 @@
 package es.deusto.bspq.cinema.server.jdo.data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class FilmDTO implements Serializable{
 	
@@ -13,17 +12,18 @@ public class FilmDTO implements Serializable{
 	private long duration;
 	private String country;
 	
-	private ArrayList <String> nameActors;
+	
+	
+	
 
-	public FilmDTO(String title, String director, int rating, long duration, String country,
-			ArrayList<String> nameActors) {
+	public FilmDTO(String title, String director, int rating, long duration, String country) {
 		super();
 		this.title = title;
 		this.director = director;
 		this.rating = rating;
 		this.duration = duration;
 		this.country = country;
-		this.nameActors = nameActors;
+		
 	}
 
 	public FilmDTO() {
@@ -70,13 +70,7 @@ public class FilmDTO implements Serializable{
 		this.country = country;
 	}
 
-	public ArrayList<String> getNameActors() {
-		return nameActors;
-	}
-
-	public void setNameActors(ArrayList<String> nameActors) {
-		this.nameActors = nameActors;
-	}
+	
 
 	
 }

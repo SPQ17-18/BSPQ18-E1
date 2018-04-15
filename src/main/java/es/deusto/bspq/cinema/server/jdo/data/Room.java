@@ -62,12 +62,25 @@ public class Room {
 	
 	public void addSession(Session session) {
 		sessions.add(session);
+		session.setRoom(this);
 	}
 	
 	public void copyRoom(Room r) {
 		this.roomNumber = r.getRoomNumber();
 		this.numberSeats = r.getNumberSeats();
-		this.sessions = r.getSessions();
+		
+
 	}
+	
+	public void obtainRoom(Room r) {
+		this.roomNumber = r.getRoomNumber();
+		this.numberSeats = r.getNumberSeats();
+		for (int i=0;i<r.getSessions().size();i++) {
+			sessions.add(r.getSessions().get(i));
+			r.getSessions().get(i).setRoom(this);
+		}
+
+	}
+	
 	
 }

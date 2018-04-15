@@ -22,7 +22,8 @@ public class Film {
 	@Persistent(defaultFetchGroup = "true", mappedBy = "film", dependentElement = "true")
 	@Join
 	private List<Session> sessions = new ArrayList<>();
-
+	
+	
 	public Film() {
 
 	}
@@ -84,8 +85,11 @@ public class Film {
 		this.sessions = sessions;
 	}
 	
+	
 	public void addSession(Session session) {
 		sessions.add(session);
+		session.setFilm(this);
+
 	}
 	
 	public void copyFilm(Film f) {
@@ -94,7 +98,11 @@ public class Film {
 		this.rating = f.getRating();
 		this.duration = f.getDuration();
 		this.country = f.getCountry();
-		this.sessions = f.getSessions();
+		
+		for (int i = 0; i < f.getSessions().size(); i++) {
+			this.sessions.add(new Session());
+			this.sessions.get(i).copySession(f.getSessions().get(i));
+		}
 	}
 
 }

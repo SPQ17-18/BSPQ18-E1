@@ -30,6 +30,10 @@ public class Ticket {
 		this.session = session;
 		this.seats = seats;
 	}
+	
+	public Ticket(List<Seat> seats) {
+		this.seats = seats;
+	}
 
 	public Member getMember() {
 		return member;
@@ -59,18 +63,22 @@ public class Ticket {
 		seats.add(seat);
 		seat.setTicket(this);
 	}
+	
+	public void addSeats(ArrayList<Seat> seat) {
+		for (int i = 0;i<seat.size();i++) {
+			this.seats.add(seat.get(i));
+			seat.get(i).setTicket(this);
+		}
+	}
 
 	
 	public void copyTicket(Ticket t) {
-		
-		this.member.copyMember (t.getMember());
-		this.session.copySession(t.getSession());
-		
 		
 		for (int i = 0; i < t.getSeats().size(); i++) {
 			this.seats.add(new Seat());
 			this.seats.get(i).copySeat(t.getSeats().get(i));
 		}
+		
 		
 		
 	}
