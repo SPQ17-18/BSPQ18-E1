@@ -17,7 +17,7 @@ public class CMServiceLocator {
 	public void setServices(String args0, String args1, String args2) {
 		String service = "//" + args0 + ":" + args1 + "/" + args2;
 		try {
-			 cinemaManagerService = (IRemoteFacade) java.rmi.Naming.lookup(service);
+			cinemaManagerService = (IRemoteFacade) java.rmi.Naming.lookup(service);
 			logger.info("Server OK: " + service);
 		} catch (Exception e) {
 			logger.error("Error trying to set Server: " + service);

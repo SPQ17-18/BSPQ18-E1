@@ -86,37 +86,41 @@ public class LoginWindow extends JDialog {
         btnLogin.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
 //              if (controller.identify(getUsername(), getPassword())) {
-	//	        	if (userIsEmployee) {
-		                JOptionPane.showMessageDialog(LoginWindow.this,
-		                        "Hi " + getUsername() + "! You have successfully logged in Cinema Manager as a employee.",
-		                        "Login",
-		                        JOptionPane.INFORMATION_MESSAGE);
-		                succeeded = true;
-		                employee = true;
-		                logger.info("Successfully logged as a user.");
-		                CMWindow cmWindow = new CMWindow(controller);
-		                cmWindow.centreWindow();
-		                cmWindow.setVisible(true);
-		                dispose();
-	//	      		}
-	//	            else {
+//  	        	if (userIsEmployee) {
+//		                JOptionPane.showMessageDialog(LoginWindow.this,
+//		                        "Hi " + getUsername() + "! You have successfully logged in Cinema Manager as a employee.",
+//		                        "Login",
+//		                        JOptionPane.INFORMATION_MESSAGE);
+//		                succeeded = true;
+//		                employee = true;
+//		                logger.info("Successfully logged as a user.");
+//		                CMWindow cmWindow = new CMWindow(controller);
+//		                cmWindow.centreWindow();
+//		                cmWindow.setVisible(true);
+//		                dispose();
+//	        		}
+//  	            else {
 		                JOptionPane.showMessageDialog(LoginWindow.this,
 		                        "Hi " + getUsername() + "! You have successfully logged in Cinema Manager as a member.",
 		                        "Login",
 		                        JOptionPane.INFORMATION_MESSAGE);
 		                succeeded = true;
 		                logger.info("Successfully logged as a member.");
-    //	        	}
+		                CMWindow cmWindow = new CMWindow(controller);
+		                cmWindow.centreWindow();
+		                cmWindow.setVisible(true);
+		                dispose();
+//  	        	}
 //              else {
-	                JOptionPane.showMessageDialog(LoginWindow.this,
-	                        "Invalid username or password",
-	                        "Login",
-	                        JOptionPane.ERROR_MESSAGE);
-	                logger.info("Invalid username and password.");
-	                // reset username and password
-	                tfUsername.setText("");
-	                pfPassword.setText("");
-	                succeeded = false;
+//	                JOptionPane.showMessageDialog(LoginWindow.this,
+//	                        "Invalid username or password",
+//	                        "Login",
+//	                        JOptionPane.ERROR_MESSAGE);
+//	                logger.info("Invalid username and password.");
+//	                // reset username and password
+//	                tfUsername.setText("");
+//	                pfPassword.setText("");
+//	                succeeded = false;
 //              }
 	        }
         });
