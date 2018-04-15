@@ -115,15 +115,15 @@ public class CMWindow extends JFrame {
 		ListSelectionListener listSelectionListener = new ListSelectionListener() {
 		      public void valueChanged(ListSelectionEvent listSelectionEvent) {
 		    	  try {
-						seatNumberList.clear();
-				    	seatList.clear();
-				  		for (int i = 0; i < sessions.get(sessionsList1.getSelectedIndex()).getRemainingSeatsCode().size(); i++) {
-				  			seatList.addElement(sessions.get(seatList1.getSelectedIndex()).getRemainingSeatsCode().get(i));
-				  		}
-				  		seatList1.setSelectedIndex(0);
-			    	} catch (Exception e) {
-			    		logger.error("Error updating seat list.");
-			    	}
+		    		  seatNumberList.clear();
+		    		  seatList.clear();
+		    		  for (int i = 0; i < sessions.get(sessionsList1.getSelectedIndex()).getRemainingSeatsCode().size(); i++) {
+		    			  seatList.addElement(sessions.get(seatList1.getSelectedIndex()).getRemainingSeatsCode().get(i));
+		    		  }
+		    		  seatList1.setSelectedIndex(0);
+		    	  } catch (Exception e) {
+		    		  logger.error("Error updating seat list.");
+		    	  }
 		      }
 		};
 		sessionsList1.addListSelectionListener(listSelectionListener);
