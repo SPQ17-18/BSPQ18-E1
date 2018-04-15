@@ -61,8 +61,6 @@ public class ManagerDAO implements IManagerDAO {
 			Query<?> q = pm.newQuery("SELECT FROM " + Film.class.getName());
 			List<Film> result = (List<Film>) q.execute();
 
-			System.out.println("All films retrieved.");
-
 			for (int i = 0; i < result.size(); i++) {
 				films.add(new Film());
 				films.get(i).copyFilm(result.get(i));

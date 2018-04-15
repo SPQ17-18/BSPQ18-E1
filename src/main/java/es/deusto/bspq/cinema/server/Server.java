@@ -50,6 +50,8 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 	public ArrayList<FilmDTO> getFilms() throws RemoteException {
 		
 		ArrayList<Film> films = dao.getFilms();
+		System.out.println("The client asked for the films");
+		
 		return assembler.assembleFilm(films);
 	
 	}
@@ -57,6 +59,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 	public ArrayList<SessionDTO> getSessions() throws RemoteException {
 
 		ArrayList<Film> films = dao.getFilms();
+		System.out.println("The client asked for the sessions");
 		return assembler.assembleSession(films);
 
 	}
@@ -66,6 +69,10 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		Ticket t = assembler.disassembleTicket(ticketDTO);
 		Session s = getSession(ticketDTO, dao.getFilms());
 		dao.insertTicket( t,s.getSession(),ticketDTO.getEmail());
+		System.out.println("Received a ticket from the client");
+		System.out.println("Client : "+ticketDTO.getEmail());
+		System.out.println("Number of seats : "+ticketDTO.getListSeats().size());
+		System.out.println("Film : "+ticketDTO.getTitleFilm());
 		return true;
 	
 	}
@@ -76,6 +83,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		try {
 		Film film = assembler.disassembleFilm(filmDTO);
 		dao.storeFilm(film);
+		System.out.println("Inserted a film to the DB : "+filmDTO.getTitle());
 		return true;
 		}catch (Exception e) {
 			return false;
@@ -90,6 +98,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		Film f = dao.getFilm(sessionDTO.getTitleFilm());
 		System.out.println("Title film: "+f.getTitle());
 		dao.insertSession(session,f.getTitle(), sessionDTO.getRoom());
+		System.out.println("Inserted a session to the DB : "+sessionDTO.getTitleFilm()+" ("+sessionDTO.getDate()+" "+sessionDTO.getHour()+")");
 		return true;
 		}catch (Exception e) {
 			return false;
