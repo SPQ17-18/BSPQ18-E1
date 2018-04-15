@@ -93,16 +93,17 @@ public class Film {
 	}
 	
 	public void copyFilm(Film f) {
+		
 		this.title = f.getTitle();
 		this.director = f.getDirector();
 		this.rating = f.getRating();
 		this.duration = f.getDuration();
 		this.country = f.getCountry();
-		
 		for (int i = 0; i < f.getSessions().size(); i++) {
 			this.sessions.add(new Session());
 			this.sessions.get(i).copySession(f.getSessions().get(i));
 		}
+		
 	}
 
 }

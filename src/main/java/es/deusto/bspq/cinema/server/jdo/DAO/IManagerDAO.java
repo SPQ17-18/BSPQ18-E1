@@ -18,6 +18,9 @@ public interface IManagerDAO {
 	public void storeRoom(Room room);
 	public void storeTicket(Ticket ticket);
 	
+	public void insertSession(Session session,String film, int room);
+	public void insertTicket(Ticket t,String session, String email);
+	
 	public ArrayList<Film> getFilms();
 	public Film getFilm (String name);
 	public ArrayList<Member> getMembers();
@@ -30,8 +33,7 @@ public interface IManagerDAO {
 	public Employee getEmployee (String username);
 	public Room getRoom(int number);
 	
-	public void updateFilm(Film film);
-	public void updateSession(Session session,Ticket t);
+	
 	public void updateMember(Member member, Ticket t);
 	public void updateEmployee(Employee employee);
 	
