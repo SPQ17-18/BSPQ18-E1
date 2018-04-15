@@ -120,7 +120,6 @@ public class Member {
 			this.tickets.get(i).copyTicket(m.getTickets().get(i));
 		}
 		
-		
 	}
 	
 	public void addTicket(Ticket t) {

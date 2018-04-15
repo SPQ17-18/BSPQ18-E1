@@ -13,8 +13,6 @@ public class Actor {
 	private String surname;
 	private String country;
 	
-	
-	
 	@Persistent(defaultFetchGroup="true")
 	private List<Film> films = new ArrayList<>();
 	
@@ -71,7 +69,6 @@ public class Actor {
 		this.name = a.getName();
 		this.surname = a.getSurname();
 		this.country = a.getCountry();
-		
 		for (int i = 0; i < a.getFilms().size(); i++) {
 			this.films.add(new Film());
 			this.films.get(i).copyFilm(a.getFilms().get(i));
