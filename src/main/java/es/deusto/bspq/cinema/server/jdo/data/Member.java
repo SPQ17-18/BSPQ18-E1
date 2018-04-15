@@ -123,6 +123,11 @@ public class Member {
 		
 	}
 	
+	public void addTicket(Ticket t) {
+		tickets.add(t);
+		t.setMember(this);
+	}
+	
 	
 	
 }

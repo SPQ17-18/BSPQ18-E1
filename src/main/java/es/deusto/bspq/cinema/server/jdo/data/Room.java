@@ -72,4 +72,15 @@ public class Room {
 
 	}
 	
+	public void obtainRoom(Room r) {
+		this.roomNumber = r.getRoomNumber();
+		this.numberSeats = r.getNumberSeats();
+		for (int i=0;i<r.getSessions().size();i++) {
+			sessions.add(r.getSessions().get(i));
+			r.getSessions().get(i).setRoom(this);
+		}
+
+	}
+	
+	
 }

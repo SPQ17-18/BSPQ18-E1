@@ -41,7 +41,7 @@ public class Seat {
 	public void copySeat(Seat s) {
 		
 		this.seatCode = s.getSeatCode();
-		this.ticket.copyTicket(s.getTicket());
+		
 		
 	}
 

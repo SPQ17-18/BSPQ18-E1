@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import es.deusto.bspq.cinema.server.jdo.data.Employee;
 import es.deusto.bspq.cinema.server.jdo.data.Film;
 import es.deusto.bspq.cinema.server.jdo.data.Member;
+import es.deusto.bspq.cinema.server.jdo.data.Room;
 import es.deusto.bspq.cinema.server.jdo.data.Session;
 
 public interface IManagerDAO {
@@ -13,6 +14,7 @@ public interface IManagerDAO {
 	public void storeSession(Session session);
 	public void storeMember(Member member);
 	public void storeEmployee(Employee employee);
+	public void storeRoom(Room room);
 	
 	public ArrayList<Film> getFilms();
 	public Film getFilm (String name);
@@ -24,7 +26,7 @@ public interface IManagerDAO {
 	public ArrayList <Session>  getSessions (String film);
 	public ArrayList<Employee> getEmployees();
 	public Employee getEmployee (String username);
-	
+	public Room getRoom(int number);
 	
 	public void updateFilm(Film film);
 	public void updateSession(Session session);
@@ -32,6 +34,7 @@ public interface IManagerDAO {
 	public void updateEmployee(Employee employee);
 	
 	public void deleteAllFilms();
+	public void deleteRoom(int room);
 	public void deleteFilm(Film film);
 	public void deleteAllSessions();
 	public void deleteSession(Session session);
@@ -39,5 +42,7 @@ public interface IManagerDAO {
 	public void deleteMember(Member member);
 	public void deleteAllEmployees();
 	public void deleteEmployee(Employee employee);
+	
+	public String getLastSessionCode();
 	
 }
