@@ -5,6 +5,9 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import es.deusto.bspq.cinema.server.jdo.DAO.IManagerDAO;
 import es.deusto.bspq.cinema.server.jdo.DAO.ManagerDAO;
 import es.deusto.bspq.cinema.server.jdo.data.Assembler;
@@ -20,6 +23,8 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 	
 	private static final long serialVersionUID = 1L;
 	
+	private static final Logger logger = Logger.getLogger(Server.class.getName());
+
 	private IManagerDAO dao;
 	private Assembler assembler;	
 	
@@ -50,7 +55,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 	public ArrayList<FilmDTO> getFilms() throws RemoteException {
 		
 		ArrayList<Film> films = dao.getFilms();
-		System.out.println("The client asked for the films");
+		logger.log(Level.INFO, "Client asked for the films");
 		
 		return assembler.assembleFilm(films);
 	
@@ -59,7 +64,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 	public ArrayList<SessionDTO> getSessions() throws RemoteException {
 
 		ArrayList<Film> films = dao.getFilms();
-		System.out.println("The client asked for the sessions");
+		logger.log(Level.INFO, "Client asked for the sessions");
 		return assembler.assembleSession(films);
 
 	}
@@ -69,10 +74,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		Ticket t = assembler.disassembleTicket(ticketDTO);
 		Session s = getSession(ticketDTO, dao.getFilms());
 		dao.insertTicket( t,s.getSession(),ticketDTO.getEmail());
-		System.out.println("Received a ticket from the client");
-		System.out.println("Client : "+ticketDTO.getEmail());
-		System.out.println("Number of seats : "+ticketDTO.getListSeats().size());
-		System.out.println("Film : "+ticketDTO.getTitleFilm());
+		logger.log(Level.INFO, "Client"+ticketDTO.getEmail()+" buyed a ticket of "+ticketDTO.getListSeats().size()+" seats for the film "+ticketDTO.getTitleFilm());
 		return true;
 	
 	}
@@ -83,7 +85,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		try {
 		Film film = assembler.disassembleFilm(filmDTO);
 		dao.storeFilm(film);
-		System.out.println("Inserted a film to the DB : "+filmDTO.getTitle());
+		logger.log(Level.INFO, "Inserted a film to the DB called "+filmDTO.getTitle());
 		return true;
 		}catch (Exception e) {
 			return false;
@@ -96,9 +98,8 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		try {
 		Session session = assembler.disassembleSession(sessionDTO,dao.getSessions());
 		Film f = dao.getFilm(sessionDTO.getTitleFilm());
-		System.out.println("Title film: "+f.getTitle());
+		logger.log(Level.INFO, "Inserted a session to the DB of the film "+sessionDTO.getTitleFilm()+" for the day "+sessionDTO.getDate());
 		dao.insertSession(session,f.getTitle(), sessionDTO.getRoom());
-		System.out.println("Inserted a session to the DB : "+sessionDTO.getTitleFilm()+" ("+sessionDTO.getDate()+" "+sessionDTO.getHour()+")");
 		return true;
 		}catch (Exception e) {
 			return false;
@@ -123,7 +124,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		try {
 			IRemoteFacade server = new Server();
 			Naming.rebind(name, server);
-			System.out.println("Server '" + name + "' active and waiting...");
+			logger.log(Level.INFO,"Server '" + name + "' active and waiting...");
 			java.io.InputStreamReader inputStreamReader = new java.io.InputStreamReader (System.in);
   			java.io.BufferedReader stdin = new java.io.BufferedReader (inputStreamReader);
   			@SuppressWarnings("unused")

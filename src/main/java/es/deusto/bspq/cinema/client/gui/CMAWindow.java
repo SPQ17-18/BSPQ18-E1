@@ -636,11 +636,6 @@ public class CMAWindow extends JFrame {
 		
 		panelDeleteFilm.add(btnDeleteFilm);
 		
-		btnInsert.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				buttonInsertActionPerformed(evt);
-			}
-		});
 		
 		btnInsert.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -673,9 +668,10 @@ public class CMAWindow extends JFrame {
 					Integer.parseInt((String) comboBoxInsertFilmRating.getSelectedItem()), 
 					new Long((int) spinnerInsertFilmDuration.getValue()), 
 					textFieldInsertFilmCountry_Edit.getText()));
+			
 		} else {
-			controller.insertSession(new SessionDTO("22:00", //TODO
-					"25-04-1996", //TODO
+			controller.insertSession(new SessionDTO("25-04-1996","22:00", //TODO
+					
 					(long) spinnerInsertFilmPrice.getValue(),
 					(int) spinnerInsertSessionRoom.getValue(),
 					25, //TODO
