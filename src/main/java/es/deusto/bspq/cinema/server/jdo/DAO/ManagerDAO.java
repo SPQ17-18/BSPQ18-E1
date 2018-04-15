@@ -35,6 +35,7 @@ public class ManagerDAO implements IManagerDAO {
 	    try {
 	       tx.begin();
 	       pm.makePersistent(object);
+	       pm.detachCopy(object);
 	       tx.commit();
 	    } catch (Exception ex) {
 	    //	ex.printStackTrace();
@@ -179,6 +180,10 @@ public class ManagerDAO implements IManagerDAO {
 		this.storeObject(session);
 	}
 
+	public void storeTicket(Ticket ticket) {
+		System.out.println("   * Storing a ticket: " + ticket.getMember().getEmail()+"");
+		this.storeObject(ticket);
+	}
 	
 	public void storeMember(Member member) {
 		System.out.println("   * Storing a member: " + member.getEmail());
@@ -208,15 +213,22 @@ public class ManagerDAO implements IManagerDAO {
 	}
 
 	
-	public void updateSession(Session session) {
+	public void updateSession(Session session,Ticket t) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		
 	    Transaction tx = pm.currentTransaction();
 	    
 	    try {
 	    	tx.begin();
-	    	pm.makePersistent(session);
-	    	tx.commit();
+	    	Query <?> query = pm.newQuery("SELECT FROM " + Session.class.getName() + " WHERE session == '" + session.getSession() + "'");
+	    	query.setUnique(true);
+	    	Session result = (Session) query.execute();
+
+	    	result.addTicket(t);
+	    	   
+	    	   tx.commit();
+	    	 
+	    	   
 	     } catch (Exception ex) {
 	    	 System.out.println("   $ Error updating a session: " + ex.getMessage());
 	     } finally {
@@ -591,6 +603,8 @@ public class ManagerDAO implements IManagerDAO {
 	     }
 	}
 
+
+	
 	
 	public void deleteAllEmployees() {
 		PersistenceManager pm = pmf.getPersistenceManager();

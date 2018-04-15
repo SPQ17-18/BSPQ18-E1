@@ -13,6 +13,7 @@ import es.deusto.bspq.cinema.server.jdo.data.FilmDTO;
 import es.deusto.bspq.cinema.server.jdo.data.Room;
 import es.deusto.bspq.cinema.server.jdo.data.Session;
 import es.deusto.bspq.cinema.server.jdo.data.SessionDTO;
+import es.deusto.bspq.cinema.server.jdo.data.Ticket;
 import es.deusto.bspq.cinema.server.jdo.data.TicketDTO;
 import es.deusto.bspq.cinema.server.remote.IRemoteFacade;
 
@@ -48,6 +49,10 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		System.out.println("Title: "+ticketDTO.getTitleFilm());
 		System.out.println("Date: "+ticketDTO.getDate());
 		System.out.println("Number seats: "+ticketDTO.getListSeats().size());
+		
+		Ticket t = assembler.disassembleTicket(ticketDTO);
+		
+		
 		return true;
 	}
 	

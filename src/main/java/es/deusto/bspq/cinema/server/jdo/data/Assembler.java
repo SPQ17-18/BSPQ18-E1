@@ -16,20 +16,41 @@ public class Assembler {
 	public Ticket disassembleTicket(TicketDTO ticketDTO) {
 
 		Ticket t = new Ticket();
+		ArrayList<Seat> seats = new ArrayList<>();
+		for (int i=0;i<ticketDTO.getListSeats().size();i++) {
+		
+		seats.add(new Seat(ticketDTO.getListSeats().get(i)));
+		}
+		t.addSeats(seats);
 
 		Member m = this.dao.getMember(ticketDTO.getEmail());
 
 		t.setMember(m);
 
-		Session s = this.dao.getSession(ticketDTO.getTitleFilm(), ticketDTO.getDate(), ticketDTO.getHour());
-		t.setSession(s);
+		ArrayList<Film> films = dao.getFilms();
+		
+		Session s = new Session();
+		
+		for (int i = 0; i < films.size(); i++) {
+			
+			if(ticketDTO.getTitleFilm().equals(films.get(i).getTitle())) {
 
-		ArrayList<String> seatCode = ticketDTO.getListSeats();
-
-		for (int i = 0; i < seatCode.size(); i++) {
-			t.addSeat(new Seat(seatCode.get(i)));
-
+			for (int j = 0; j < films.get(i).getSessions().size(); j++) {
+				
+				if (films.get(i).getSessions().get(j).getHour().equals(ticketDTO.getHour())) {
+					if (films.get(i).getSessions().get(j).getDate().equals(ticketDTO.getDate())) {
+						s.copySession(films.get(i).getSessions().get(j));
+						
+					}
+					
+				}
+				}
+			}
 		}
+		
+		//t.setSession(s);
+		
+		dao.updateSession(s, t);
 
 		return t;
 	}

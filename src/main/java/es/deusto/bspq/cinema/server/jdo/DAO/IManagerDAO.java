@@ -7,6 +7,7 @@ import es.deusto.bspq.cinema.server.jdo.data.Film;
 import es.deusto.bspq.cinema.server.jdo.data.Member;
 import es.deusto.bspq.cinema.server.jdo.data.Room;
 import es.deusto.bspq.cinema.server.jdo.data.Session;
+import es.deusto.bspq.cinema.server.jdo.data.Ticket;
 
 public interface IManagerDAO {
 	
@@ -15,6 +16,7 @@ public interface IManagerDAO {
 	public void storeMember(Member member);
 	public void storeEmployee(Employee employee);
 	public void storeRoom(Room room);
+	public void storeTicket(Ticket ticket);
 	
 	public ArrayList<Film> getFilms();
 	public Film getFilm (String name);
@@ -29,7 +31,7 @@ public interface IManagerDAO {
 	public Room getRoom(int number);
 	
 	public void updateFilm(Film film);
-	public void updateSession(Session session);
+	public void updateSession(Session session,Ticket t);
 	public void updateMember(Member member);
 	public void updateEmployee(Employee employee);
 	
