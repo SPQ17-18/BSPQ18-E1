@@ -44,6 +44,8 @@ public class CMAWindow extends JFrame {
 
 	private static String[] foo = {"1", "2", "3", "4"};
 	
+	private final int seatsPerSession = 25;
+	
 	private SessionDTO insertSessionDTO;
 	private FilmDTO insertFilmDTO;
 	
@@ -670,11 +672,11 @@ public class CMAWindow extends JFrame {
 					textFieldInsertFilmCountry_Edit.getText()));
 			
 		} else {
-			controller.insertSession(new SessionDTO("25-04-1996","22:00", //TODO
-					
+			controller.insertSession(new SessionDTO(textFieldInsertSessionDate_Edit.getText(),
+					spinnerInsertSessionHourHs.getValue()+":"+spinnerInsertSessionHourMins.getValue(),
 					(long) spinnerInsertFilmPrice.getValue(),
 					(int) spinnerInsertSessionRoom.getValue(),
-					25, //TODO
+					seatsPerSession,
 					textFieldInsertSessionFilm_Edit.getText()));
 		}
 	}
