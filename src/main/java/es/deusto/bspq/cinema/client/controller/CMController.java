@@ -22,23 +22,23 @@ public class CMController {
 	}
 	
 	public boolean insertFilm(FilmDTO filmDTO) {
-		boolean b = false;
+		boolean film = false;
 		try {
-	//		b = cmsl.getService().insertFilm(filmDTO);
+			film = cmsl.getService().insertFilm(filmDTO);
 		} catch (Exception e) {
-			logger.error("Error getting sessions from server.");
+			logger.error("Error inserting a film.");
 		}
-		return b;
+		return film;
 	}
 	
 	public boolean insertSession(SessionDTO sessionDTO) {
-		boolean b = false;
+		boolean session = false;
 		try {
-	//		b = cmsl.getService().insertSession(sessionDTO);
+			session = cmsl.getService().insertSession(sessionDTO);
 		} catch (Exception e) {
-			logger.error("Error getting sessions from server.");
+			logger.error("Error inserting a session.");
 		}
-		return b;
+		return session;
 	}
 	
 	public List<SessionDTO> getAllSessions() {

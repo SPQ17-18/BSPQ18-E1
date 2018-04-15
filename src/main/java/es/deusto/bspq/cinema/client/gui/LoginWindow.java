@@ -106,10 +106,19 @@ public class LoginWindow extends JDialog {
 		                        JOptionPane.INFORMATION_MESSAGE);
 		                succeeded = true;
 		                logger.info("Successfully logged as a member.");
-		                CMWindow cmWindow = new CMWindow(controller);
-		                cmWindow.centreWindow();
-		                cmWindow.setVisible(true);
-		                dispose();
+		                // temp
+		                if (tfUsername.equals("user")) {
+			                CMWindow cmWindow = new CMWindow(controller);
+			                cmWindow.centreWindow();
+			                cmWindow.setVisible(true);
+			                dispose();
+		                }
+		                else {
+		                	CMAWindow cmaWindow = new CMAWindow(controller);
+			                cmaWindow.centreWindow();
+			                cmaWindow.setVisible(true);
+			                dispose();
+		                }
 //  	        	}
 //              else {
 //	                JOptionPane.showMessageDialog(LoginWindow.this,
