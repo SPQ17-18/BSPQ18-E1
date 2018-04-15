@@ -6,11 +6,9 @@ import java.rmi.RemoteException;
 
 import javax.swing.JFrame;
 
-
 import es.deusto.bspq.cinema.client.controller.CMController;
 import es.deusto.bspq.cinema.server.jdo.data.FilmDTO;
 import es.deusto.bspq.cinema.server.jdo.data.SessionDTO;
-
 
 import java.awt.BorderLayout;
 import javax.swing.JComboBox;
@@ -22,19 +20,15 @@ import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-
 import java.awt.event.WindowEvent;
-
 
 import java.awt.GridBagLayout;
 import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JSpinner;
-import java.awt.event.InputMethodListener;
-import java.awt.event.InputMethodEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
+
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import javax.swing.event.ChangeListener;
@@ -48,7 +42,7 @@ public class CMAWindow extends JFrame {
 	
 	final static Logger logger = Logger.getLogger(CMWindow.class);
 
-	private static String[] foo = {"Item 1", "Item 2", "Item 3", "Item 4"};
+	private static String[] foo = {"1", "2", "3", "4"};
 	
 	private SessionDTO insertSessionDTO;
 	private FilmDTO insertFilmDTO;
@@ -83,7 +77,7 @@ public class CMAWindow extends JFrame {
 	private final JButton btnInsert = new JButton("Insert");
 	private final JPanel panelInsertSession = new JPanel();
 	private final JTextField textFieldInsertSessionFilm = new JTextField();
-	private final JComboBox comboBoxInsertSessionFilm = new JComboBox(foo);
+	private final JTextField textFieldInsertSessionFilm_Edit = new JTextField();
 	private final JTextField textFieldInsertSessionRoom = new JTextField();
 	private final JTextField textFieldInsertSessionDate = new JTextField();
 	private final JTextField textFieldInsertSessionHour = new JTextField();
@@ -170,13 +164,7 @@ public class CMAWindow extends JFrame {
 		gbc_comboBoxInsertSessionFilm.insets = new Insets(0, 0, 5, 0);
 		gbc_comboBoxInsertSessionFilm.gridx = 1;
 		gbc_comboBoxInsertSessionFilm.gridy = 0;
-		comboBoxInsertSessionFilm.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				enableButtonInsert();
-			}
-		});
-		panelInsertSession.add(comboBoxInsertSessionFilm, gbc_comboBoxInsertSessionFilm);
+		panelInsertSession.add(textFieldInsertSessionFilm_Edit, gbc_comboBoxInsertSessionFilm);
 		
 		GridBagConstraints gbc_textFieldInsertSessionRoom = new GridBagConstraints();
 		gbc_textFieldInsertSessionRoom.anchor = GridBagConstraints.NORTH;
@@ -270,7 +258,7 @@ public class CMAWindow extends JFrame {
 				enableButtonInsert();
 			}
 		});
-		spinnerInsertFilmPrice.setModel(new SpinnerNumberModel(new Float(1), new Float(1), new Float(99), new Float(1)));
+		spinnerInsertFilmPrice.setModel(new SpinnerNumberModel(new Long(1), new Long(1), new Long(99), new Long(1)));
 		
 		panelInsertSessionPrice.add(spinnerInsertFilmPrice);
 		panelInsertFilm.setBorder(null);
@@ -647,6 +635,19 @@ public class CMAWindow extends JFrame {
 		});
 		
 		panelDeleteFilm.add(btnDeleteFilm);
+		
+		btnInsert.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				buttonInsertActionPerformed(evt);
+			}
+		});
+		
+		btnInsert.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				buttonInsertActionPerformed(evt);
+			}
+		});
+		
 		initComponents();
 	}
 
@@ -664,16 +665,26 @@ public class CMAWindow extends JFrame {
 	private void exitForm(WindowEvent evt) {
 		controller.exit();
 	}
-
-
-	public static void main(String[] args) throws RemoteException {
-		final CMAWindow window = new CMAWindow(new CMController(foo));
-		window.centreWindow();
-		window.setVisible(true);
-	}
 	
+	private void buttonInsertActionPerformed(ActionEvent evt) {
+		if (tabbedPaneInsert.getSelectedIndex() == 1) {
+			controller.insertFilm(new FilmDTO(textFieldInsertFilmTitle_Edit.getText(), 
+					textFieldInsertFilmDirector_Edit.getText(),
+					Integer.parseInt((String) comboBoxInsertFilmRating.getSelectedItem()), 
+					new Long((int) spinnerInsertFilmDuration.getValue()), 
+					textFieldInsertFilmCountry_Edit.getText()));
+		} else {
+			controller.insertSession(new SessionDTO("22:00", //TODO
+					"25-04-1996", //TODO
+					(long) spinnerInsertFilmPrice.getValue(),
+					(int) spinnerInsertSessionRoom.getValue(),
+					25, //TODO
+					textFieldInsertSessionFilm_Edit.getText()));
+		}
+	}
+
 	private void enableButtonInsert() {
-		if(tabbedPaneInsert.getSelectedIndex() == 0) {
+		if (tabbedPaneInsert.getSelectedIndex() == 0) {
 			if(textFieldInsertSessionDate_Edit.getText().equals("")) {
 				btnInsert.setEnabled(false);
 			} else {
@@ -686,6 +697,13 @@ public class CMAWindow extends JFrame {
 				btnInsert.setEnabled(true);
 			}
 		}
+	}
+
+
+	public static void main(String[] args) throws RemoteException {
+		final CMAWindow window = new CMAWindow(new CMController(foo));
+		window.centreWindow();
+		window.setVisible(true);
 	}
 
 }
