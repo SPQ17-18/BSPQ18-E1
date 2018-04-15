@@ -224,9 +224,9 @@ public class ManagerDAO implements IManagerDAO {
 	    	query.setUnique(true);
 	    	Session result = (Session) query.execute();
 
-	    	result.addTicket(t);
-	    	   
-	    	   tx.commit();
+	    	result.addTicket(t);	   
+	    	 
+	    tx.commit();
 	    	 
 	    	   
 	     } catch (Exception ex) {
@@ -241,15 +241,22 @@ public class ManagerDAO implements IManagerDAO {
 	}
 
 	
-	public void updateMember(Member member) {
+	public void updateMember(Member member,Ticket t) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		
 	    Transaction tx = pm.currentTransaction();
 	    
 	    try {
 	    	tx.begin();
-	    	pm.makePersistent(member);
-	    	tx.commit();
+	    	Query <?> query = pm.newQuery("SELECT FROM " + Member.class.getName() + " WHERE  email== '" + member.getEmail() + "'");
+	    	query.setUnique(true);
+	    	Member result = (Member) query.execute();
+
+	    	result.addTicket(t);
+	    	   
+	    	   tx.commit();
+	    	 
+	    	   
 	     } catch (Exception ex) {
 	    	 System.out.println("   $ Error updating a member: " + ex.getMessage());
 	     } finally {

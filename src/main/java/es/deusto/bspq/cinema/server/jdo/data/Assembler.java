@@ -14,7 +14,8 @@ public class Assembler {
 
 
 	public Ticket disassembleTicket(TicketDTO ticketDTO) {
-
+		
+		
 		Ticket t = new Ticket();
 		ArrayList<Seat> seats = new ArrayList<>();
 		for (int i=0;i<ticketDTO.getListSeats().size();i++) {
@@ -22,10 +23,6 @@ public class Assembler {
 		seats.add(new Seat(ticketDTO.getListSeats().get(i)));
 		}
 		t.addSeats(seats);
-
-		Member m = this.dao.getMember(ticketDTO.getEmail());
-
-		t.setMember(m);
 
 		ArrayList<Film> films = dao.getFilms();
 		
@@ -47,8 +44,6 @@ public class Assembler {
 				}
 			}
 		}
-		
-		//t.setSession(s);
 		
 		dao.updateSession(s, t);
 

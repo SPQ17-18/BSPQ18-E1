@@ -32,7 +32,7 @@ public interface IManagerDAO {
 	
 	public void updateFilm(Film film);
 	public void updateSession(Session session,Ticket t);
-	public void updateMember(Member member);
+	public void updateMember(Member member, Ticket t);
 	public void updateEmployee(Employee employee);
 	
 	public void deleteAllFilms();
