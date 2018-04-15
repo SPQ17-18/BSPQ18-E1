@@ -150,7 +150,7 @@ public class ManagerDAO implements IManagerDAO {
 	    	query.setUnique(true);
 	    	Film result = (Film) query.execute();
 	    	film.copyFilm(result);
-	    	film= pm.detachCopy(film);
+	 
  	    	tx.commit();
 	     } catch (Exception ex) {
 	    	 System.out.println("   $ Error retrieving a film: " + ex.getMessage());
@@ -731,7 +731,7 @@ public class ManagerDAO implements IManagerDAO {
 	    	query.setUnique(true);
 	    	Room result = (Room) query.execute();
 	    	room.copyRoom(result);
-	    	room= pm.detachCopy(room);
+	 
  	    	tx.commit();
 	     } catch (Exception ex) {
 	    	 System.out.println("   $ Error retrieving a session: " + ex.getMessage());
@@ -754,6 +754,8 @@ public class ManagerDAO implements IManagerDAO {
 			
 		try {		
 			tx.begin();
+			
+			
 
 			Query<Room> query = pm.newQuery(Room.class, "roomNumber =="+room+"");
 
@@ -766,6 +768,8 @@ public class ManagerDAO implements IManagerDAO {
 			pm.deletePersistent(r);
 			   
 			tx.commit();
+			
+			System.out.println("Cleaned the room: "+room);
 		} catch (Exception ex) {
 			System.out.println("   $ Error cleaning a room: " + ex.getMessage());
 			ex.printStackTrace();
@@ -849,21 +853,21 @@ public class ManagerDAO implements IManagerDAO {
 		Room r4 = new Room(4, 60);
 		Room r5 = new Room(5, 60);
 		
-		Seat se1 = new Seat("G3");
-		Seat se2 = new Seat("G4");
-		Seat se3 = new Seat("G5");
+		Seat se1 = new Seat("A3");
+		Seat se2 = new Seat("A4");
+		Seat se3 = new Seat("A5");
 		Seat se4 = new Seat("E10");
 		Seat se5 = new Seat("E9");
 		Seat se6 = new Seat("E8");
 		Seat se7 = new Seat("D5");
 		Seat se8 = new Seat("D6");
-		Seat se9 = new Seat("H7");
+		Seat se9 = new Seat("C7");
 		Seat seA = new Seat("B8");
 		Seat seB = new Seat("B9");
 		Seat seC = new Seat("B10");
-		Seat seD = new Seat("G3");
-		Seat seE = new Seat("G4");
-		Seat seF = new Seat("G5");
+		Seat seD = new Seat("F3");
+		Seat seE = new Seat("F4");
+		Seat seF = new Seat("F5");
 		
 		ArrayList<Seat> ss1 = new ArrayList<Seat>();
 		ss1.add(se1);

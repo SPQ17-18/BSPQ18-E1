@@ -41,6 +41,11 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 	}
 
 	public boolean buyTickets(TicketDTO ticketDTO) throws RemoteException {
+		
+		System.out.println("Recived the ticket");
+		System.out.println("Title: "+ticketDTO.getTitleFilm());
+		System.out.println("Date: "+ticketDTO.getDate());
+		System.out.println("Number seats: "+ticketDTO.getListSeats().size());
 		return true;
 	}
 	
@@ -66,7 +71,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 	public boolean insertSession(SessionDTO sessionDTO) throws RemoteException {
 		
 		try {
-		Session session = assembler.disassembleSession(sessionDTO,dao.getFilms());
+		Session session = assembler.disassembleSession(sessionDTO,dao.getSessions());
 		
 		System.out.println("Prueba Session");
 		System.out.println("Hour: "+session.getHour());
@@ -78,21 +83,20 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		
 		System.out.println("Title film: "+f.getTitle());
 		
-		f.addSession(session);
-	
-//		dao.deleteRoom(sessionDTO.getRoom());
+		dao.deleteRoom(sessionDTO.getRoom());
 		
-		//dao.deleteFilm(f);
+//		f.addSession(session);
+//		
+//		dao.deleteFilm(f);
+//	
+//		dao.storeFilm(f);
 		
-		dao.storeFilm(f);
-		
-//		dao.deleteRoom(sessionDTO.getRoom());
+		//dao.deleteRoom(sessionDTO.getRoom());
 //		
+		//session.getRoom().getSessions().add(session);
+		//session.getRoom().getSessions().get(session.getRoom().getSessions().size()-1).setRoom(session.getRoom());
 //		
-//		
-//		session.getRoom().addSession(session);
-//		
-//		dao.storeRoom(session.getRoom());
+		//dao.storeRoom(session.getRoom());
 	
 		return true;
 		}catch (Exception e) {
@@ -117,10 +121,10 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 			IRemoteFacade server = new Server();
 			Naming.rebind(name, server);
 			System.out.println("Server '" + name + "' active and waiting...");
-			FilmDTO f = new FilmDTO("Maria de la o", "Paco Salas", 15, 123, "España");
-			server.insertFilm(f);
-			SessionDTO s = new SessionDTO("15-04-2018","13:00",(float)3.40,5,60,"Maria de la o");
-			server.insertSession(s);
+//			FilmDTO f = new FilmDTO("Maria de la o", "Paco Salas", 15, 123, "España");
+//			server.insertFilm(f);
+//			SessionDTO s = new SessionDTO("15-04-2018","13:00",(float)3.40,5,60,"Maria de la o");
+//			server.insertSession(s);
 			
 			ArrayList<FilmDTO> films = server.getFilms();
 			

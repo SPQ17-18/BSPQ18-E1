@@ -110,6 +110,7 @@ public class Session {
 	}
 
 	public void copySession(Session s) {
+		this.session=s.getSession();
 		this.date = s.getDate();
 		this.hour = s.getHour();
 		this.price = s.getPrice();

@@ -51,7 +51,7 @@ public class Assembler {
 		return f;
 	}
 
-	public Session disassembleSession(SessionDTO sessionDTO, ArrayList<Film> films) {
+	public Session disassembleSession(SessionDTO sessionDTO, ArrayList<Session> sessions) {
 
 		Session s = new Session();
 
@@ -71,17 +71,21 @@ public class Assembler {
 
 		System.out.println("ROOM: " + s.getRoom().getRoomNumber());
 
-//		System.out.println("Sessions: ");
+		System.out.println("Sessions: ");
 
-//		for (int i = 0; i < films.size(); i++) {
-//			for (int j = 0; j < films.get(i).getSessions().size(); j++) {
-//				if (films.get(i).getSessions().get(j).getRoom().getRoomNumber()==sessionDTO.getRoom()){
-//					s.getRoom().getSessions().add(films.get(i).getSessions().get(j));
-//					System.out.println("Date: " + s.getRoom().getSessions().get(i).getDate());
-//				}
-//				
-//			}
-//		}
+		for (int i = 0; i < sessions.size(); i++) {
+			
+				
+				if (sessions.get(i).getRoom().getRoomNumber()==sessionDTO.getRoom()){
+					s.getRoom().setSessions(new ArrayList<>());
+					s.getRoom().getSessions().add(sessions.get(i));
+					s.getRoom().getSessions().get(i).setRoom(s.getRoom());
+					System.out.println("Date: " +sessions.get(i).getDate());
+					System.out.println("Session: "+sessions.get(i).getSession());
+				}
+				
+			}
+		
 
 		return s;
 
@@ -105,6 +109,7 @@ public class Assembler {
 		for (int i = 0; i < films.size(); i++) {
 
 			for (int j = 0; j < films.get(i).getSessions().size(); j++) {
+				
 				ArrayList<String> seats = new ArrayList<String>();
 				sessionDTO.add(new SessionDTO(films.get(i).getSessions().get(j).getDate(),
 						films.get(i).getSessions().get(j).getHour(), films.get(i).getSessions().get(j).getPrice(),
@@ -112,6 +117,7 @@ public class Assembler {
 						films.get(i).getSessions().get(j).getRoom().getNumberSeats(), films.get(i).getTitle(),
 						films.get(i).getDirector(), films.get(i).getRating(), films.get(i).getDuration(),
 						films.get(i).getCountry(), seats));
+				sessionDTO.get(sessionDTO.size()-1).setRemainingSeatsCode(obtainSeats(films.get(i).getSessions().get(j)));
 			}
 		}
 
@@ -120,18 +126,55 @@ public class Assembler {
 
 	private ArrayList<String> obtainSeats(Session session) {
 
-		ArrayList<String> seats = new ArrayList<String>();
-
+		ArrayList<String> seatsBuyed = new ArrayList<String>();
+		
 		for (int i = 0; i < session.getTickets().size(); i++) {
 
 			for (int j = 0; j < session.getTickets().get(i).getSeats().size(); j++) {
 
-				seats.add(session.getTickets().get(i).getSeats().get(j).getSeatCode());
+				seatsBuyed.add(session.getTickets().get(i).getSeats().get(j).getSeatCode());
+				
 			}
 
 		}
+		
+		
+		ArrayList <String> seatsRemaining = new ArrayList<String>();
+		char a = 65;
+		int contador =0;
+		
+		for (int i=0;i<session.getRoom().getNumberSeats();i++) {
+		
+			if (contador<10) {
+				contador = contador+1;
+				seatsRemaining.add(""+a+(contador));
+				
+		
+			}else {
+				a++;
+				i--;
+				contador=0;
+			}
+			
+			
+		}
+		
+		
+		for (int i=0;i<seatsBuyed.size();i++) {
+			for (int j=0;j<seatsRemaining.size();j++) {
+				
+				if (seatsBuyed.get(i).equals(seatsRemaining.get(j))) {
+					seatsRemaining.remove(j);
+					j=0;
+				}
+			}
+			
+		}
+		
 
-		return seats;
+	
+
+		return seatsRemaining;
 
 	}
 }
