@@ -115,11 +115,11 @@ public class LoginWindow extends JDialog {
 		                }
 		                else {
 		                	 JOptionPane.showMessageDialog(LoginWindow.this,
-				                        "Hi " + getUsername() + "! You have successfully logged in Cinema Manager as a member.",
+				                        "Hi " + getUsername() + "! You have successfully logged in Cinema Manager as an employee.",
 				                        "Login",
 				                        JOptionPane.INFORMATION_MESSAGE);
 				                succeeded = true;
-				                logger.info("Successfully logged as a member.");
+				                logger.info("Successfully logged as an employee.");
 		                	CMAWindow cmaWindow = new CMAWindow(controller);
 			                cmaWindow.centreWindow();
 			                cmaWindow.setVisible(true);
