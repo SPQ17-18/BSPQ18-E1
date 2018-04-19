@@ -1,5 +1,6 @@
 package es.deusto.bspq.cinema.server.jdo.DAO;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,7 +34,7 @@ public class ManagerDAO implements IManagerDAO {
 		pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
 	}
 
-	private void storeObject(Object object) {
+	private void storeObject(Object object) throws Exception{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
@@ -43,6 +44,7 @@ public class ManagerDAO implements IManagerDAO {
 			tx.commit();
 		} catch (Exception ex) {
 			logger.log(Level.ERROR, "Problem occurred trying to store the object");
+			throw new Exception();
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -167,23 +169,23 @@ public class ManagerDAO implements IManagerDAO {
 		return film;
 	}
 
-	public void storeFilm(Film film) {
+	public void storeFilm(Film film) throws Exception{
 		logger.log(Level.INFO, "Storing a film called "+film.getTitle());
 		this.storeObject(film);
 	}
 
-	public void storeSession(Session session) {
+	public void storeSession(Session session) throws Exception {
 		logger.log(Level.INFO, "Storing a session: " + session.getRoom().getRoomNumber() + " - "
 				+ session.getDate().toString() + " " + session.getHour().toString());
 		this.storeObject(session);
 	}
 
-	public void storeTicket(Ticket ticket) {
+	public void storeTicket(Ticket ticket) throws Exception{
 		logger.log(Level.INFO,"Storing a ticket: " + ticket.getMember().getEmail() + "");
 		this.storeObject(ticket);
 	}
 
-	public void storeMember(Member member) {
+	public void storeMember(Member member)throws Exception {
 		logger.log(Level.INFO,"Storing a member: " + member.getEmail());
 		this.storeObject(member);
 
@@ -412,12 +414,12 @@ public class ManagerDAO implements IManagerDAO {
 
 	}
 
-	public void storeEmployee(Employee employee) {
+	public void storeEmployee(Employee employee) throws Exception{
 		logger.log(Level.INFO,"* Storing an employee: " + employee.getUsername());
 		this.storeObject(employee);
 	}
 
-	public void storeRoom(Room room) {
+	public void storeRoom(Room room) throws Exception{
 		logger.log(Level.INFO,"* Storing a room: " + room.getRoomNumber());
 		this.storeObject(room);
 	}
@@ -1019,7 +1021,8 @@ public class ManagerDAO implements IManagerDAO {
 		f5.addSession(sD);
 		f5.addSession(sE);
 		f5.addSession(sF);
-
+		
+		try {
 		dao.storeFilm(f1);
 
 		dao.storeEmployee(e1);
@@ -1027,7 +1030,9 @@ public class ManagerDAO implements IManagerDAO {
 		dao.storeEmployee(e3);
 		dao.storeEmployee(e4);
 		dao.storeEmployee(e5);
-		
+		}catch(Exception e) {
+			
+		}
 		logger.log(Level.INFO, "DB filled completely");
 
 	}
