@@ -37,6 +37,18 @@ public class Assembler {
 	
 	}
 	
+	public Member disassembleMember(MemberDTO memberDTO) {
+
+		Member m = new Member();
+		m.setBirthday(memberDTO.getBirthday());
+		m.setEmail(memberDTO.getEmail());
+		m.setName(memberDTO.getName());
+		m.setPassword(memberDTO.getPassword());
+		m.setSurname(memberDTO.getSurname());
+		return m;
+	
+	}
+	
 	public Session disassembleSession(SessionDTO sessionDTO, ArrayList<Session> sessions) {
 
 		Session s = new Session();

@@ -13,6 +13,8 @@ import es.deusto.bspq.cinema.server.jdo.DAO.ManagerDAO;
 import es.deusto.bspq.cinema.server.jdo.data.Assembler;
 import es.deusto.bspq.cinema.server.jdo.data.Film;
 import es.deusto.bspq.cinema.server.jdo.data.FilmDTO;
+import es.deusto.bspq.cinema.server.jdo.data.Member;
+import es.deusto.bspq.cinema.server.jdo.data.MemberDTO;
 import es.deusto.bspq.cinema.server.jdo.data.Session;
 import es.deusto.bspq.cinema.server.jdo.data.SessionDTO;
 import es.deusto.bspq.cinema.server.jdo.data.Ticket;
@@ -31,6 +33,20 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 	public Server() throws RemoteException {
 		dao = new ManagerDAO();
 		assembler = new Assembler();	
+	}
+	
+
+	public boolean registerMember(MemberDTO memberDTO) throws RemoteException {
+		try {
+			Member member = assembler.disassembleMember(memberDTO);
+			dao.storeMember(member);
+			logger.log(Level.INFO, "Inserted a member to the DB called "+member.getName());
+			return true;
+			}catch (Exception e) {
+				logger.log(Level.ERROR, "Primary key duplicated: User already exits");
+				return false;
+			}
+			
 	}
 
 	public Session getSession(TicketDTO ticketDTO, ArrayList <Film> films){
@@ -133,6 +149,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 			e.printStackTrace();
 		}
 	}
+
 
 	
 	
