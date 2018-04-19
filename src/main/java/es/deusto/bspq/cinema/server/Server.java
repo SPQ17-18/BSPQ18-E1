@@ -48,6 +48,26 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 			}
 			
 	}
+	
+	public boolean loginMember (String email, String password) throws RemoteException {
+		try {
+			Member m = dao.getMember(email);
+			
+			if (m.getPassword().equals(password)) {
+				logger.log(Level.INFO,"User with email "+email+" logined succesfully");
+				return true;
+			}else {
+				logger.log(Level.INFO, "Password incorrect");
+				return false;
+				
+			}
+			
+			}catch (Exception e) {
+				logger.log(Level.ERROR, "User with email "+email+" doesnt exist");
+				return false;
+			}
+			
+	}
 
 	public Session getSession(TicketDTO ticketDTO, ArrayList <Film> films){
 
