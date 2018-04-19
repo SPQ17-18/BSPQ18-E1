@@ -40,7 +40,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		try {
 			Member member = assembler.disassembleMember(memberDTO);
 			dao.storeMember(member);
-			logger.log(Level.INFO, "Inserted a member to the DB called "+member.getName());
+			logger.log(Level.INFO, "Inserted a member to the DB called "+memberDTO.getName());
 			return true;
 			}catch (Exception e) {
 				logger.log(Level.ERROR, "Primary key duplicated: User already exits");
@@ -154,11 +154,26 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 			System.setSecurityManager(new SecurityManager());
 		}
 		
+		
+		
 
 		String name = "//" + args[0] + ":" + args[1] + "/" + args[2];
 
 		try {
 			IRemoteFacade server = new Server();
+			System.out.println("Primer registro Correcto");
+			MemberDTO m = new MemberDTO("prueba@opendeusto.es","Prueba","Prueba","prueba","23-05-1997");
+			System.out.println(server.registerMember(m));
+			System.out.println("Segundo registro incorrecto");
+			MemberDTO m1 = new MemberDTO("unai.bermejo@opendeusto.es","Prueba","Prueba","prueba","23-05-1997");
+			System.out.println(server.registerMember(m1));
+			System.out.println("Primer login CORRECTO");
+			System.out.println(server.loginMember("prueba@opendeusto.es", "prueba"));
+			System.out.println("Segundo login email INCORRECTO");
+			System.out.println(server.loginMember("prueb@opendeusto.es", "prueba"));
+			System.out.println("Tercer login contraseña INCORRECTA");
+			System.out.println(server.loginMember("prueba@opendeusto.es", "prueb"));
+			
 			Naming.rebind(name, server);
 			logger.log(Level.INFO,"Server '" + name + "' active and waiting...");
 			java.io.InputStreamReader inputStreamReader = new java.io.InputStreamReader (System.in);

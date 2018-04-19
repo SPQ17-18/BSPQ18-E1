@@ -13,12 +13,12 @@ public interface IManagerDAO {
 	
 	
 	
-	public void storeFilm(Film film);
-	public void storeSession(Session session);
-	public void storeMember(Member member);
-	public void storeEmployee(Employee employee);
-	public void storeRoom(Room room);
-	public void storeTicket(Ticket ticket);
+	public void storeFilm(Film film)throws Exception;
+	public void storeSession(Session session)throws Exception;
+	public void storeMember(Member member) throws Exception;
+	public void storeEmployee(Employee employee)throws Exception;
+	public void storeRoom(Room room)throws Exception;
+	public void storeTicket(Ticket ticket)throws Exception;
 	
 	public void insertSession(Session session,String film, int room);
 	public void insertTicket(Ticket t,String session, String email);
