@@ -61,6 +61,16 @@ public class CMController {
 		return ticket;
 	}
 	
+	public boolean identifyMember(String email, String password) {
+		boolean login = false;
+		try {
+			login = cmsl.getService().loginMember(email, password);
+		} catch (RemoteException e) {
+			logger.error("Error identifying a member.");
+		}
+		return login;
+	}
+	
 	public void exit() {
     	System.exit(0);
     }

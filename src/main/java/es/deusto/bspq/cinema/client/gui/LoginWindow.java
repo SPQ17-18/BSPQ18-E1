@@ -123,19 +123,7 @@ public class LoginWindow extends JDialog {
         btnLogin.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		if (tabbedPane.getSelectedIndex() == 0) {
-//  	        	if (controller.identify(tfUsernameM.getText().trim(), pfPasswordM.getPassword()) {
-        			JOptionPane.showMessageDialog(LoginWindow.this,
-        					"Hi " + tfUsernameM.getText().trim() + "! You have successfully logged in Cinema Manager as a employee.",
-        					"Login",
-        					JOptionPane.INFORMATION_MESSAGE);
-        			logger.info("Successfully logged as an employee.");
-        			CMAWindow cmaWindow = new CMAWindow(controller);
-        			cmaWindow.centreWindow();
-        			cmaWindow.setVisible(true);
-        			dispose();
-        		}
-        		else {
-//  	        	if (controller.identify(tfUsernameM.getText().trim(), pfPasswordM.getPassword()) {
+//  	        	if (controller.identifyEmployee(tfUsernameM.getText().trim(), String.valueOf(pfPasswordM.getPassword()))) {
         			JOptionPane.showMessageDialog(LoginWindow.this,
         					"Hi " + tfUsernameM.getText().trim() + "! You have successfully logged in Cinema Manager as a member.",
         					"Login",
@@ -145,6 +133,26 @@ public class LoginWindow extends JDialog {
         			cmWindow.centreWindow();
         			cmWindow.setVisible(true);
         			dispose();
+        		}
+        		else {
+        			if (controller.identifyMember(tfUsernameM.getText().trim(), String.valueOf(pfPasswordM.getPassword()))) {
+	        			JOptionPane.showMessageDialog(LoginWindow.this,
+	        					"Hi " + tfUsernameM.getText().trim() + "! You have successfully logged in Cinema Manager as a employee.",
+	        					"Login",
+	        					JOptionPane.INFORMATION_MESSAGE);
+	        			logger.info("Successfully logged as an employee.");
+	        			CMAWindow cmaWindow = new CMAWindow(controller);
+	        			cmaWindow.centreWindow();
+	        			cmaWindow.setVisible(true);
+	        			dispose();
+        			}
+        			else {
+        				JOptionPane.showMessageDialog(LoginWindow.this,
+	        					"Wrong email or password.",
+	        					"Bad credentials",
+	        					JOptionPane.INFORMATION_MESSAGE);
+	        			logger.info("Wrong email or password: " + tfUsernameM.getText().trim() + " " +  String.valueOf(pfPasswordM.getPassword()));
+        			}
         		}
 	        }
         });
