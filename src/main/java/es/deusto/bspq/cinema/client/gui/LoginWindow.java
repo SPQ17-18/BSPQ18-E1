@@ -125,25 +125,25 @@ public class LoginWindow extends JDialog {
         		if (tabbedPane.getSelectedIndex() == 0) {
 //  	        	if (controller.identifyEmployee(tfUsernameM.getText().trim(), String.valueOf(pfPasswordM.getPassword()))) {
         			JOptionPane.showMessageDialog(LoginWindow.this,
-        					"Hi " + tfUsernameM.getText().trim() + "! You have successfully logged in Cinema Manager as a member.",
+        					"Hi " + tfUsernameM.getText().trim() + "! You have successfully logged in Cinema Manager as an employee.",
         					"Login",
         					JOptionPane.INFORMATION_MESSAGE);
-        			logger.info("Successfully logged as a member.");
-        			CMWindow cmWindow = new CMWindow(controller);
-        			cmWindow.centreWindow();
-        			cmWindow.setVisible(true);
+        			logger.info("Successfully logged as an employee.");
+        			CMAWindow cmaWindow = new CMAWindow(controller);
+        			cmaWindow.centreWindow();
+        			cmaWindow.setVisible(true);
         			dispose();
         		}
         		else {
         			if (controller.identifyMember(tfUsernameM.getText().trim(), String.valueOf(pfPasswordM.getPassword()))) {
 	        			JOptionPane.showMessageDialog(LoginWindow.this,
-	        					"Hi " + tfUsernameM.getText().trim() + "! You have successfully logged in Cinema Manager as a employee.",
+	        					"Hi " + tfUsernameM.getText().trim() + "! You have successfully logged in Cinema Manager as a member.",
 	        					"Login",
 	        					JOptionPane.INFORMATION_MESSAGE);
-	        			logger.info("Successfully logged as an employee.");
-	        			CMAWindow cmaWindow = new CMAWindow(controller);
-	        			cmaWindow.centreWindow();
-	        			cmaWindow.setVisible(true);
+	        			logger.info("Successfully logged as a member.");
+	        			CMWindow cmWindow = new CMWindow(controller);
+	        			cmWindow.centreWindow();
+	        			cmWindow.setVisible(true);
 	        			dispose();
         			}
         			else {
