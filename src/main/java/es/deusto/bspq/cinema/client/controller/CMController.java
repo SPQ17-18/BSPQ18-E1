@@ -71,6 +71,16 @@ public class CMController {
 		return login;
 	}
 	
+	public boolean identifyEmployee(String email, String password) {
+		boolean login = false;
+		try {
+			login = cmsl.getService().loginEmployee(email, password);
+		} catch (RemoteException e) {
+			logger.error("Error identifying a member.");
+		}
+		return login;
+	}
+	
 	public void exit() {
     	System.exit(0);
     }
