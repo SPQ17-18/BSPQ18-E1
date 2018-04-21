@@ -2,7 +2,8 @@ package es.deusto.bspq.cinema.testing;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import es.deusto.bspq.cinema.server.jdo.DAO.ManagerDAO;
@@ -14,20 +15,20 @@ import es.deusto.bspq.cinema.server.jdo.data.MemberDTO;
 
 public class ManagerDAOTest {
 	
-	private ManagerDAO managerDAO;
-	private Assembler assembler;
+	private static ManagerDAO managerDAO;
+	private static Assembler assembler;
 	
-	private EmployeeDTO employeeDTO;
-	private MemberDTO memberDTO;
+	private static EmployeeDTO employeeDTO;
+	private static MemberDTO memberDTO;
 	
-	@Before
-	public void setUp() {
+	@BeforeClass
+	public static void setUpClass() {
 		managerDAO = new ManagerDAO();
-		managerDAO.deleteAllEmployees();
-		managerDAO.deleteAllMembers();
 		assembler = new Assembler();
 		employeeDTO = new EmployeeDTO("e10", "laura", "garcía", "e10pass", 20000f);
 		memberDTO = new MemberDTO("test@opendeusto.es", "leire", "rementeria", "testpass", "25/05/96");
+		managerDAO.deleteAllEmployees();
+		managerDAO.deleteAllMembers();
 	}
 	
 	@Test
@@ -48,6 +49,12 @@ public class ManagerDAOTest {
 		assertEquals("rementeria", e.getSurname());
 		assertEquals("testpass", e.getPassword());
 		assertEquals("25/05/96", e.getBirthday());
+	}
+	
+	@AfterClass
+	public static void tearDownClass() {
+		managerDAO.deleteAllEmployees();
+		managerDAO.deleteAllMembers();
 	}
 
 }
