@@ -124,42 +124,42 @@ public class LoginWindow extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				if (tabbedPane.getSelectedIndex() == 0) {
 					if (controller.identifyEmployee(tfUsernameE.getText().trim(), String.valueOf(pfPasswordE.getPassword()))) {
-		    			JOptionPane.showMessageDialog(LoginWindow.this,
-		    					"Hi " + tfUsernameE.getText().trim() + "! You have successfully logged in Cinema Manager as an employee.",
-		    					"Login",
-		    					JOptionPane.INFORMATION_MESSAGE);
-		    			logger.info("Successfully logged as an employee.");
-		    			CMAWindow cmaWindow = new CMAWindow(controller, tfUsernameE.getText().trim());
-		    			cmaWindow.centreWindow();
-		    			cmaWindow.setVisible(true);
-		    			dispose();
+						JOptionPane.showMessageDialog(LoginWindow.this,
+								"Hi " + tfUsernameE.getText().trim() + "! You have successfully logged in Cinema Manager as an employee.",
+								"Login",
+								JOptionPane.INFORMATION_MESSAGE);
+						logger.info("Successfully logged as an employee.");
+						CMAWindow cmaWindow = new CMAWindow(controller, tfUsernameE.getText().trim());
+						cmaWindow.centreWindow();
+						cmaWindow.setVisible(true);
+						dispose();
 					}
 					else {
 						JOptionPane.showMessageDialog(LoginWindow.this,
-		    					"Wrong username or password.",
-		    					"Bad credentials",
-		    					JOptionPane.INFORMATION_MESSAGE);
-		    			logger.info("Wrong username or password: " + tfUsernameE.getText().trim() + " " +  String.valueOf(pfPasswordE.getPassword()));
+								"Wrong username or password.",
+								"Bad credentials",
+								JOptionPane.INFORMATION_MESSAGE);
+						logger.info("Wrong username or password: " + tfUsernameE.getText().trim() + " " +  String.valueOf(pfPasswordE.getPassword()));
 					}
 				}
 				else {
 					if (controller.identifyMember(tfEmailM.getText().trim(), String.valueOf(pfPasswordM.getPassword()))) {
-		    			JOptionPane.showMessageDialog(LoginWindow.this,
-		    					"Hi " + tfEmailM.getText().trim() + "! You have successfully logged in Cinema Manager as a member.",
-		    					"Login",
-		    					JOptionPane.INFORMATION_MESSAGE);
-		    			logger.info("Successfully logged as a member.");
-		    			CMWindow cmWindow = new CMWindow(controller, tfEmailM.getText().trim());
-		    			cmWindow.centreWindow();
-		    			cmWindow.setVisible(true);
-		    			dispose();
+						JOptionPane.showMessageDialog(LoginWindow.this,
+								"Hi " + tfEmailM.getText().trim() + "! You have successfully logged in Cinema Manager as a member.",
+								"Login",
+								JOptionPane.INFORMATION_MESSAGE);
+						logger.info("Successfully logged as a member.");
+						CMWindow cmWindow = new CMWindow(controller, tfEmailM.getText().trim());
+						cmWindow.centreWindow();
+						cmWindow.setVisible(true);
+						dispose();
 					}
 					else {
 						JOptionPane.showMessageDialog(LoginWindow.this,
-		    					"Wrong email or password.",
-		    					"Bad credentials",
-		    					JOptionPane.INFORMATION_MESSAGE);
-		    			logger.info("Wrong email or password: " + tfEmailM.getText().trim() + " " +  String.valueOf(pfPasswordM.getPassword()));
+								"Wrong email or password.",
+								"Bad credentials",
+								JOptionPane.INFORMATION_MESSAGE);
+						logger.info("Wrong email or password: " + tfEmailM.getText().trim() + " " +  String.valueOf(pfPasswordM.getPassword()));
 					}
 				}
 		    }
@@ -182,7 +182,7 @@ public class LoginWindow extends JDialog {
 		pack();
 	}
 	    
-    public void centreWindow() {
+	public void centreWindow() {
 		Dimension dim = getToolkit().getScreenSize();
 		Rectangle abounds = getBounds();
 		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
