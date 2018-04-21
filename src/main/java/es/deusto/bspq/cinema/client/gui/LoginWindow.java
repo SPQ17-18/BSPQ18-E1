@@ -45,7 +45,7 @@ public class LoginWindow extends JDialog {
 	private JButton btnCancel;
 	private JTabbedPane tabbedPane;
  
-    public LoginWindow(String args[]) {
+	public LoginWindow(String args[]) {
 		
 		try {
 			controller = new CMController(args);
@@ -164,23 +164,23 @@ public class LoginWindow extends JDialog {
 				}
 		    }
 		});
-    
-        btnCancel = new JButton("Cancel");
-        btnCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+		
+		btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
         
-        JPanel bp = new JPanel();
-        bp.add(btnLogin);
-        bp.add(btnCancel);
+		JPanel bp = new JPanel();
+		bp.add(btnLogin);
+		bp.add(btnCancel);
  
-        getContentPane().add(tabbedPane, BorderLayout.CENTER);
-        getContentPane().add(bp, BorderLayout.PAGE_END);
+		getContentPane().add(tabbedPane, BorderLayout.CENTER);
+		getContentPane().add(bp, BorderLayout.PAGE_END);
  
-        pack();
-    }
+		pack();
+	}
 	    
     public void centreWindow() {
 		Dimension dim = getToolkit().getScreenSize();
