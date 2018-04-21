@@ -43,14 +43,19 @@ public class CMAWindow extends JFrame {
 	final static Logger logger = Logger.getLogger(CMWindow.class);
 
 	private static String[] foo = {"1", "2", "3", "4"};
-	
 	private final int seatsPerSession = 25;
+	
+	// App controller
+	private CMController controller;
+	
+	// Login user
+	private String loginUser;
 	
 	private SessionDTO insertSessionDTO;
 	private FilmDTO insertFilmDTO;
 	
 	private static final long serialVersionUID = 1L;
-	private CMController controller;
+	
 	private JPanel panelCentral = new JPanel();
 	private JPanel panelInsert = new JPanel();
 	private JTabbedPane tabbedPaneInsert = new JTabbedPane(JTabbedPane.TOP);
@@ -117,13 +122,13 @@ public class CMAWindow extends JFrame {
 	private final JSpinner spinnerInsertSessionHourMins = new JSpinner();
 	private final JTextField textFieldInsertSessionDate_Edit = new JTextField();
 	private final JSpinner spinnerInsertSessionRoom = new JSpinner();
-	
 
-	public CMAWindow(CMController controller) {
+	public CMAWindow(CMController controller, String loginUser) {
 		textFieldInsertSessionDate_Edit.setColumns(10);
 		setResizable(false);
 		setTitle("CMAWindow");
 		this.controller = controller;
+		this.loginUser = loginUser;
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		getContentPane().add(panelCentral, BorderLayout.CENTER);
@@ -695,13 +700,6 @@ public class CMAWindow extends JFrame {
 				btnInsert.setEnabled(true);
 			}
 		}
-	}
-
-
-	public static void main(String[] args) throws RemoteException {
-		final CMAWindow window = new CMAWindow(new CMController(foo));
-		window.centreWindow();
-		window.setVisible(true);
 	}
 
 }

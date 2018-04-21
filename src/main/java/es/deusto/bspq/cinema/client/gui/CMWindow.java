@@ -26,6 +26,9 @@ public class CMWindow extends JFrame {
 	
 	// App controller
 	private CMController controller;
+	
+	// Login email
+	private String loginEmail;
 
 	private javax.swing.JButton buttonBuy;
 	private javax.swing.JButton buttonSearch;
@@ -61,8 +64,9 @@ public class CMWindow extends JFrame {
 	private List<SessionDTO> sessions;
 	private javax.swing.DefaultListModel<String> sessionsList;
 
-	public CMWindow(CMController controller) {
+	public CMWindow(CMController controller, String loginEmail) {
 		this.controller = controller;
+		this.loginEmail = loginEmail;
 		initComponents();
 		sessionsList = new DefaultListModel<String>();
 		seatList = new DefaultListModel<String>();
@@ -244,8 +248,7 @@ public class CMWindow extends JFrame {
 	
 	private void buttonBuyActionPerformed(ActionEvent evt) {
 		SessionDTO session = sessions.get(sessionsList1.getSelectedIndex());
-		//TODO Email will be inserted in login features
-		TicketDTO ticket = new TicketDTO("unai.bermejo@opendeusto.es", session.getTitleFilm(),
+		TicketDTO ticket = new TicketDTO(loginEmail, session.getTitleFilm(),
 				session.getDate(), session.getHour(), seatNumberList);
 		controller.buyTicket(ticket);
 		logger.info("Ticket bought with " + ticket.getListSeats().size() + " seats for film: " + ticket.getTitleFilm());
