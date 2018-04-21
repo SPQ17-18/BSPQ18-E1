@@ -120,7 +120,24 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 
 	public boolean loginEmployee(String username, String password) throws RemoteException {
 		
-		return false;
+		try {
+			Employee e = dao.getEmployee(username);
+			
+			if (e.getPassword().equals(password)) {
+				logger.log(Level.INFO,"Employee with username "+username+" logined succesfully");
+				return true;
+			}else {
+				logger.log(Level.INFO, "Password incorrect");
+				return false;
+				
+			}
+			
+			}catch (Exception e) {
+				logger.log(Level.ERROR, "Employee with username "+username+" doesnt exist");
+				return false;
+			}
+			
+		
 	}
 
 
