@@ -199,25 +199,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		String name = "//" + args[0] + ":" + args[1] + "/" + args[2];
 
 		try {
-			IRemoteFacade server = new Server();
-			
-			System.out.println("Correct registration");
-			EmployeeDTO emplo = new EmployeeDTO("prueba", "prueba", "prueba", "prueba", (float)567.00);
-			System.out.println(server.registerEmployee(emplo));
-			
-			System.out.println("InCorrect registration");
-			EmployeeDTO emplo1 = new EmployeeDTO("e1", "prueba", "prueba", "prueba", (float)567.00);
-			System.out.println(server.registerEmployee(emplo1));
-			
-			System.out.println("Correct login");
-			System.out.println(server.loginEmployee("prueba", "prueba"));
-
-			System.out.println("Incorrect login");
-			System.out.println(server.loginEmployee("prueb", "prueba"));
-			
-			System.out.println("Correct login");
-			System.out.println(server.loginEmployee("prueba", "prueb"));
-			
+			IRemoteFacade server = new Server();			
 			Naming.rebind(name, server);
 			logger.log(Level.INFO,"Server '" + name + "' active and waiting...");
 			java.io.InputStreamReader inputStreamReader = new java.io.InputStreamReader (System.in);
