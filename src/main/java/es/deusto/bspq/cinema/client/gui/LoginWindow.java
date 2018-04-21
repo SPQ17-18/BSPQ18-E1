@@ -34,10 +34,10 @@ public class LoginWindow extends JDialog {
 	private CMController controller;
 	
 	private JTextField tfEmailM;
-    private JPasswordField pfPasswordM;
+	private JPasswordField pfPasswordM;
     private JLabel lbEmailM;
     private JLabel lbPasswordM;
-	private JTextField tfUsernameE;
+    private JTextField tfUsernameE;
     private JPasswordField pfPasswordE;
     private JLabel lbUsernameE;
     private JLabel lbPasswordE;
@@ -45,25 +45,25 @@ public class LoginWindow extends JDialog {
     private JButton btnCancel;
     private JTabbedPane tabbedPane;
  
-    public LoginWindow(String args[]) {
-    	
-    	try {
+	public LoginWindow(String args[]) {
+		
+		try {
 			controller = new CMController(args);
 		} catch (RemoteException e) {
 			logger.error("Remote exception: " + e.getMessage());
 			e.printStackTrace();
 		}
-    	
-        setResizable(false);
-    	
-        JPanel panelEmployee = new JPanel(new GridBagLayout());
-        JPanel panelMember = new JPanel(new GridBagLayout());
-        
-    	tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-    	tabbedPane.addTab("Employee", null, panelEmployee, null);
-    	tabbedPane.addTab("Member", null, panelMember, null);
- 
-    	GridBagConstraints cs = new GridBagConstraints();
+		
+	    setResizable(false);
+		
+	    JPanel panelEmployee = new JPanel(new GridBagLayout());
+	    JPanel panelMember = new JPanel(new GridBagLayout());
+	    
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.addTab("Employee", null, panelEmployee, null);
+		tabbedPane.addTab("Member", null, panelMember, null);
+	 
+		GridBagConstraints cs = new GridBagConstraints();
         cs.fill = GridBagConstraints.HORIZONTAL;
  
         lbEmailM = new JLabel("Email: ");
@@ -121,9 +121,9 @@ public class LoginWindow extends JDialog {
  
         btnLogin = new JButton("Sign in");
         btnLogin.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		if (tabbedPane.getSelectedIndex() == 0) {
-        			if (controller.identifyEmployee(tfUsernameE.getText().trim(), String.valueOf(pfPasswordE.getPassword()))) {
+	    	public void actionPerformed(ActionEvent e) {
+	    		if (tabbedPane.getSelectedIndex() == 0) {
+	    			if (controller.identifyEmployee(tfUsernameE.getText().trim(), String.valueOf(pfPasswordE.getPassword()))) {
 	        			JOptionPane.showMessageDialog(LoginWindow.this,
 	        					"Hi " + tfUsernameE.getText().trim() + "! You have successfully logged in Cinema Manager as an employee.",
 	        					"Login",
@@ -133,17 +133,17 @@ public class LoginWindow extends JDialog {
 	        			cmaWindow.centreWindow();
 	        			cmaWindow.setVisible(true);
 	        			dispose();
-        			}
-        			else {
-        				JOptionPane.showMessageDialog(LoginWindow.this,
+	    			}
+	    			else {
+	    				JOptionPane.showMessageDialog(LoginWindow.this,
 	        					"Wrong username or password.",
 	        					"Bad credentials",
 	        					JOptionPane.INFORMATION_MESSAGE);
 	        			logger.info("Wrong username or password: " + tfUsernameE.getText().trim() + " " +  String.valueOf(pfPasswordE.getPassword()));
-        			}
-        		}
-        		else {
-        			if (controller.identifyMember(tfEmailM.getText().trim(), String.valueOf(pfPasswordM.getPassword()))) {
+	    			}
+	    		}
+	    		else {
+	    			if (controller.identifyMember(tfEmailM.getText().trim(), String.valueOf(pfPasswordM.getPassword()))) {
 	        			JOptionPane.showMessageDialog(LoginWindow.this,
 	        					"Hi " + tfEmailM.getText().trim() + "! You have successfully logged in Cinema Manager as a member.",
 	        					"Login",
@@ -153,18 +153,18 @@ public class LoginWindow extends JDialog {
 	        			cmWindow.centreWindow();
 	        			cmWindow.setVisible(true);
 	        			dispose();
-        			}
-        			else {
-        				JOptionPane.showMessageDialog(LoginWindow.this,
+	    			}
+	    			else {
+	    				JOptionPane.showMessageDialog(LoginWindow.this,
 	        					"Wrong email or password.",
 	        					"Bad credentials",
 	        					JOptionPane.INFORMATION_MESSAGE);
 	        			logger.info("Wrong email or password: " + tfEmailM.getText().trim() + " " +  String.valueOf(pfPasswordM.getPassword()));
-        			}
-        		}
+	    			}
+	    		}
 	        }
         });
-        
+    
         btnCancel = new JButton("Cancel");
         btnCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -180,19 +180,12 @@ public class LoginWindow extends JDialog {
         getContentPane().add(bp, BorderLayout.PAGE_END);
  
         pack();
-    }
-    
-    public void centreWindow() {
+	}
+	    
+	public void centreWindow() {
 		Dimension dim = getToolkit().getScreenSize();
 		Rectangle abounds = getBounds();
 		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
-	}
-  
-    
-    public static void main(String[] args) throws RemoteException {
-		final LoginWindow window = new LoginWindow(args);
-		window.centreWindow();
-		window.setVisible(true);
 	}
     
 }
