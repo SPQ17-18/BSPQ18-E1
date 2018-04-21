@@ -34,165 +34,158 @@ public class LoginWindow extends JDialog {
 	private CMController controller;
 	
 	private JTextField tfEmailM;
-    private JPasswordField pfPasswordM;
-    private JLabel lbEmailM;
-    private JLabel lbPasswordM;
+	private JPasswordField pfPasswordM;
+	private JLabel lbEmailM;
+	private JLabel lbPasswordM;
 	private JTextField tfUsernameE;
-    private JPasswordField pfPasswordE;
-    private JLabel lbUsernameE;
-    private JLabel lbPasswordE;
-    private JButton btnLogin;
-    private JButton btnCancel;
-    private JTabbedPane tabbedPane;
+	private JPasswordField pfPasswordE;
+	private JLabel lbUsernameE;
+	private JLabel lbPasswordE;
+	private JButton btnLogin;
+	private JButton btnCancel;
+	private JTabbedPane tabbedPane;
  
-    public LoginWindow(String args[]) {
-    	
-    	try {
+	public LoginWindow(String args[]) {
+		
+		try {
 			controller = new CMController(args);
 		} catch (RemoteException e) {
 			logger.error("Remote exception: " + e.getMessage());
 			e.printStackTrace();
 		}
-    	
-        setResizable(false);
-    	
-        JPanel panelEmployee = new JPanel(new GridBagLayout());
-        JPanel panelMember = new JPanel(new GridBagLayout());
+
+		setResizable(false);
+		
+		JPanel panelEmployee = new JPanel(new GridBagLayout());
+		JPanel panelMember = new JPanel(new GridBagLayout());
+
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.addTab("Employee", null, panelEmployee, null);
+		tabbedPane.addTab("Member", null, panelMember, null);
+	 
+		GridBagConstraints cs = new GridBagConstraints();
+		cs.fill = GridBagConstraints.HORIZONTAL;
+ 
+		lbEmailM = new JLabel("Email: ");
+		cs.gridx = 0;
+		cs.gridy = 0;
+		cs.gridwidth = 1;
+		panelEmployee.add(lbEmailM, cs);
+		panelMember.add(lbEmailM, cs);
+ 
+		tfEmailM = new JTextField(20);
+		cs.gridx = 1;
+		cs.gridy = 0;
+		cs.gridwidth = 2;
+		panelMember.add(tfEmailM, cs);
+ 
+		lbPasswordM = new JLabel("Password: ");
+		cs.gridx = 0;
+		cs.gridy = 1;
+		cs.gridwidth = 1;
+		panelMember.add(lbPasswordM, cs);
+ 
+		pfPasswordM = new JPasswordField(20);
+		cs.gridx = 1;
+		cs.gridy = 1;
+		cs.gridwidth = 2;
+		panelMember.add(pfPasswordM, cs);
+		panelMember.setBorder(new LineBorder(Color.GRAY));
         
-    	tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-    	tabbedPane.addTab("Employee", null, panelEmployee, null);
-    	tabbedPane.addTab("Member", null, panelMember, null);
+		cs.fill = GridBagConstraints.HORIZONTAL;
  
-    	GridBagConstraints cs = new GridBagConstraints();
-        cs.fill = GridBagConstraints.HORIZONTAL;
+		lbUsernameE = new JLabel("Username: ");
+		cs.gridx = 0;
+		cs.gridy = 0;
+		cs.gridwidth = 1;
+		panelEmployee.add(lbUsernameE, cs);
  
-        lbEmailM = new JLabel("Email: ");
-        cs.gridx = 0;
-        cs.gridy = 0;
-        cs.gridwidth = 1;
-        panelEmployee.add(lbEmailM, cs);
-        panelMember.add(lbEmailM, cs);
+		tfUsernameE = new JTextField(20);
+		cs.gridx = 1;
+		cs.gridy = 0;
+		cs.gridwidth = 2;
+		panelEmployee.add(tfUsernameE, cs);
  
-        tfEmailM = new JTextField(20);
-        cs.gridx = 1;
-        cs.gridy = 0;
-        cs.gridwidth = 2;
-        panelMember.add(tfEmailM, cs);
+		lbPasswordE = new JLabel("Password: ");
+		cs.gridx = 0;
+		cs.gridy = 1;
+		cs.gridwidth = 1;
+		panelEmployee.add(lbPasswordE, cs);
  
-        lbPasswordM = new JLabel("Password: ");
-        cs.gridx = 0;
-        cs.gridy = 1;
-        cs.gridwidth = 1;
-        panelMember.add(lbPasswordM, cs);
+		pfPasswordE = new JPasswordField(20);
+		cs.gridx = 1;
+		cs.gridy = 1;
+		cs.gridwidth = 2;
+		panelEmployee.add(pfPasswordE, cs);
+		panelEmployee.setBorder(new LineBorder(Color.GRAY));
  
-        pfPasswordM = new JPasswordField(20);
-        cs.gridx = 1;
-        cs.gridy = 1;
-        cs.gridwidth = 2;
-        panelMember.add(pfPasswordM, cs);
-        panelMember.setBorder(new LineBorder(Color.GRAY));
+		btnLogin = new JButton("Sign in");
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (tabbedPane.getSelectedIndex() == 0) {
+					if (controller.identifyEmployee(tfUsernameE.getText().trim(), String.valueOf(pfPasswordE.getPassword()))) {
+						JOptionPane.showMessageDialog(LoginWindow.this,
+								"Hi " + tfUsernameE.getText().trim() + "! You have successfully logged in Cinema Manager as an employee.",
+								"Login",
+								JOptionPane.INFORMATION_MESSAGE);
+						logger.info("Successfully logged as an employee.");
+						CMAWindow cmaWindow = new CMAWindow(controller, tfUsernameE.getText().trim());
+						cmaWindow.centreWindow();
+						cmaWindow.setVisible(true);
+						dispose();
+					}
+					else {
+						JOptionPane.showMessageDialog(LoginWindow.this,
+								"Wrong username or password.",
+								"Bad credentials",
+								JOptionPane.INFORMATION_MESSAGE);
+						logger.info("Wrong username or password: " + tfUsernameE.getText().trim() + " " +  String.valueOf(pfPasswordE.getPassword()));
+					}
+				}
+				else {
+					if (controller.identifyMember(tfEmailM.getText().trim(), String.valueOf(pfPasswordM.getPassword()))) {
+						JOptionPane.showMessageDialog(LoginWindow.this,
+								"Hi " + tfEmailM.getText().trim() + "! You have successfully logged in Cinema Manager as a member.",
+								"Login",
+								JOptionPane.INFORMATION_MESSAGE);
+						logger.info("Successfully logged as a member.");
+						CMWindow cmWindow = new CMWindow(controller, tfEmailM.getText().trim());
+						cmWindow.centreWindow();
+						cmWindow.setVisible(true);
+						dispose();
+					}
+					else {
+						JOptionPane.showMessageDialog(LoginWindow.this,
+								"Wrong email or password.",
+								"Bad credentials",
+								JOptionPane.INFORMATION_MESSAGE);
+						logger.info("Wrong email or password: " + tfEmailM.getText().trim() + " " +  String.valueOf(pfPasswordM.getPassword()));
+					}
+				}
+		    }
+		});
+		
+		btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
         
-        cs.fill = GridBagConstraints.HORIZONTAL;
+		JPanel bp = new JPanel();
+		bp.add(btnLogin);
+		bp.add(btnCancel);
  
-        lbUsernameE = new JLabel("Username: ");
-        cs.gridx = 0;
-        cs.gridy = 0;
-        cs.gridwidth = 1;
-        panelEmployee.add(lbUsernameE, cs);
+		getContentPane().add(tabbedPane, BorderLayout.CENTER);
+		getContentPane().add(bp, BorderLayout.PAGE_END);
  
-        tfUsernameE = new JTextField(20);
-        cs.gridx = 1;
-        cs.gridy = 0;
-        cs.gridwidth = 2;
-        panelEmployee.add(tfUsernameE, cs);
- 
-        lbPasswordE = new JLabel("Password: ");
-        cs.gridx = 0;
-        cs.gridy = 1;
-        cs.gridwidth = 1;
-        panelEmployee.add(lbPasswordE, cs);
- 
-        pfPasswordE = new JPasswordField(20);
-        cs.gridx = 1;
-        cs.gridy = 1;
-        cs.gridwidth = 2;
-        panelEmployee.add(pfPasswordE, cs);
-        panelEmployee.setBorder(new LineBorder(Color.GRAY));
- 
-        btnLogin = new JButton("Sign in");
-        btnLogin.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		if (tabbedPane.getSelectedIndex() == 0) {
-        			if (controller.identifyEmployee(tfUsernameE.getText().trim(), String.valueOf(pfPasswordE.getPassword()))) {
-	        			JOptionPane.showMessageDialog(LoginWindow.this,
-	        					"Hi " + tfUsernameE.getText().trim() + "! You have successfully logged in Cinema Manager as an employee.",
-	        					"Login",
-	        					JOptionPane.INFORMATION_MESSAGE);
-	        			logger.info("Successfully logged as an employee.");
-	        			CMAWindow cmaWindow = new CMAWindow(controller, tfUsernameE.getText().trim());
-	        			cmaWindow.centreWindow();
-	        			cmaWindow.setVisible(true);
-	        			dispose();
-        			}
-        			else {
-        				JOptionPane.showMessageDialog(LoginWindow.this,
-	        					"Wrong username or password.",
-	        					"Bad credentials",
-	        					JOptionPane.INFORMATION_MESSAGE);
-	        			logger.info("Wrong username or password: " + tfUsernameE.getText().trim() + " " +  String.valueOf(pfPasswordE.getPassword()));
-        			}
-        		}
-        		else {
-        			if (controller.identifyMember(tfEmailM.getText().trim(), String.valueOf(pfPasswordM.getPassword()))) {
-	        			JOptionPane.showMessageDialog(LoginWindow.this,
-	        					"Hi " + tfEmailM.getText().trim() + "! You have successfully logged in Cinema Manager as a member.",
-	        					"Login",
-	        					JOptionPane.INFORMATION_MESSAGE);
-	        			logger.info("Successfully logged as a member.");
-	        			CMWindow cmWindow = new CMWindow(controller, tfEmailM.getText().trim());
-	        			cmWindow.centreWindow();
-	        			cmWindow.setVisible(true);
-	        			dispose();
-        			}
-        			else {
-        				JOptionPane.showMessageDialog(LoginWindow.this,
-	        					"Wrong email or password.",
-	        					"Bad credentials",
-	        					JOptionPane.INFORMATION_MESSAGE);
-	        			logger.info("Wrong email or password: " + tfEmailM.getText().trim() + " " +  String.valueOf(pfPasswordM.getPassword()));
-        			}
-        		}
-	        }
-        });
-        
-        btnCancel = new JButton("Cancel");
-        btnCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
-        
-        JPanel bp = new JPanel();
-        bp.add(btnLogin);
-        bp.add(btnCancel);
- 
-        getContentPane().add(tabbedPane, BorderLayout.CENTER);
-        getContentPane().add(bp, BorderLayout.PAGE_END);
- 
-        pack();
-    }
-    
-    public void centreWindow() {
+		pack();
+	}
+	    
+	public void centreWindow() {
 		Dimension dim = getToolkit().getScreenSize();
 		Rectangle abounds = getBounds();
 		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
-	}
-  
-    
-    public static void main(String[] args) throws RemoteException {
-		final LoginWindow window = new LoginWindow(args);
-		window.centreWindow();
-		window.setVisible(true);
 	}
     
 }
