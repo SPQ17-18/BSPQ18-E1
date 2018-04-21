@@ -11,6 +11,8 @@ import org.apache.log4j.Logger;
 import es.deusto.bspq.cinema.server.jdo.DAO.IManagerDAO;
 import es.deusto.bspq.cinema.server.jdo.DAO.ManagerDAO;
 import es.deusto.bspq.cinema.server.jdo.data.Assembler;
+import es.deusto.bspq.cinema.server.jdo.data.Employee;
+import es.deusto.bspq.cinema.server.jdo.data.EmployeeDTO;
 import es.deusto.bspq.cinema.server.jdo.data.Film;
 import es.deusto.bspq.cinema.server.jdo.data.FilmDTO;
 import es.deusto.bspq.cinema.server.jdo.data.Member;
@@ -115,6 +117,43 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 	
 	}
 	
+
+	public boolean loginEmployee(String username, String password) throws RemoteException {
+		
+		try {
+			Employee e = dao.getEmployee(username);
+			
+			if (e.getPassword().equals(password)) {
+				logger.log(Level.INFO,"Employee with username "+username+" logined succesfully");
+				return true;
+			}else {
+				logger.log(Level.INFO, "Password incorrect");
+				return false;
+				
+			}
+			
+			}catch (Exception e) {
+				logger.log(Level.ERROR, "Employee with username "+username+" doesnt exist");
+				return false;
+			}
+			
+		
+	}
+
+
+
+	public boolean registerEmployee(EmployeeDTO employeeDTO) throws RemoteException {
+		try {
+			Employee employee = assembler.disassembleEmployee(employeeDTO);
+			dao.storeEmployee(employee);
+			logger.log(Level.INFO, "Inserted an employee to the DB called "+employeeDTO.getName());
+			return true;
+			}catch (Exception e) {
+				logger.log(Level.ERROR, "Primary key duplicated: Employee already exits");
+				return false;
+		}
+	}
+	
 	
 	public boolean insertFilm(FilmDTO filmDTO) throws RemoteException {
 		
@@ -160,7 +199,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		String name = "//" + args[0] + ":" + args[1] + "/" + args[2];
 
 		try {
-			IRemoteFacade server = new Server();
+			IRemoteFacade server = new Server();			
 			Naming.rebind(name, server);
 			logger.log(Level.INFO,"Server '" + name + "' active and waiting...");
 			java.io.InputStreamReader inputStreamReader = new java.io.InputStreamReader (System.in);
@@ -171,7 +210,6 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 			e.printStackTrace();
 		}
 	}
-
 
 	
 	

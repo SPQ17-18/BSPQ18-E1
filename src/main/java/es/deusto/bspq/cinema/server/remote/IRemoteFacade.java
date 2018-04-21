@@ -4,6 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+import es.deusto.bspq.cinema.server.jdo.data.EmployeeDTO;
 import es.deusto.bspq.cinema.server.jdo.data.FilmDTO;
 import es.deusto.bspq.cinema.server.jdo.data.MemberDTO;
 import es.deusto.bspq.cinema.server.jdo.data.SessionDTO;
@@ -18,4 +19,7 @@ public interface IRemoteFacade extends Remote{
 	public boolean buyTickets(TicketDTO ticketDTO) throws RemoteException;
 	public boolean registerMember (MemberDTO memberDTO) throws RemoteException;
 	public boolean loginMember(String email, String password) throws RemoteException;
+	public boolean loginEmployee(String username, String password) throws RemoteException;
+	public boolean registerEmployee (EmployeeDTO employeeDTO) throws RemoteException;
+	
 }
