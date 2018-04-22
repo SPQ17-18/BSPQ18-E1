@@ -379,7 +379,7 @@ public class ManagerDAO implements IManagerDAO {
 
 	}
 
-	public void deleteMember(Member member) {
+	public void deleteMember(Member member) throws Exception {
 
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -401,7 +401,7 @@ public class ManagerDAO implements IManagerDAO {
 			tx.commit();
 		} catch (Exception ex) {
 			logger.error("Error cleaning a member: " + ex.getMessage());
-			ex.printStackTrace();
+			throw new Exception();
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -654,7 +654,7 @@ public class ManagerDAO implements IManagerDAO {
 
 	}
 
-	public void deleteEmployee(Employee employee) {
+	public void deleteEmployee(Employee employee) throws Exception {
 
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -676,6 +676,7 @@ public class ManagerDAO implements IManagerDAO {
 			tx.commit();
 		} catch (Exception ex) {
 			logger.info("   $ Error cleaning an employee: " + ex.getMessage());
+			throw new Exception();
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
