@@ -41,7 +41,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		try {
 			Member member = assembler.disassembleMember(memberDTO);
 			dao.manageMember(member);
-			logger.info("Updated the member called " + memberDTO.getName());
+			logger.info("Updated the member with the email " + memberDTO.getEmail());
 			return true;
 		} catch (Exception e) {
 			logger.error("Error updating the member");

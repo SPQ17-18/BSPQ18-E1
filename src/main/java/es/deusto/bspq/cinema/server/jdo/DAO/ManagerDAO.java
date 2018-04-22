@@ -310,7 +310,7 @@ public class ManagerDAO implements IManagerDAO {
 			Member result = (Member) query.execute();
 
 			result.setBirthday(member.getBirthday());
-			result.setName(member.getEmail());
+			result.setName(member.getName());
 			result.setSurname(member.getSurname());
 			result.setPassword(member.getPassword());
 
@@ -318,6 +318,7 @@ public class ManagerDAO implements IManagerDAO {
 
 		} catch (Exception ex) {
 			logger.error("Error updating a member: " + ex.getMessage());
+			throw new Exception();
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
