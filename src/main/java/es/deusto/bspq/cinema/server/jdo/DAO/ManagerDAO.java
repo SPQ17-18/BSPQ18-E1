@@ -295,6 +295,37 @@ public class ManagerDAO implements IManagerDAO {
 		}
 
 	}
+	
+	public void manageMember(Member member) throws Exception {
+		
+		PersistenceManager pm = pmf.getPersistenceManager();
+
+		Transaction tx = pm.currentTransaction();
+
+		try {
+			tx.begin();
+			Query<?> query = pm
+					.newQuery("SELECT FROM " + Member.class.getName() + " WHERE  email== '" + member.getEmail() + "'");
+			query.setUnique(true);
+			Member result = (Member) query.execute();
+
+			result.setBirthday(member.getBirthday());
+			result.setName(member.getEmail());
+			result.setSurname(member.getSurname());
+			result.setPassword(member.getPassword());
+
+			tx.commit();
+
+		} catch (Exception ex) {
+			logger.error("Error updating a member: " + ex.getMessage());
+		} finally {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+
+	}
 
 	public void deleteAllSessions() {
 

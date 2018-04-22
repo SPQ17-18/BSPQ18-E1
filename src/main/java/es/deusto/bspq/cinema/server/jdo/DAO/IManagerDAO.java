@@ -38,6 +38,7 @@ public interface IManagerDAO {
 	
 	public void updateMember(Member member, Ticket t);
 	public void updateEmployee(Employee employee);
+	public void manageMember(Member member) throws Exception;
 	
 	public void deleteAllFilms();
 	public void deleteRoom(int room);
