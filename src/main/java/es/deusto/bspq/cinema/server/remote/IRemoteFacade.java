@@ -12,6 +12,7 @@ import es.deusto.bspq.cinema.server.jdo.data.TicketDTO;
 
 public interface IRemoteFacade extends Remote{	
 	
+	public boolean updateMember (MemberDTO memberDTO) throws RemoteException;
 	public boolean insertFilm (FilmDTO filmDTO) throws RemoteException;
 	public boolean insertSession (SessionDTO sessionDTO) throws RemoteException;
 	public ArrayList<FilmDTO> getFilms() throws RemoteException;
@@ -21,5 +22,7 @@ public interface IRemoteFacade extends Remote{
 	public boolean loginMember(String email, String password) throws RemoteException;
 	public boolean loginEmployee(String username, String password) throws RemoteException;
 	public boolean registerEmployee (EmployeeDTO employeeDTO) throws RemoteException;
+	public boolean cancelMembership (String email, String password) throws RemoteException;
+	public boolean cancelEmployee (String username) throws RemoteException;
 	
 }

@@ -255,7 +255,7 @@ public class ManagerDAO implements IManagerDAO {
 			Member result2 = (Member) query2.execute();
 			t.setMember(result2);
 			result2.addTicket(t);
-
+			result2.setPoints(result2.getPoints()+(t.getSeats().size()*3));
 			tx.commit();
 
 		} catch (Exception ex) {
@@ -282,11 +282,43 @@ public class ManagerDAO implements IManagerDAO {
 			Member result = (Member) query.execute();
 
 			result.addTicket(t);
+			
+			tx.commit();
+
+		} catch (Exception ex) {
+			logger.error("Error updating a member: " + ex.getMessage());
+		} finally {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+
+	}
+	
+	public void manageMember(Member member) throws Exception {
+		
+		PersistenceManager pm = pmf.getPersistenceManager();
+
+		Transaction tx = pm.currentTransaction();
+
+		try {
+			tx.begin();
+			Query<?> query = pm
+					.newQuery("SELECT FROM " + Member.class.getName() + " WHERE  email== '" + member.getEmail() + "'");
+			query.setUnique(true);
+			Member result = (Member) query.execute();
+
+			result.setBirthday(member.getBirthday());
+			result.setName(member.getName());
+			result.setSurname(member.getSurname());
+			result.setPassword(member.getPassword());
 
 			tx.commit();
 
 		} catch (Exception ex) {
 			logger.error("Error updating a member: " + ex.getMessage());
+			throw new Exception();
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -379,7 +411,7 @@ public class ManagerDAO implements IManagerDAO {
 
 	}
 
-	public void deleteMember(Member member) {
+	public void deleteMember(Member member) throws Exception {
 
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -401,7 +433,7 @@ public class ManagerDAO implements IManagerDAO {
 			tx.commit();
 		} catch (Exception ex) {
 			logger.error("Error cleaning a member: " + ex.getMessage());
-			ex.printStackTrace();
+			throw new Exception();
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -654,7 +686,7 @@ public class ManagerDAO implements IManagerDAO {
 
 	}
 
-	public void deleteEmployee(Employee employee) {
+	public void deleteEmployee(Employee employee) throws Exception {
 
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -676,6 +708,7 @@ public class ManagerDAO implements IManagerDAO {
 			tx.commit();
 		} catch (Exception ex) {
 			logger.info("   $ Error cleaning an employee: " + ex.getMessage());
+			throw new Exception();
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();

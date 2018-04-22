@@ -38,6 +38,7 @@ public interface IManagerDAO {
 	
 	public void updateMember(Member member, Ticket t);
 	public void updateEmployee(Employee employee);
+	public void manageMember(Member member) throws Exception;
 	
 	public void deleteAllFilms();
 	public void deleteRoom(int room);
@@ -45,9 +46,9 @@ public interface IManagerDAO {
 	public void deleteAllSessions();
 	public void deleteSession(Session session);
 	public void deleteAllMembers();
-	public void deleteMember(Member member);
+	public void deleteMember(Member member) throws Exception;
 	public void deleteAllEmployees();
-	public void deleteEmployee(Employee employee);
+	public void deleteEmployee(Employee employee) throws Exception;
 	
 	public String getLastSessionCode();
 	
