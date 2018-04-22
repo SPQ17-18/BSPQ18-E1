@@ -30,6 +30,7 @@ import java.awt.Insets;
 import javax.swing.JSpinner;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import javax.swing.event.ChangeListener;
@@ -141,7 +142,7 @@ public class CMAWindow extends JFrame {
 		
 		panelInsert.setBorder(new TitledBorder(null, "Insert", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelCentral.add(panelInsert);
-		panelCentral.setMaximumSize(new java.awt.Dimension(600, 120));
+		panelCentral.setMaximumSize(new Dimension(600, 120));
 		panelInsert.setLayout(new BorderLayout(0, 0));
 		tabbedPaneInsert.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
@@ -400,8 +401,8 @@ public class CMAWindow extends JFrame {
 		});
 		btnInsert.setEnabled(false);
 		
-		btnInsert.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		btnInsert.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
 				buttonInsertActionPerformed(evt);
 			}
 		});
@@ -651,8 +652,8 @@ public class CMAWindow extends JFrame {
 		});
 		panelDeleteFilm.add(btnDeleteFilm);
 		
-		btnManageMembers.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		btnManageMembers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
 				buttonManageMembersActionPerformed(evt);
 			}
 		});
@@ -696,18 +697,21 @@ public class CMAWindow extends JFrame {
 	}
 	
 	private void buttonManageMembersActionPerformed(ActionEvent evt) {
-		// Launch Manage Members window
+		MMWindow mmWindow = new MMWindow(controller, loginUser);
+		mmWindow.centreWindow();
+		mmWindow.setVisible(true);
+		dispose();
 	}
 
 	private void enableButtonInsert() {
 		if (tabbedPaneInsert.getSelectedIndex() == 0) {
-			if(textFieldInsertSessionDate_Edit.getText().equals("")) {
+			if (textFieldInsertSessionDate_Edit.getText().equals("")) {
 				btnInsert.setEnabled(false);
 			} else {
 				btnInsert.setEnabled(true);
 			}
-		} else if(tabbedPaneInsert.getSelectedIndex() == 1) {
-			if(textFieldInsertFilmCountry_Edit.getText().equals("") || textFieldInsertFilmDirector_Edit.getText().equals("") || textFieldInsertFilmTitle_Edit.getText().equals("")) {
+		} else if (tabbedPaneInsert.getSelectedIndex() == 1) {
+			if (textFieldInsertFilmCountry_Edit.getText().equals("") || textFieldInsertFilmDirector_Edit.getText().equals("") || textFieldInsertFilmTitle_Edit.getText().equals("")) {
 				btnInsert.setEnabled(false);
 			} else {
 				btnInsert.setEnabled(true);
