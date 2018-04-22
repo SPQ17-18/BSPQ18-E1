@@ -282,6 +282,7 @@ public class ManagerDAO implements IManagerDAO {
 			Member result = (Member) query.execute();
 
 			result.addTicket(t);
+			result.setPoints(member.getPoints()+(t.getSeats().size()*3));
 
 			tx.commit();
 
