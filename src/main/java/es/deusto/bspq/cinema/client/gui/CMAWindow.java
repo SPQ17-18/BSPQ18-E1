@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.rmi.RemoteException;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import es.deusto.bspq.cinema.client.controller.CMController;
 import es.deusto.bspq.cinema.server.jdo.data.FilmDTO;
@@ -29,6 +30,7 @@ import java.awt.Insets;
 import javax.swing.JSpinner;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import javax.swing.event.ChangeListener;
@@ -122,6 +124,9 @@ public class CMAWindow extends JFrame {
 	private final JSpinner spinnerInsertSessionHourMins = new JSpinner();
 	private final JTextField textFieldInsertSessionDate_Edit = new JTextField();
 	private final JSpinner spinnerInsertSessionRoom = new JSpinner();
+	
+	private JPanel panelOptions = new JPanel();
+	private final JButton btnManageMembers = new JButton("Go to Manage Memberships");
 
 	public CMAWindow(CMController controller, String loginUser) {
 		textFieldInsertSessionDate_Edit.setColumns(10);
@@ -131,12 +136,13 @@ public class CMAWindow extends JFrame {
 		this.loginUser = loginUser;
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		getContentPane().add(panelCentral, BorderLayout.CENTER);
+		getContentPane().add(panelOptions, BorderLayout.NORTH);
+		getContentPane().add(panelCentral, BorderLayout.SOUTH);
 		panelCentral.setLayout(new GridLayout(1, 0, 0, 0));
 		
 		panelInsert.setBorder(new TitledBorder(null, "Insert", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelCentral.add(panelInsert);
-		panelCentral.setMaximumSize(new java.awt.Dimension(1200, 120));
+		panelCentral.setMaximumSize(new Dimension(600, 120));
 		panelInsert.setLayout(new BorderLayout(0, 0));
 		tabbedPaneInsert.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
@@ -395,6 +401,11 @@ public class CMAWindow extends JFrame {
 		});
 		btnInsert.setEnabled(false);
 		
+		btnInsert.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				buttonInsertActionPerformed(evt);
+			}
+		});
 		panelInsertButton.add(btnInsert);
 		
 		panelUpdate.setBorder(new TitledBorder(null, "Update", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -629,7 +640,6 @@ public class CMAWindow extends JFrame {
 		});
 		
 		panelDeleteSession.add(btnDeleteSession);
-		panelDeleteSession.setPreferredSize(new java.awt.Dimension(280, 100));
 		
 		tabbedPaneDelete.addTab("Film", null, panelDeleteFilm, null);
 		
@@ -640,15 +650,15 @@ public class CMAWindow extends JFrame {
 				//TODO Delete Film
 			}
 		});
-		
 		panelDeleteFilm.add(btnDeleteFilm);
 		
-		
-		btnInsert.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				buttonInsertActionPerformed(evt);
+		btnManageMembers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				buttonManageMembersActionPerformed(evt);
 			}
 		});
+		panelOptions.add(new JLabel("OPTIONS: "), BorderLayout.SOUTH);
+		panelOptions.add(btnManageMembers, BorderLayout.SOUTH);
 		
 		initComponents();
 	}
@@ -685,16 +695,23 @@ public class CMAWindow extends JFrame {
 					textFieldInsertSessionFilm_Edit.getText()));
 		}
 	}
+	
+	private void buttonManageMembersActionPerformed(ActionEvent evt) {
+		MMWindow mmWindow = new MMWindow(controller, loginUser);
+		mmWindow.centreWindow();
+		mmWindow.setVisible(true);
+		dispose();
+	}
 
 	private void enableButtonInsert() {
 		if (tabbedPaneInsert.getSelectedIndex() == 0) {
-			if(textFieldInsertSessionDate_Edit.getText().equals("")) {
+			if (textFieldInsertSessionDate_Edit.getText().equals("")) {
 				btnInsert.setEnabled(false);
 			} else {
 				btnInsert.setEnabled(true);
 			}
-		} else if(tabbedPaneInsert.getSelectedIndex() == 1) {
-			if(textFieldInsertFilmCountry_Edit.getText().equals("") || textFieldInsertFilmDirector_Edit.getText().equals("") || textFieldInsertFilmTitle_Edit.getText().equals("")) {
+		} else if (tabbedPaneInsert.getSelectedIndex() == 1) {
+			if (textFieldInsertFilmCountry_Edit.getText().equals("") || textFieldInsertFilmDirector_Edit.getText().equals("") || textFieldInsertFilmTitle_Edit.getText().equals("")) {
 				btnInsert.setEnabled(false);
 			} else {
 				btnInsert.setEnabled(true);
