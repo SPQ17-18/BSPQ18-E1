@@ -5,7 +5,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import es.deusto.bspq.cinema.server.jdo.DAO.IManagerDAO;
@@ -27,7 +26,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private static final Logger logger = Logger.getLogger(Server.class.getName());
+	private static final Logger logger = Logger.getLogger(Server.class);
 
 	private IManagerDAO dao;
 	private Assembler assembler;	
@@ -42,10 +41,10 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		try {
 			Member member = assembler.disassembleMember(memberDTO);
 			dao.storeMember(member);
-			logger.log(Level.INFO, "Inserted a member to the DB called "+memberDTO.getName());
+			logger.info( "Inserted a member to the DB called "+memberDTO.getName());
 			return true;
 			}catch (Exception e) {
-				logger.log(Level.ERROR, "Primary key duplicated: User already exits");
+				logger.error( "Primary key duplicated: User already exits");
 				return false;
 			}
 			
@@ -56,16 +55,16 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 			Member m = dao.getMember(email);
 			
 			if (m.getPassword().equals(password)) {
-				logger.log(Level.INFO,"User with email "+email+" logined succesfully");
+				logger.info("User with email "+email+" logined succesfully");
 				return true;
 			}else {
-				logger.log(Level.INFO, "Password incorrect");
+				logger.info( "Password incorrect");
 				return false;
 				
 			}
 			
 			}catch (Exception e) {
-				logger.log(Level.ERROR, "User with email "+email+" doesnt exist");
+				logger.error( "User with email "+email+" doesnt exist");
 				return false;
 			}
 			
@@ -93,7 +92,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 	public ArrayList<FilmDTO> getFilms() throws RemoteException {
 		
 		ArrayList<Film> films = dao.getFilms();
-		logger.log(Level.INFO, "Client asked for the films");
+		logger.info( "Client asked for the films");
 		
 		return assembler.assembleFilm(films);
 	
@@ -102,7 +101,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 	public ArrayList<SessionDTO> getSessions() throws RemoteException {
 
 		ArrayList<Film> films = dao.getFilms();
-		logger.log(Level.INFO, "Client asked for the sessions");
+		logger.info( "Client asked for the sessions");
 		return assembler.assembleSession(films);
 
 	}
@@ -112,7 +111,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		Ticket t = assembler.disassembleTicket(ticketDTO);
 		Session s = getSession(ticketDTO, dao.getFilms());
 		dao.insertTicket( t,s.getSession(),ticketDTO.getEmail());
-		logger.log(Level.INFO, "Client"+ticketDTO.getEmail()+" buyed a ticket of "+ticketDTO.getListSeats().size()+" seats for the film "+ticketDTO.getTitleFilm());
+		logger.info( "Client"+ticketDTO.getEmail()+" buyed a ticket of "+ticketDTO.getListSeats().size()+" seats for the film "+ticketDTO.getTitleFilm());
 		return true;
 	
 	}
@@ -124,16 +123,16 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 			Employee e = dao.getEmployee(username);
 			
 			if (e.getPassword().equals(password)) {
-				logger.log(Level.INFO,"Employee with username "+username+" logined succesfully");
+				logger.info("Employee with username "+username+" logined succesfully");
 				return true;
 			}else {
-				logger.log(Level.INFO, "Password incorrect");
+				logger.info( "Password incorrect");
 				return false;
 				
 			}
 			
 			}catch (Exception e) {
-				logger.log(Level.ERROR, "Employee with username "+username+" doesnt exist");
+				logger.error( "Employee with username "+username+" doesnt exist");
 				return false;
 			}
 			
@@ -146,10 +145,10 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		try {
 			Employee employee = assembler.disassembleEmployee(employeeDTO);
 			dao.storeEmployee(employee);
-			logger.log(Level.INFO, "Inserted an employee to the DB called "+employeeDTO.getName());
+			logger.info( "Inserted an employee to the DB called "+employeeDTO.getName());
 			return true;
 			}catch (Exception e) {
-				logger.log(Level.ERROR, "Primary key duplicated: Employee already exits");
+				logger.error( "Primary key duplicated: Employee already exits");
 				return false;
 		}
 	}
@@ -160,7 +159,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		try {
 		Film film = assembler.disassembleFilm(filmDTO);
 		dao.storeFilm(film);
-		logger.log(Level.INFO, "Inserted a film to the DB called "+filmDTO.getTitle());
+		logger.info( "Inserted a film to the DB called "+filmDTO.getTitle());
 		return true;
 		}catch (Exception e) {
 			return false;
@@ -173,7 +172,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		try {
 		Session session = assembler.disassembleSession(sessionDTO,dao.getSessions());
 		Film f = dao.getFilm(sessionDTO.getTitleFilm());
-		logger.log(Level.INFO, "Inserted a session to the DB of the film "+sessionDTO.getTitleFilm()+" for the day "+sessionDTO.getDate());
+		logger.info( "Inserted a session to the DB of the film "+sessionDTO.getTitleFilm()+" for the day "+sessionDTO.getDate());
 		dao.insertSession(session,f.getTitle(), sessionDTO.getRoom());
 		return true;
 		}catch (Exception e) {
@@ -201,7 +200,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		try {
 			IRemoteFacade server = new Server();			
 			Naming.rebind(name, server);
-			logger.log(Level.INFO,"Server '" + name + "' active and waiting...");
+			logger.info("Server '" + name + "' active and waiting...");
 			java.io.InputStreamReader inputStreamReader = new java.io.InputStreamReader (System.in);
   			java.io.BufferedReader stdin = new java.io.BufferedReader (inputStreamReader);
   			@SuppressWarnings("unused")

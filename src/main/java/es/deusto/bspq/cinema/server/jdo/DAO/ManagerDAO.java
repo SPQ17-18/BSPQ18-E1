@@ -12,7 +12,6 @@ import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.datanucleus.api.jdo.JDOQuery;
 
@@ -26,7 +25,7 @@ import es.deusto.bspq.cinema.server.jdo.data.Ticket;
 
 public class ManagerDAO implements IManagerDAO {
 
-	private static final Logger logger = Logger.getLogger(ManagerDAO.class.getName());
+	private static final Logger logger = Logger.getLogger(ManagerDAO.class);
 
 	private PersistenceManagerFactory pmf;
 
@@ -43,7 +42,7 @@ public class ManagerDAO implements IManagerDAO {
 			pm.detachCopy(object);
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.ERROR, "Problem occurred trying to store the object");
+			logger.error("Problem occurred trying to store the object");
 			throw new Exception();
 		} finally {
 			if (tx != null && tx.isActive()) {
@@ -74,7 +73,7 @@ public class ManagerDAO implements IManagerDAO {
 
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.ERROR, "Error trying to get the films");
+			logger.error("Error trying to get the films");
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -93,10 +92,10 @@ public class ManagerDAO implements IManagerDAO {
 		try {
 			tx.begin();
 			JDOQuery<Film> query = (JDOQuery<Film>) pm.newQuery(Film.class);
-			logger.log(Level.INFO," * '" + query.deletePersistentAll() + "' films deleted from the DB.");
+			logger.info(" * '" + query.deletePersistentAll() + "' films deleted from the DB.");
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.INFO,"   $ Error cleaning the DB: " + ex.getMessage());
+			logger.info("   $ Error cleaning the DB: " + ex.getMessage());
 			ex.printStackTrace();
 		} finally {
 			if (tx != null && tx.isActive()) {
@@ -128,7 +127,7 @@ public class ManagerDAO implements IManagerDAO {
 
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.ERROR, "Error cleaning a film: " + ex.getMessage());
+			logger.error( "Error cleaning a film: " + ex.getMessage());
 		
 		} finally {
 			if (tx != null && tx.isActive()) {
@@ -157,7 +156,7 @@ public class ManagerDAO implements IManagerDAO {
 
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.ERROR,"Error retrieving a film: " + ex.getMessage());
+			logger.error("Error retrieving a film: " + ex.getMessage());
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -170,23 +169,23 @@ public class ManagerDAO implements IManagerDAO {
 	}
 
 	public void storeFilm(Film film) throws Exception{
-		logger.log(Level.INFO, "Storing a film called "+film.getTitle());
+		logger.info( "Storing a film called "+film.getTitle());
 		this.storeObject(film);
 	}
 
 	public void storeSession(Session session) throws Exception {
-		logger.log(Level.INFO, "Storing a session: " + session.getRoom().getRoomNumber() + " - "
+		logger.info( "Storing a session: " + session.getRoom().getRoomNumber() + " - "
 				+ session.getDate().toString() + " " + session.getHour().toString());
 		this.storeObject(session);
 	}
 
 	public void storeTicket(Ticket ticket) throws Exception{
-		logger.log(Level.INFO,"Storing a ticket: " + ticket.getMember().getEmail() + "");
+		logger.info("Storing a ticket: " + ticket.getMember().getEmail() + "");
 		this.storeObject(ticket);
 	}
 
 	public void storeMember(Member member)throws Exception {
-		logger.log(Level.INFO,"Storing a member: " + member.getEmail());
+		logger.info("Storing a member: " + member.getEmail());
 		this.storeObject(member);
 
 	}
@@ -221,7 +220,7 @@ public class ManagerDAO implements IManagerDAO {
 			tx.commit();
 
 		} catch (Exception ex) {
-			logger.log(Level.ERROR, "   $ Error updating a film: " + ex.getMessage());
+			logger.error( "   $ Error updating a film: " + ex.getMessage());
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -260,7 +259,7 @@ public class ManagerDAO implements IManagerDAO {
 			tx.commit();
 
 		} catch (Exception ex) {
-			logger.log(Level.ERROR, "Error updating a session: " + ex.getMessage());
+			logger.error( "Error updating a session: " + ex.getMessage());
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -287,7 +286,7 @@ public class ManagerDAO implements IManagerDAO {
 			tx.commit();
 
 		} catch (Exception ex) {
-			logger.log(Level.ERROR,"Error updating a member: " + ex.getMessage());
+			logger.error("Error updating a member: " + ex.getMessage());
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -306,10 +305,10 @@ public class ManagerDAO implements IManagerDAO {
 		try {
 			tx.begin();
 			JDOQuery<Session> query = (JDOQuery<Session>) pm.newQuery(Session.class);
-			logger.log(Level.INFO,"* '" + query.deletePersistentAll() + "' sessions deleted from the DB.");
+			logger.info("* '" + query.deletePersistentAll() + "' sessions deleted from the DB.");
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.ERROR,"Error cleaning the DB: " + ex.getMessage());
+			logger.error("Error cleaning the DB: " + ex.getMessage());
 			
 		} finally {
 			if (tx != null && tx.isActive()) {
@@ -342,7 +341,7 @@ public class ManagerDAO implements IManagerDAO {
 
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.ERROR,"Error cleaning a session: " + ex.getMessage());
+			logger.error("Error cleaning a session: " + ex.getMessage());
 			
 		} finally {
 			if (tx != null && tx.isActive()) {
@@ -364,10 +363,10 @@ public class ManagerDAO implements IManagerDAO {
 		try {
 			tx.begin();
 			JDOQuery<Member> query = (JDOQuery<Member>) pm.newQuery(Member.class);
-			logger.log(Level.INFO," * '" + query.deletePersistentAll() + "' members deleted from the DB.");
+			logger.info(" * '" + query.deletePersistentAll() + "' members deleted from the DB.");
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.ERROR,"Error cleaning the DB: " + ex.getMessage());
+			logger.error("Error cleaning the DB: " + ex.getMessage());
 			
 		} finally {
 			if (tx != null && tx.isActive()) {
@@ -401,7 +400,7 @@ public class ManagerDAO implements IManagerDAO {
 
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.ERROR,"Error cleaning a member: " + ex.getMessage());
+			logger.error("Error cleaning a member: " + ex.getMessage());
 			ex.printStackTrace();
 		} finally {
 			if (tx != null && tx.isActive()) {
@@ -415,12 +414,12 @@ public class ManagerDAO implements IManagerDAO {
 	}
 
 	public void storeEmployee(Employee employee) throws Exception{
-		logger.log(Level.INFO,"* Storing an employee: " + employee.getUsername());
+		logger.info("* Storing an employee: " + employee.getUsername());
 		this.storeObject(employee);
 	}
 
 	public void storeRoom(Room room) throws Exception{
-		logger.log(Level.INFO,"* Storing a room: " + room.getRoomNumber());
+		logger.info("* Storing a room: " + room.getRoomNumber());
 		this.storeObject(room);
 	}
 
@@ -438,7 +437,7 @@ public class ManagerDAO implements IManagerDAO {
 			@SuppressWarnings("unchecked")
 			List<Member> result = (List<Member>) q.execute();
 
-			logger.log(Level.INFO,"All members retrieved.");
+			logger.info("All members retrieved.");
 
 			for (int i = 0; i < result.size(); i++) {
 				members.add(new Member());
@@ -447,7 +446,7 @@ public class ManagerDAO implements IManagerDAO {
 
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.ERROR,"Error retrieving all members: " + ex.getMessage());
+			logger.error("Error retrieving all members: " + ex.getMessage());
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -474,7 +473,7 @@ public class ManagerDAO implements IManagerDAO {
 			member.copyMember(result);
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.ERROR,"Error retrieving a member: " + ex.getMessage());
+			logger.error("Error retrieving a member: " + ex.getMessage());
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -499,7 +498,7 @@ public class ManagerDAO implements IManagerDAO {
 			Query<?> q = pm.newQuery("SELECT FROM " + Session.class.getName());
 			List<Session> result = (List<Session>) q.execute();
 
-			logger.log(Level.INFO,"All sessions retrieved: " + result.size());
+			logger.info("All sessions retrieved: " + result.size());
 
 			for (int i = 0; i < result.size(); i++) {
 				Session s = new Session();
@@ -509,7 +508,7 @@ public class ManagerDAO implements IManagerDAO {
 
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.ERROR,"Error retrieving all sessions: " + ex.getMessage());
+			logger.error("Error retrieving all sessions: " + ex.getMessage());
 		
 		} finally {
 			if (tx != null && tx.isActive()) {
@@ -539,7 +538,7 @@ public class ManagerDAO implements IManagerDAO {
 			session.copySession(result);
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.ERROR,"Error retrieving a session: " + ex.getMessage());
+			logger.error("Error retrieving a session: " + ex.getMessage());
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -564,7 +563,7 @@ public class ManagerDAO implements IManagerDAO {
 			@SuppressWarnings("unchecked")
 			List<Employee> result = (List<Employee>) q.execute();
 
-			logger.log(Level.INFO,"All employees retrieved.");
+			logger.info("All employees retrieved.");
 
 			for (int i = 0; i < result.size(); i++) {
 				employees.add(new Employee());
@@ -573,7 +572,7 @@ public class ManagerDAO implements IManagerDAO {
 
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.ERROR,"Error retrieving all employees: " + ex.getMessage());
+			logger.error("Error retrieving all employees: " + ex.getMessage());
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -601,7 +600,7 @@ public class ManagerDAO implements IManagerDAO {
 			employee.copyEmployee(result);
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.ERROR,"Error retrieving an employee: " + ex.getMessage());
+			logger.error("Error retrieving an employee: " + ex.getMessage());
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -623,7 +622,7 @@ public class ManagerDAO implements IManagerDAO {
 			pm.makePersistent(employee);
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.ERROR,"Error updating an employee: " + ex.getMessage());
+			logger.error("Error updating an employee: " + ex.getMessage());
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -640,10 +639,10 @@ public class ManagerDAO implements IManagerDAO {
 		try {
 			tx.begin();
 			JDOQuery<Employee> query = (JDOQuery<Employee>) pm.newQuery(Employee.class);
-			logger.log(Level.INFO," * '" + query.deletePersistentAll() + "' employees deleted from the DB.");
+			logger.info(" * '" + query.deletePersistentAll() + "' employees deleted from the DB.");
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.ERROR,"Error cleaning the DB: " + ex.getMessage());
+			logger.error("Error cleaning the DB: " + ex.getMessage());
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -676,7 +675,7 @@ public class ManagerDAO implements IManagerDAO {
 
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.INFO,"   $ Error cleaning an employee: " + ex.getMessage());
+			logger.info("   $ Error cleaning an employee: " + ex.getMessage());
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -702,7 +701,7 @@ public class ManagerDAO implements IManagerDAO {
 			@SuppressWarnings("unchecked")
 			List<Session> result = (List<Session>) q.execute();
 
-			logger.log(Level.INFO,"All sessions retrieved from the film: " + film);
+			logger.info("All sessions retrieved from the film: " + film);
 
 			for (int i = 0; i < result.size(); i++) {
 				sessions.add(new Session());
@@ -711,7 +710,7 @@ public class ManagerDAO implements IManagerDAO {
 
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.ERROR,"Error retrieving all sessions from the film: " + ex.getMessage());
+			logger.error("Error retrieving all sessions from the film: " + ex.getMessage());
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -741,7 +740,7 @@ public class ManagerDAO implements IManagerDAO {
 			session.copySession(result);
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.ERROR,"Error retrieving a session: " + ex.getMessage());
+			logger.error("Error retrieving a session: " + ex.getMessage());
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -771,7 +770,7 @@ public class ManagerDAO implements IManagerDAO {
 
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.ERROR,"Error retrieving a session: " + ex.getMessage());
+			logger.error("Error retrieving a session: " + ex.getMessage());
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -804,9 +803,9 @@ public class ManagerDAO implements IManagerDAO {
 
 			tx.commit();
 
-			logger.log(Level.INFO,"Cleaned the room: " + room);
+			logger.info("Cleaned the room: " + room);
 		} catch (Exception ex) {
-			logger.log(Level.ERROR,"Error cleaning a room: " + ex.getMessage());
+			logger.error("Error cleaning a room: " + ex.getMessage());
 			
 		} finally {
 			if (tx != null && tx.isActive()) {
@@ -844,7 +843,7 @@ public class ManagerDAO implements IManagerDAO {
 			sessionCode = "S" + number;
 			tx.commit();
 		} catch (Exception ex) {
-			logger.log(Level.ERROR,"Error the last session code: " + ex.getMessage());
+			logger.error("Error the last session code: " + ex.getMessage());
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -860,7 +859,7 @@ public class ManagerDAO implements IManagerDAO {
 		IManagerDAO dao = new ManagerDAO();
 
 		if (args.length != 3) {
-			logger.log(Level.ERROR,"Attention: arguments missing");
+			logger.error("Attention: arguments missing");
 			System.exit(0);
 		}
 
@@ -1033,7 +1032,7 @@ public class ManagerDAO implements IManagerDAO {
 		}catch(Exception e) {
 			
 		}
-		logger.log(Level.INFO, "DB filled completely");
+		logger.info( "DB filled completely");
 
 	}
 }
