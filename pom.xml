@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>Cinema</groupId>
@@ -22,6 +22,11 @@
 	<!-- search for the latest version of dependencies in http://mvnrepository.com -->
 	<dependencies>
 		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
 			<groupId>org.datanucleus</groupId>
 			<artifactId>datanucleus-core</artifactId>
 			<version>[5.1.6, 5.9)</version>
@@ -36,7 +41,7 @@
 			<artifactId>datanucleus-rdbms</artifactId>
 			<version>[5.1.6, 5.9)</version>
 		</dependency>
-		<dependency>     
+		<dependency>
 			<groupId>org.datanucleus</groupId>
 			<artifactId>javax.jdo</artifactId>
 			<version>[3.2.0-m8, )</version>
@@ -58,7 +63,7 @@
 			<version>[1.2.17, )</version>
 		</dependency>
 	</dependencies>
- 
+
 	<build>
 		<plugins>
 			<plugin>
@@ -89,15 +94,15 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId> 
-				<artifactId>cobertura-maven-plugin</artifactId> 
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
 				<version>2.7</version>
 				<configuration>
 					<check>
 						<regexes>
-							<regex> 
-								<pattern>es.deusto.bspq.cinema.testing.*</pattern> 
-								<branchRate>90</branchRate> 
+							<regex>
+								<pattern>es.deusto.bspq.cinema.testing.*</pattern>
+								<branchRate>90</branchRate>
 								<lineRate>90</lineRate>
 							</regex>
 						</regexes>
@@ -107,11 +112,11 @@
 		</plugins>
 	</build>
 
-	<profiles> 
+	<profiles>
 		<!-- run as 'mvn exec:java -Pserver' -->
-		<profile>  
-			<id>server</id>  
-			<build>  
+		<profile>
+			<id>server</id>
+			<build>
 				<resources>
 					<resource>
 						<directory>${config.files.dir}</directory>
@@ -122,7 +127,7 @@
 						</includes>
 					</resource>
 				</resources>
-				<plugins>  
+				<plugins>
 					<plugin>
 						<artifactId>maven-clean-plugin</artifactId>
 						<version>3.0.0</version>
@@ -138,11 +143,11 @@
 							</filesets>
 						</configuration>
 					</plugin>
-					<plugin>  
-						<groupId>org.codehaus.mojo</groupId>  
-						<artifactId>exec-maven-plugin</artifactId>  
-						<version>1.2.1</version>  
-						<configuration>  
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.2.1</version>
+						<configuration>
 							<mainClass>es.deusto.bspq.cinema.server.Server</mainClass>
 							<systemProperties>
 								<systemProperty>
@@ -158,27 +163,27 @@
 									<value>${policy.file}</value>
 								</systemProperty>
 							</systemProperties>
-							<arguments>  
-								<argument>${server.IP}</argument>  
-								<argument>${server.port}</argument>  
-								<argument>${server.Name}</argument>  
-							</arguments>  
-						</configuration>  
-					</plugin>  	
-				</plugins>  
-			</build>  
-		</profile>  
-		
+							<arguments>
+								<argument>${server.IP}</argument>
+								<argument>${server.port}</argument>
+								<argument>${server.Name}</argument>
+							</arguments>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
 		<!-- run as 'mvn exec:java -Pclient' -->
-		<profile>  
-			<id>client</id>  
-			<build>  
-				<plugins>  
-					<plugin>  
-						<groupId>org.codehaus.mojo</groupId>  
-						<artifactId>exec-maven-plugin</artifactId>  
-						<version>1.2.1</version>  
-						<configuration>  
+		<profile>
+			<id>client</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.2.1</version>
+						<configuration>
 							<mainClass>es.deusto.bspq.cinema.client.Client</mainClass>
 							<systemProperties>
 								<systemProperty>
@@ -190,27 +195,27 @@
 									<value>${policy.file}</value>
 								</systemProperty>
 							</systemProperties>
-							<arguments>  
-								<argument>${server.IP}</argument>  
-								<argument>${server.port}</argument>  
-								<argument>${server.Name}</argument>  
-							</arguments>  
-						</configuration>  
-					</plugin>  
-				</plugins>  
-			</build>  
-		</profile>  
-		
+							<arguments>
+								<argument>${server.IP}</argument>
+								<argument>${server.port}</argument>
+								<argument>${server.Name}</argument>
+							</arguments>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
 		<!-- run as 'mvn exec:java -Pload' -->
-		<profile>  
-			<id>load</id>  
-			<build>  
-				<plugins>  
-					<plugin>  
-						<groupId>org.codehaus.mojo</groupId>  
-						<artifactId>exec-maven-plugin</artifactId>  
-						<version>1.2.1</version>  
-						<configuration>  
+		<profile>
+			<id>load</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.2.1</version>
+						<configuration>
 							<mainClass>es.deusto.bspq.cinema.server.jdo.DAO.ManagerDAO</mainClass>
 							<systemProperties>
 								<systemProperty>
@@ -222,17 +227,17 @@
 									<value>${policy.file}</value>
 								</systemProperty>
 							</systemProperties>
-							<arguments>  
-								<argument>${server.IP}</argument>  
-								<argument>${server.port}</argument>  
-								<argument>${server.Name}</argument>  
-							</arguments>  
-						</configuration>  
-					</plugin>  
-				</plugins>  
-			</build>  
+							<arguments>
+								<argument>${server.IP}</argument>
+								<argument>${server.port}</argument>
+								<argument>${server.Name}</argument>
+							</arguments>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
-	</profiles>  
+	</profiles>
 	<repositories>
 		<repository>
 			<id>DN_M2_Repo</id>
@@ -246,5 +251,5 @@
 			<url>http://www.datanucleus.org/downloads/maven2/</url>
 		</pluginRepository>
 	</pluginRepositories>
-	
+
 </project>

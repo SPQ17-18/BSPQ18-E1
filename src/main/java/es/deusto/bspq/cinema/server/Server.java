@@ -20,6 +20,7 @@ import es.deusto.bspq.cinema.server.jdo.data.Session;
 import es.deusto.bspq.cinema.server.jdo.data.SessionDTO;
 import es.deusto.bspq.cinema.server.jdo.data.Ticket;
 import es.deusto.bspq.cinema.server.jdo.data.TicketDTO;
+import es.deusto.bspq.cinema.server.mail.MailSender;
 import es.deusto.bspq.cinema.server.remote.IRemoteFacade;
 
 public class Server extends UnicastRemoteObject implements IRemoteFacade {
@@ -54,6 +55,10 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 			Member member = assembler.disassembleMember(memberDTO);
 			dao.storeMember(member);
 			logger.info("Inserted a member to the DB called " + memberDTO.getName());
+			MailSender mail = new MailSender(memberDTO.getEmail());
+			
+			mail.sendMessage("Welcome to our community! \nWe are very glad to have you here, now you can buy tickets or manage your personal information with our app. ", "Welcome "+memberDTO.getName()+" to our community");
+			
 			return true;
 		} catch (Exception e) {
 			logger.error("Primary key duplicated: User already exits");
@@ -161,8 +166,28 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		Ticket t = assembler.disassembleTicket(ticketDTO);
 		Session s = getSession(ticketDTO, dao.getFilms());
 		dao.insertTicket(t, s.getSession(), ticketDTO.getEmail());
+		
+		MailSender mail = new MailSender(ticketDTO.getEmail());
+		
+		String text = "You have buyed "+ticketDTO.getListSeats().size()+" tickets for the film "+ticketDTO.getTitleFilm()+":\n";
+		text = text + "Title Film: "+ticketDTO.getTitleFilm()+"\n";
+		text = text +"Seats: ";
+		for (int i = 0; i<ticketDTO.getListSeats().size();i++) {
+			if (i==ticketDTO.getListSeats().size()-1) {
+			text = text+ticketDTO.getListSeats().get(i)+"\n";
+			} else {
+				text = text+ticketDTO.getListSeats().get(i)+", ";
+			}
+		}
+		
+		text = text + "Date: "+ticketDTO.getDate()+"\tHour: "+ticketDTO.getHour();
+		
+		mail.sendMessage(text, "Ticket for the film "+ticketDTO.getTitleFilm());
+		
+		
 		logger.info("Client " + ticketDTO.getEmail() + " buyed a ticket of " + ticketDTO.getListSeats().size()
 				+ " seats for the film " + ticketDTO.getTitleFilm());
+		
 		return true;
 
 	}
