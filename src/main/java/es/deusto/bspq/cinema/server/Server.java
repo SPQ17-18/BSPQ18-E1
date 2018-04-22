@@ -50,6 +50,48 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 			
 	}
 	
+	public boolean cancelMembership(String email, String password) throws RemoteException {
+		
+		try {
+			Member m = dao.getMember(email);
+			
+			if (m.getPassword().equals(password)) {
+				dao.deleteMember(m);
+				logger.info("User with email "+email+" deleted succesfully");
+				return true;
+			}else {
+				logger.info( "Password incorrect, we cannot delete the user");
+				return false;
+				
+			}
+			
+			}catch (Exception e) {
+				logger.error( "User with email "+email+" doesnt exist");
+				return false;
+			}
+			
+			
+	}
+
+
+
+	public boolean cancelEmployee(String username) throws RemoteException {
+		
+		try {
+			Employee e = dao.getEmployee(username);
+			
+			dao.deleteEmployee(e);
+			
+			logger.info("Employee with username "+username+" deleted succesfully");
+			return true;
+			
+			}catch (Exception e) {
+				logger.error( "Employee with username "+username+" doesnt exist");
+				return false;
+			}
+			
+	}
+	
 	public boolean loginMember (String email, String password) throws RemoteException {
 		try {
 			Member m = dao.getMember(email);
@@ -209,6 +251,10 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 			e.printStackTrace();
 		}
 	}
+
+
+
+
 
 	
 	
