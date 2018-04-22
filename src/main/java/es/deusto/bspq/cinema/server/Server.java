@@ -161,7 +161,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		Ticket t = assembler.disassembleTicket(ticketDTO);
 		Session s = getSession(ticketDTO, dao.getFilms());
 		dao.insertTicket(t, s.getSession(), ticketDTO.getEmail());
-		logger.info("Client" + ticketDTO.getEmail() + " buyed a ticket of " + ticketDTO.getListSeats().size()
+		logger.info("Client " + ticketDTO.getEmail() + " buyed a ticket of " + ticketDTO.getListSeats().size()
 				+ " seats for the film " + ticketDTO.getTitleFilm());
 		return true;
 

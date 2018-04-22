@@ -255,7 +255,7 @@ public class ManagerDAO implements IManagerDAO {
 			Member result2 = (Member) query2.execute();
 			t.setMember(result2);
 			result2.addTicket(t);
-
+			result2.setPoints(result2.getPoints()+(t.getSeats().size()*3));
 			tx.commit();
 
 		} catch (Exception ex) {
@@ -282,8 +282,7 @@ public class ManagerDAO implements IManagerDAO {
 			Member result = (Member) query.execute();
 
 			result.addTicket(t);
-			result.setPoints(member.getPoints()+(t.getSeats().size()*3));
-
+			
 			tx.commit();
 
 		} catch (Exception ex) {
