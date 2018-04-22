@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.rmi.RemoteException;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import es.deusto.bspq.cinema.client.controller.CMController;
 import es.deusto.bspq.cinema.server.jdo.data.FilmDTO;
@@ -122,6 +123,9 @@ public class CMAWindow extends JFrame {
 	private final JSpinner spinnerInsertSessionHourMins = new JSpinner();
 	private final JTextField textFieldInsertSessionDate_Edit = new JTextField();
 	private final JSpinner spinnerInsertSessionRoom = new JSpinner();
+	
+	private JPanel panelOptions = new JPanel();
+	private final JButton btnManageMembers = new JButton("Go to Manage Memberships");
 
 	public CMAWindow(CMController controller, String loginUser) {
 		textFieldInsertSessionDate_Edit.setColumns(10);
@@ -131,12 +135,13 @@ public class CMAWindow extends JFrame {
 		this.loginUser = loginUser;
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		getContentPane().add(panelCentral, BorderLayout.CENTER);
+		getContentPane().add(panelOptions, BorderLayout.NORTH);
+		getContentPane().add(panelCentral, BorderLayout.SOUTH);
 		panelCentral.setLayout(new GridLayout(1, 0, 0, 0));
 		
 		panelInsert.setBorder(new TitledBorder(null, "Insert", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelCentral.add(panelInsert);
-		panelCentral.setMaximumSize(new java.awt.Dimension(1200, 120));
+		panelCentral.setMaximumSize(new java.awt.Dimension(600, 120));
 		panelInsert.setLayout(new BorderLayout(0, 0));
 		tabbedPaneInsert.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
@@ -395,6 +400,11 @@ public class CMAWindow extends JFrame {
 		});
 		btnInsert.setEnabled(false);
 		
+		btnInsert.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				buttonInsertActionPerformed(evt);
+			}
+		});
 		panelInsertButton.add(btnInsert);
 		
 		panelUpdate.setBorder(new TitledBorder(null, "Update", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -629,7 +639,6 @@ public class CMAWindow extends JFrame {
 		});
 		
 		panelDeleteSession.add(btnDeleteSession);
-		panelDeleteSession.setPreferredSize(new java.awt.Dimension(280, 100));
 		
 		tabbedPaneDelete.addTab("Film", null, panelDeleteFilm, null);
 		
@@ -640,15 +649,15 @@ public class CMAWindow extends JFrame {
 				//TODO Delete Film
 			}
 		});
-		
 		panelDeleteFilm.add(btnDeleteFilm);
 		
-		
-		btnInsert.addActionListener(new java.awt.event.ActionListener() {
+		btnManageMembers.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				buttonInsertActionPerformed(evt);
+				buttonManageMembersActionPerformed(evt);
 			}
 		});
+		panelOptions.add(new JLabel("OPTIONS: "), BorderLayout.SOUTH);
+		panelOptions.add(btnManageMembers, BorderLayout.SOUTH);
 		
 		initComponents();
 	}
@@ -684,6 +693,10 @@ public class CMAWindow extends JFrame {
 					seatsPerSession,
 					textFieldInsertSessionFilm_Edit.getText()));
 		}
+	}
+	
+	private void buttonManageMembersActionPerformed(ActionEvent evt) {
+		// Launch Manage Members window
 	}
 
 	private void enableButtonInsert() {
