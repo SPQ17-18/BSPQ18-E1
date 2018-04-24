@@ -160,6 +160,14 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		return assembler.assembleSession(films);
 
 	}
+	
+	public ArrayList<MemberDTO> getMembers() throws RemoteException {
+
+		ArrayList<Member> members = dao.getMembers();
+		logger.info("Client asked for the members");
+		return assembler.assembleMember(members);
+
+	}
 
 	public boolean buyTickets(TicketDTO ticketDTO) throws RemoteException {
 

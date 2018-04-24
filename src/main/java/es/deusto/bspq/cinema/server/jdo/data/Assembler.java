@@ -84,6 +84,18 @@ public class Assembler {
 		return filmDTO;
 		
 	}
+	
+	public ArrayList<MemberDTO> assembleMember(ArrayList<Member> members) {
+		
+		ArrayList<MemberDTO> memberDTO = new ArrayList<MemberDTO>();
+		for (int i = 0; i < members.size(); i++) {
+			MemberDTO mDTO = new MemberDTO(members.get(i).getEmail(), members.get(i).getName(), members.get(i).getSurname(), 
+					members.get(i).getPassword(), members.get(i).getBirthday(), members.get(i).getPoints());
+			memberDTO.add(mDTO);
+		}
+		return memberDTO;
+		
+	}
 
 	public ArrayList<SessionDTO> assembleSession(ArrayList<Film> films) {
 	

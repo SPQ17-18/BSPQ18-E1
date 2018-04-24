@@ -1,13 +1,27 @@
 package es.deusto.bspq.cinema.client.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -28,27 +42,27 @@ public class MMWindow extends JFrame {
 	// Login user
 	private String loginUser;
 
-	private javax.swing.JButton buttonSearch;
-	private javax.swing.JButton buttonSearchAll;
-	private javax.swing.JLabel jLabel1;
-	private javax.swing.JLabel jLabel2;
-	private javax.swing.JLabel jLabel3;
-	private javax.swing.JTextField email;
-	private javax.swing.JList<String> membersList1;
-	private javax.swing.JTextField name;
-	private javax.swing.JTextField surname;
-	private javax.swing.JPanel panelButtons;
-	private javax.swing.JPanel panelMembers;
-	private javax.swing.JPanel panelControlM;
-	private javax.swing.JPanel panelListMembers;
-	private javax.swing.JPanel panelEmail;
-	private javax.swing.JPanel panelName;
-	private javax.swing.JPanel panelSurname;
-	private javax.swing.JScrollPane scrollMembers;
-	private javax.swing.JTabbedPane tabsTable;
+	private JButton buttonSearch;
+	private JButton buttonSearchAll;
+	private JLabel jLabel1;
+	private JLabel jLabel2;
+	private JLabel jLabel3;
+	private JTextField email;
+	private JList<String> membersList1;
+	private JTextField name;
+	private JTextField surname;
+	private JPanel panelButtons;
+	private JPanel panelMembers;
+	private JPanel panelControlM;
+	private JPanel panelListMembers;
+	private JPanel panelEmail;
+	private JPanel panelName;
+	private JPanel panelSurname;
+	private JScrollPane scrollMembers;
+	private JTabbedPane tabsTable;
 	
 	private List<MemberDTO> members;
-	private javax.swing.DefaultListModel<String> membersList;
+	private DefaultListModel<String> membersList;
 
 	public MMWindow(CMController controller, String loginUser) {
 		this.controller = controller;
@@ -59,38 +73,38 @@ public class MMWindow extends JFrame {
 	}
 
 	private void initComponents() {
-		panelMembers = new javax.swing.JPanel();
-		panelListMembers = new javax.swing.JPanel();
-		scrollMembers = new javax.swing.JScrollPane();
-		membersList1 = new javax.swing.JList<String>();
-		panelControlM = new javax.swing.JPanel();
-		tabsTable = new javax.swing.JTabbedPane();
-		panelEmail = new javax.swing.JPanel();
-		jLabel3 = new javax.swing.JLabel();
-		email = new javax.swing.JTextField();
-		panelName = new javax.swing.JPanel();
-		jLabel2 = new javax.swing.JLabel();
-		name = new javax.swing.JTextField();
-		panelSurname = new javax.swing.JPanel();
-		jLabel1 = new javax.swing.JLabel();
-		surname = new javax.swing.JTextField();
-		panelButtons = new javax.swing.JPanel();
-		buttonSearch = new javax.swing.JButton();
-		buttonSearchAll = new javax.swing.JButton();
+		panelMembers = new JPanel();
+		panelListMembers = new JPanel();
+		scrollMembers = new JScrollPane();
+		membersList1 = new JList<String>();
+		panelControlM = new JPanel();
+		tabsTable = new JTabbedPane();
+		panelEmail = new JPanel();
+		jLabel3 = new JLabel();
+		email = new JTextField();
+		panelName = new JPanel();
+		jLabel2 = new JLabel();
+		name = new JTextField();
+		panelSurname = new JPanel();
+		jLabel1 = new JLabel();
+		surname = new JTextField();
+		panelButtons = new JPanel();
+		buttonSearch = new JButton();
+		buttonSearchAll = new JButton();
 
-		getContentPane().setLayout(new java.awt.GridLayout(1, 1));
+		getContentPane().setLayout(new GridLayout(1, 1));
 
 		setResizable(false);
-		addWindowListener(new java.awt.event.WindowAdapter() {
-			public void windowClosing(java.awt.event.WindowEvent evt) {
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
 				exitForm(evt);
 			}
 		});
 
-		panelMembers.setLayout(new java.awt.GridLayout(1, 2));
-		panelMembers.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), "Member Section"));
+		panelMembers.setLayout(new GridLayout(1, 2));
+		panelMembers.setBorder(new TitledBorder(new EtchedBorder(), "Member Section"));
 
-		membersList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+		membersList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		ListSelectionListener listSelectionListener = new ListSelectionListener() {
 		      public void valueChanged(ListSelectionEvent listSelectionEvent) {
 		    	 
@@ -98,16 +112,16 @@ public class MMWindow extends JFrame {
 		};
 		membersList1.addListSelectionListener(listSelectionListener);
 		
-		scrollMembers.setPreferredSize(new java.awt.Dimension(100, 110));	
+		scrollMembers.setPreferredSize(new Dimension(100, 110));	
 		scrollMembers.setViewportView(membersList1);
 		
-		panelListMembers.setLayout(new java.awt.BorderLayout());
-		panelListMembers.setBorder(new javax.swing.border.TitledBorder("Member List"));
-		panelListMembers.add(scrollMembers, java.awt.BorderLayout.CENTER);
+		panelListMembers.setLayout(new BorderLayout());
+		panelListMembers.setBorder(new TitledBorder("Member List"));
+		panelListMembers.add(scrollMembers, BorderLayout.CENTER);
 
 		panelMembers.add(panelListMembers);
-		panelControlM.setLayout(new java.awt.BorderLayout());
-		panelControlM.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.TitledBorder(""), "Search Settings"));
+		panelControlM.setLayout(new BorderLayout());
+		panelControlM.setBorder(new TitledBorder(new TitledBorder(""), "Search Settings"));
 		jLabel3.setText("Email:");
 		panelEmail.add(jLabel3);
 
@@ -132,30 +146,30 @@ public class MMWindow extends JFrame {
 
 		tabsTable.addTab("Surname", panelSurname);
 
-		panelControlM.add(tabsTable, java.awt.BorderLayout.CENTER);
+		panelControlM.add(tabsTable, BorderLayout.CENTER);
 
 		buttonSearch.setText("Search");
-		buttonSearch.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		buttonSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
 				buttonSearchActionPerformed(evt);
 			}
 		});
 		
 		buttonSearchAll.setText("Search All Members");
-		buttonSearchAll.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		buttonSearchAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
 				buttonSearchAllActionPerformed(evt);
 			}
 		});
 
 		panelButtons.add(buttonSearch);
 		panelButtons.add(buttonSearchAll);
-		panelControlM.add(panelButtons, java.awt.BorderLayout.SOUTH);
+		panelControlM.add(panelButtons, BorderLayout.SOUTH);
 		panelMembers.add(panelControlM);
-		// Add sessions panel
+		// Add members panel
 		getContentPane().add(panelMembers);
 
-		membersList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+		membersList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		membersList1.setFocusable(false);
 		membersList1.setEnabled(true);
 		
