@@ -1,7 +1,11 @@
 package es.deusto.bspq.cinema.server.jdo.data;
 
-public class MemberDTO {
+import java.io.Serializable;
 
+public class MemberDTO implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
 	private String email;
 	private String name;
 	private String surname;

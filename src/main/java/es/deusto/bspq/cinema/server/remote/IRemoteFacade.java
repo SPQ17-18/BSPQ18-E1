@@ -17,10 +17,11 @@ public interface IRemoteFacade extends Remote{
 	public boolean insertSession (SessionDTO sessionDTO) throws RemoteException;
 	public ArrayList<FilmDTO> getFilms() throws RemoteException;
 	public ArrayList<SessionDTO> getSessions() throws RemoteException;
+	public ArrayList<MemberDTO> getMembers() throws RemoteException;
 	public boolean buyTickets(TicketDTO ticketDTO) throws RemoteException;
-	public boolean registerMember (MemberDTO memberDTO) throws RemoteException;
 	public boolean loginMember(String email, String password) throws RemoteException;
 	public boolean loginEmployee(String username, String password) throws RemoteException;
+	public boolean registerMember (MemberDTO memberDTO) throws RemoteException;
 	public boolean registerEmployee (EmployeeDTO employeeDTO) throws RemoteException;
 	public boolean cancelMembership (String email, String password) throws RemoteException;
 	public boolean cancelEmployee (String username) throws RemoteException;

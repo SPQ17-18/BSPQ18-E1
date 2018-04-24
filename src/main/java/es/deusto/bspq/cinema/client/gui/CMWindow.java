@@ -1,14 +1,28 @@
 package es.deusto.bspq.cinema.client.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -30,39 +44,39 @@ public class CMWindow extends JFrame {
 	// Login email
 	private String loginEmail;
 
-	private javax.swing.JButton buttonBuy;
-	private javax.swing.JButton buttonSearch;
-	private javax.swing.JButton buttonSearchAll;
-	private javax.swing.JLabel jLabel1;
-	private javax.swing.JLabel jLabel2;
-	private javax.swing.JLabel jLabel3;
-	private javax.swing.JTextField film;
-	private javax.swing.JList<String> sessionsList1;
-	private javax.swing.JList<String> seatList1;
-	private javax.swing.JTextField hour;
-	private javax.swing.JTextField date;
-	private javax.swing.JPanel panelButton;
-	private javax.swing.JPanel panelButtonsP1;
-	private javax.swing.JPanel panelSessions;
-	private javax.swing.JPanel panelControlP;
-	private javax.swing.JPanel panelControlM;
-	private javax.swing.JPanel panelListSessions;
-	private javax.swing.JPanel panelSeats;
-	private javax.swing.JPanel panelTickets;
-	private javax.swing.JPanel panelDate;
-	private javax.swing.JPanel panelFilm;
-	private javax.swing.JPanel panelHour;
-	private javax.swing.JPanel panelUserTicketFields;
-	private javax.swing.JScrollPane scrollSessions;
-	private javax.swing.JScrollPane scrollSeats;
-	private javax.swing.JTabbedPane tabsTable;
-	private javax.swing.JButton buttonAddSeat;
+	private JButton buttonBuy;
+	private JButton buttonSearch;
+	private JButton buttonSearchAll;
+	private JLabel jLabel1;
+	private JLabel jLabel2;
+	private JLabel jLabel3;
+	private JTextField film;
+	private JList<String> sessionsList1;
+	private JList<String> seatList1;
+	private JTextField hour;
+	private JTextField date;
+	private JPanel panelButton;
+	private JPanel panelButtonsP1;
+	private JPanel panelSessions;
+	private JPanel panelControlP;
+	private JPanel panelControlM;
+	private JPanel panelListSessions;
+	private JPanel panelSeats;
+	private JPanel panelTickets;
+	private JPanel panelDate;
+	private JPanel panelFilm;
+	private JPanel panelHour;
+	private JPanel panelUserTicketFields;
+	private JScrollPane scrollSessions;
+	private JScrollPane scrollSeats;
+	private JTabbedPane tabsTable;
+	private JButton buttonAddSeat;
 	
 	private ArrayList<String> seatNumberList = new ArrayList<String>();
-	private javax.swing.DefaultListModel<String> seatList;
+	private DefaultListModel<String> seatList;
 	
 	private List<SessionDTO> sessions;
-	private javax.swing.DefaultListModel<String> sessionsList;
+	private DefaultListModel<String> sessionsList;
 
 	public CMWindow(CMController controller, String loginEmail) {
 		this.controller = controller;
@@ -75,47 +89,47 @@ public class CMWindow extends JFrame {
 	}
 
 	private void initComponents() {
-		panelSessions = new javax.swing.JPanel();
-		panelListSessions = new javax.swing.JPanel();
-		scrollSessions = new javax.swing.JScrollPane();
-		sessionsList1 = new javax.swing.JList<String>();
-		panelControlP = new javax.swing.JPanel();
-		tabsTable = new javax.swing.JTabbedPane();
-		panelFilm = new javax.swing.JPanel();
-		jLabel3 = new javax.swing.JLabel();
-		film = new javax.swing.JTextField();
-		panelHour = new javax.swing.JPanel();
-		jLabel2 = new javax.swing.JLabel();
-		hour = new javax.swing.JTextField();
-		panelDate = new javax.swing.JPanel();
-		jLabel1 = new javax.swing.JLabel();
-		date = new javax.swing.JTextField();
-		panelButtonsP1 = new javax.swing.JPanel();
-		buttonSearch = new javax.swing.JButton();
-		buttonSearchAll = new javax.swing.JButton();
-		panelTickets = new javax.swing.JPanel();
-		panelSeats = new javax.swing.JPanel();
-		scrollSeats = new javax.swing.JScrollPane();
-		seatList1 = new javax.swing.JList<String>();
-		panelControlM = new javax.swing.JPanel();
-		panelUserTicketFields = new javax.swing.JPanel();
-		panelButton = new javax.swing.JPanel();
-		buttonBuy = new javax.swing.JButton();
-		buttonAddSeat = new javax.swing.JButton();
+		panelSessions = new JPanel();
+		panelListSessions = new JPanel();
+		scrollSessions = new JScrollPane();
+		sessionsList1 = new JList<String>();
+		panelControlP = new JPanel();
+		tabsTable = new JTabbedPane();
+		panelFilm = new JPanel();
+		jLabel3 = new JLabel();
+		film = new JTextField();
+		panelHour = new JPanel();
+		jLabel2 = new JLabel();
+		hour = new JTextField();
+		panelDate = new JPanel();
+		jLabel1 = new JLabel();
+		date = new JTextField();
+		panelButtonsP1 = new JPanel();
+		buttonSearch = new JButton();
+		buttonSearchAll = new JButton();
+		panelTickets = new JPanel();
+		panelSeats = new JPanel();
+		scrollSeats = new JScrollPane();
+		seatList1 = new JList<String>();
+		panelControlM = new JPanel();
+		panelUserTicketFields = new JPanel();
+		panelButton = new JPanel();
+		buttonBuy = new JButton();
+		buttonAddSeat = new JButton();
 
-		getContentPane().setLayout(new java.awt.GridLayout(2, 1));
+		getContentPane().setLayout(new GridLayout(2, 1));
 
 		setResizable(false);
-		addWindowListener(new java.awt.event.WindowAdapter() {
-			public void windowClosing(java.awt.event.WindowEvent evt) {
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
 				exitForm(evt);
 			}
 		});
 
-		panelSessions.setLayout(new java.awt.GridLayout(1, 2));
-		panelSessions.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), "Session Section"));
+		panelSessions.setLayout(new GridLayout(1, 2));
+		panelSessions.setBorder(new TitledBorder(new EtchedBorder(), "Session Section"));
 
-		sessionsList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+		sessionsList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		ListSelectionListener listSelectionListener = new ListSelectionListener() {
 		      public void valueChanged(ListSelectionEvent listSelectionEvent) {
 		    	  try {
@@ -132,16 +146,16 @@ public class CMWindow extends JFrame {
 		};
 		sessionsList1.addListSelectionListener(listSelectionListener);
 		
-		scrollSessions.setPreferredSize(new java.awt.Dimension(100, 110));	
+		scrollSessions.setPreferredSize(new Dimension(100, 110));	
 		scrollSessions.setViewportView(sessionsList1);
 		
-		panelListSessions.setLayout(new java.awt.BorderLayout());
-		panelListSessions.setBorder(new javax.swing.border.TitledBorder("Session List"));
-		panelListSessions.add(scrollSessions, java.awt.BorderLayout.CENTER);
+		panelListSessions.setLayout(new BorderLayout());
+		panelListSessions.setBorder(new TitledBorder("Session List"));
+		panelListSessions.add(scrollSessions, BorderLayout.CENTER);
 
 		panelSessions.add(panelListSessions);
-		panelControlP.setLayout(new java.awt.BorderLayout());
-		panelControlP.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.TitledBorder(""), "Search Settings"));
+		panelControlP.setLayout(new BorderLayout());
+		panelControlP.setBorder(new TitledBorder(new TitledBorder(""), "Search Settings"));
 		jLabel3.setText("Film:");
 		panelFilm.add(jLabel3);
 
@@ -166,59 +180,59 @@ public class CMWindow extends JFrame {
 
 		tabsTable.addTab("Date", panelDate);
 
-		panelControlP.add(tabsTable, java.awt.BorderLayout.CENTER);
+		panelControlP.add(tabsTable, BorderLayout.CENTER);
 
 		buttonSearch.setText("Search");
-		buttonSearch.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		buttonSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
 				buttonSearchActionPerformed(evt);
 			}
 		});
 		
 		buttonSearchAll.setText("Search All Sessions");
-		buttonSearchAll.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		buttonSearchAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
 				buttonSearchAllActionPerformed(evt);
 			}
 		});
 
 		panelButtonsP1.add(buttonSearch);
 		panelButtonsP1.add(buttonSearchAll);
-		panelControlP.add(panelButtonsP1, java.awt.BorderLayout.SOUTH);
+		panelControlP.add(panelButtonsP1, BorderLayout.SOUTH);
 		panelSessions.add(panelControlP);
 		// Add sessions panel
 		getContentPane().add(panelSessions);
 
-		panelTickets.setLayout(new java.awt.GridLayout(1, 2));
-		panelTickets.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), "Ticket Section")); 
-		panelSeats.setLayout(new java.awt.BorderLayout());
-		panelSeats.setBorder(new javax.swing.border.TitledBorder("Seats"));
-		scrollSeats.setPreferredSize(new java.awt.Dimension(100, 110));
-		sessionsList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+		panelTickets.setLayout(new GridLayout(1, 2));
+		panelTickets.setBorder(new TitledBorder(new EtchedBorder(), "Ticket Section")); 
+		panelSeats.setLayout(new BorderLayout());
+		panelSeats.setBorder(new TitledBorder("Seats"));
+		scrollSeats.setPreferredSize(new Dimension(100, 110));
+		sessionsList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		sessionsList1.setFocusable(false);
 		sessionsList1.setEnabled(true);
 		scrollSeats.setViewportView(seatList1);
-		panelSeats.add(scrollSeats, java.awt.BorderLayout.CENTER);
+		panelSeats.add(scrollSeats, BorderLayout.CENTER);
 		panelTickets.add(panelSeats);
 
-		panelControlM.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.TitledBorder(""), "Buy a Ticket"));
-		panelControlM.setLayout(new java.awt.GridLayout(1, 2));
+		panelControlM.setBorder(new TitledBorder(new TitledBorder(""), "Buy a Ticket"));
+		panelControlM.setLayout(new GridLayout(1, 2));
 
-		panelUserTicketFields.setPreferredSize(new java.awt.Dimension(250, 60));
+		panelUserTicketFields.setPreferredSize(new Dimension(250, 60));
 
 		panelControlM.add(panelUserTicketFields);
 
-		panelButton.setPreferredSize(new java.awt.Dimension(250, 36));
+		panelButton.setPreferredSize(new Dimension(250, 36));
 		buttonBuy.setText("Buy");
-		buttonBuy.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		buttonBuy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
 				buttonBuyActionPerformed(evt);
 			}
 		});
 		
 		buttonAddSeat.setText("Add Seat");
-		buttonAddSeat.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		buttonAddSeat.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
 				buttonAddSeatActionPerformed(evt);
 			}
 		});

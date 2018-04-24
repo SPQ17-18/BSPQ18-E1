@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import es.deusto.bspq.cinema.client.remote.CMServiceLocator;
 import es.deusto.bspq.cinema.server.jdo.data.FilmDTO;
+import es.deusto.bspq.cinema.server.jdo.data.MemberDTO;
 import es.deusto.bspq.cinema.server.jdo.data.SessionDTO;
 import es.deusto.bspq.cinema.server.jdo.data.TicketDTO;
 
@@ -79,6 +80,16 @@ public class CMController {
 			logger.error("Error identifying a member.");
 		}
 		return login;
+	}
+	
+	public List<MemberDTO> getAllMembers() {
+		List<MemberDTO> members = null;
+		try {
+			members = cmsl.getService().getMembers();
+		} catch (RemoteException e) {
+			logger.error("Error getting members from server.");
+		}
+		return members;
 	}
 	
 	public void exit() {
