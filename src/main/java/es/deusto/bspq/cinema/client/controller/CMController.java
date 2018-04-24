@@ -84,11 +84,11 @@ public class CMController {
 	
 	public List<MemberDTO> getAllMembers() {
 		List<MemberDTO> members = null;
-//		try {
-//			members = cmsl.getService().getMembers();
-//		} catch (RemoteException e) {
-//			logger.error("Error getting members from server.");
-//		}
+		try {
+			members = cmsl.getService().getMembers();
+		} catch (RemoteException e) {
+			logger.error("Error getting members from server.");
+		}
 		return members;
 	}
 	

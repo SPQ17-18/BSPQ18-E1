@@ -187,10 +187,10 @@ public class MMWindow extends JFrame {
 	}
 	
 	private void buttonSearchAllActionPerformed(ActionEvent evt) {
-//		members = controller.getAllMembers();
-//		updateLists(members);
-//		cleanSearchDetails();
-//		logger.info("All members retrieved.");
+		members = controller.getAllMembers();
+		updateLists(members);
+		cleanSearchDetails();
+		logger.info("All members retrieved.");
 	}
 
 	/** Exit the Application */
@@ -200,6 +200,11 @@ public class MMWindow extends JFrame {
 
 	private void updateLists(List<MemberDTO> members) {
 		membersList.clear();
+		for (int i = 0; i < members.size(); i++) {
+			MemberDTO member = (MemberDTO) members.get(i);
+			membersList.addElement(member.getName() + " " + member.getSurname() + " Birthday: " + member.getBirthday());
+		}
+		membersList1.setSelectedIndex(0);
 	}
 
 	private void cleanSearchDetails() {
