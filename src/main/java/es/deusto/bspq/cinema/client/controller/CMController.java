@@ -92,6 +92,16 @@ public class CMController {
 		return members;
 	}
 	
+	public boolean cancelMembership(String email, String password) {
+		boolean cancel = false;
+		try {
+			cancel = cmsl.getService().cancelMembership(email, password);
+		} catch (RemoteException e) {
+			logger.error("Error canceling a membership.");
+		}
+		return cancel;
+	}
+	
 	public void exit() {
     	System.exit(0);
     }
