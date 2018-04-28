@@ -49,6 +49,19 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 			return false;
 		}
 	}
+	
+	public boolean deleteMember(MemberDTO memberDTO) throws RemoteException {
+
+		try {
+			Member member = assembler.disassembleMember(memberDTO);
+			dao.deleteMember(member);
+			logger.info("Deleted the member with the email " + memberDTO.getEmail());
+			return true;
+		} catch (Exception e) {
+			logger.error("Error deleting the member");
+			return false;
+		}
+	}
 
 	public boolean registerMember(MemberDTO memberDTO) throws RemoteException {
 		try {
