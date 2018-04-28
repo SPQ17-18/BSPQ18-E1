@@ -15,6 +15,7 @@ public interface IRemoteFacade extends Remote{
 	public boolean updateMember (MemberDTO memberDTO) throws RemoteException;
 	public boolean insertFilm (FilmDTO filmDTO) throws RemoteException;
 	public boolean insertSession (SessionDTO sessionDTO) throws RemoteException;
+	public boolean deleteMember (MemberDTO memberDTO) throws RemoteException;
 	public ArrayList<FilmDTO> getFilms() throws RemoteException;
 	public ArrayList<SessionDTO> getSessions() throws RemoteException;
 	public ArrayList<MemberDTO> getMembers() throws RemoteException;
