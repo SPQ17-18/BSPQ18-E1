@@ -92,6 +92,16 @@ public class CMController {
 		return members;
 	}
 	
+	public boolean deleteMember(MemberDTO memberDTO) {
+		boolean deleted = false;
+		try {
+			deleted = cmsl.getService().deleteMember(memberDTO);
+		} catch (RemoteException e) {
+			logger.error("Error deleting a member.");
+		}
+		return deleted;
+	}
+	
 	public void exit() {
     	System.exit(0);
     }

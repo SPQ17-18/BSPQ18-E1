@@ -44,6 +44,7 @@ public class MMWindow extends JFrame {
 
 	private JButton buttonSearch;
 	private JButton buttonSearchAll;
+	private JButton buttonDelete;
 	private JLabel jLabel1;
 	private JLabel jLabel2;
 	private JLabel jLabel3;
@@ -91,6 +92,7 @@ public class MMWindow extends JFrame {
 		panelButtons = new JPanel();
 		buttonSearch = new JButton();
 		buttonSearchAll = new JButton();
+		buttonDelete = new JButton();
 
 		getContentPane().setLayout(new GridLayout(1, 1));
 
@@ -161,9 +163,17 @@ public class MMWindow extends JFrame {
 				buttonSearchAllActionPerformed(evt);
 			}
 		});
+		
+		buttonDelete.setText("Delete");
+		buttonDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				buttonDeleteActionPerformed(evt);
+			}
+		});
 
 		panelButtons.add(buttonSearch);
 		panelButtons.add(buttonSearchAll);
+		panelButtons.add(buttonDelete);
 		panelControlM.add(panelButtons, BorderLayout.SOUTH);
 		panelMembers.add(panelControlM);
 		// Add members panel
@@ -191,6 +201,13 @@ public class MMWindow extends JFrame {
 		updateLists(members);
 		cleanSearchDetails();
 		logger.info("All members retrieved.");
+	}
+	
+	private void buttonDeleteActionPerformed(ActionEvent evt) {
+		controller.deleteMember(members.get(membersList1.getSelectedIndex()));
+		members.remove(membersList1.getSelectedIndex());
+		updateLists(members);
+		logger.info("Member deleted.");
 	}
 
 	/** Exit the Application */
