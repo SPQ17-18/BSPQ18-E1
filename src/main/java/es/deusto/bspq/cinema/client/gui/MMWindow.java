@@ -44,10 +44,14 @@ public class MMWindow extends JFrame {
 
 	private JButton buttonSearch;
 	private JButton buttonSearchAll;
+	private JButton buttonUpdate;
 	private JButton buttonDelete;
 	private JLabel jLabel1;
 	private JLabel jLabel2;
 	private JLabel jLabel3;
+	private JLabel jLabel4;
+	private JLabel jLabel5;
+	private JLabel jLabel6;
 	private JTextField email;
 	private JList<String> membersList1;
 	private JTextField name;
@@ -59,6 +63,12 @@ public class MMWindow extends JFrame {
 	private JPanel panelEmail;
 	private JPanel panelName;
 	private JPanel panelSurname;
+	private JPanel panelUpdate;
+	private JPanel panelFields;
+	private JPanel panelPoints;
+	private JTextField updateName;
+	private JTextField updateSurname;
+	private JTextField updateBirthday;
 	private JScrollPane scrollMembers;
 	private JTabbedPane tabsTable;
 	
@@ -89,12 +99,22 @@ public class MMWindow extends JFrame {
 		panelSurname = new JPanel();
 		jLabel1 = new JLabel();
 		surname = new JTextField();
+		panelUpdate = new JPanel();
+		updateName = new JTextField();
+		updateSurname = new JTextField();
+		updateBirthday = new JTextField();
 		panelButtons = new JPanel();
 		buttonSearch = new JButton();
 		buttonSearchAll = new JButton();
+		buttonUpdate = new JButton();
 		buttonDelete = new JButton();
-
-		getContentPane().setLayout(new GridLayout(1, 1));
+		jLabel4 = new JLabel();
+		jLabel5 = new JLabel();
+		jLabel6 = new JLabel();
+		panelFields = new JPanel();
+		panelPoints = new JPanel();
+		
+		getContentPane().setLayout(new GridLayout(2, 1));
 
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
@@ -127,7 +147,7 @@ public class MMWindow extends JFrame {
 		jLabel3.setText("Email:");
 		panelEmail.add(jLabel3);
 
-		email.setColumns(5);
+		email.setColumns(15);
 		panelEmail.add(email);
 
 		tabsTable.addTab("Email", panelEmail);
@@ -135,7 +155,7 @@ public class MMWindow extends JFrame {
 		jLabel2.setText("Name: ");
 		panelName.add(jLabel2);
 
-		name.setColumns(5);
+		name.setColumns(7);
 		panelName.add(name);
 
 		tabsTable.addTab("Name", panelName);
@@ -143,7 +163,7 @@ public class MMWindow extends JFrame {
 		jLabel1.setText("Surname: ");
 		panelSurname.add(jLabel1);
 
-		surname.setColumns(10);
+		surname.setColumns(7);
 		panelSurname.add(surname);
 
 		tabsTable.addTab("Surname", panelSurname);
@@ -164,6 +184,13 @@ public class MMWindow extends JFrame {
 			}
 		});
 		
+		buttonUpdate.setText("Update");
+		buttonUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				buttonUpdateActionPerformed(evt);
+			}
+		});
+		
 		buttonDelete.setText("Delete");
 		buttonDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -173,11 +200,38 @@ public class MMWindow extends JFrame {
 
 		panelButtons.add(buttonSearch);
 		panelButtons.add(buttonSearchAll);
+		panelButtons.add(buttonUpdate);
 		panelButtons.add(buttonDelete);
 		panelControlM.add(panelButtons, BorderLayout.SOUTH);
 		panelMembers.add(panelControlM);
+		
 		// Add members panel
 		getContentPane().add(panelMembers);
+		
+		updateName.setColumns(7);
+		updateSurname.setColumns(7);
+		updateBirthday.setColumns(10);
+		jLabel4.setText("Name: ");
+		panelFields.add(jLabel4);
+		panelFields.add(updateName);
+		jLabel5.setText("Surname: ");
+		panelFields.add(jLabel5);
+		panelFields.add(updateSurname);
+		jLabel6.setText("Birthday: ");
+		panelFields.add(jLabel6);
+		panelFields.add(updateBirthday);
+		panelFields.setBorder(new TitledBorder("Update Member Fields"));
+		
+		//TODO
+		panelPoints.setBorder(new TitledBorder("Update Member Points"));
+		
+		panelUpdate.setBorder(new TitledBorder("Update Member"));
+		panelUpdate.setLayout(new GridLayout(1, 2));
+		panelUpdate.add(panelFields);
+		panelUpdate.add(panelPoints);
+		
+		// Add update panel
+		getContentPane().add(panelUpdate);
 
 		membersList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		membersList1.setFocusable(false);
@@ -201,6 +255,25 @@ public class MMWindow extends JFrame {
 		updateLists(members);
 		cleanSearchDetails();
 		logger.info("All members retrieved.");
+	}
+	
+	private void buttonUpdateActionPerformed(ActionEvent evt) {
+		MemberDTO memberDTO = members.get(membersList1.getSelectedIndex());
+		if (!updateName.getText().trim().isEmpty()) {
+			memberDTO.setName(updateName.getText().trim());
+		}
+		if (!updateSurname.getText().trim().isEmpty()) {
+			memberDTO.setSurname(updateSurname.getText().trim());
+		}
+		if (!updateBirthday.getText().trim().isEmpty()) {
+			memberDTO.setBirthday(updateBirthday.getText().trim());
+		}
+		controller.updateMember(memberDTO);
+		members.set(membersList1.getSelectedIndex(), memberDTO);
+		updateLists(members);
+		cleanUpdateDetails();
+		cleanSearchDetails();
+		logger.info("Member updated.");
 	}
 	
 	private void buttonDeleteActionPerformed(ActionEvent evt) {
@@ -228,6 +301,12 @@ public class MMWindow extends JFrame {
 		email.setText("");
 		name.setText("");
 		surname.setText("");
+	}
+	
+	private void cleanUpdateDetails() {
+		updateName.setText("");
+		updateSurname.setText("");
+		updateBirthday.setText("");
 	}
 	
 }
