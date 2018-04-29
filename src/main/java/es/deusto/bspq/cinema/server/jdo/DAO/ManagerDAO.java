@@ -975,9 +975,9 @@ public class ManagerDAO implements IManagerDAO {
 		t6.addSeats(ss6);
 
 		Member m1 = new Member("ariane.fernandez@opendeusto.es", "Ariane", "Fernandez", "ariane", "26-04-1997", 0);
-		Member m2 = new Member("unai.bermejo@opendeusto.es", "Unai", "Bermejo", "unai", "23-08-1997", 0);
+		Member m2 = new Member("unaibermejofdez@opendeusto.es", "Unai", "Bermejo", "unai", "23-08-1997", 0);
 		Member m3 = new Member("ander.arguinano@opendeusto.es", "Ander", "Arguinano", "ander", "26-10-1997", 0);
-		Member m4 = new Member("inigo.garcia@opendeusto.es", "Inigo", "Garcia", "inigo", "10-02-1997", 0);
+		Member m4 = new Member("inigogc@opendeusto.es", "Inigo", "Garcia", "inigo", "10-02-1997", 0);
 		Member m5 = new Member("fischer.wolfgang@opendeusto.es", "Wolfgang ", "Fischer", "wolfgang", "05-09-1997", 0);
 
 		m1.addTicket(t1);
