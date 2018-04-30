@@ -1,4 +1,4 @@
-package es.deusto.bspq.cinema.testing;
+package es.deusto.bspq.cinema.server.jdo.DAO;
 
 import static org.junit.Assert.assertEquals;
 
@@ -27,8 +27,9 @@ public class ManagerDAOTest {
 		assembler = new Assembler();
 		employeeDTO = new EmployeeDTO("e10", "laura", "garcía", "e10pass", 20000f);
 		memberDTO = new MemberDTO("test@opendeusto.es", "leire", "rementeria", "testpass", "25/05/96");
-//		managerDAO.deleteAllEmployees();
-//		managerDAO.deleteAllMembers();
+		// Clean the DB
+		managerDAO.deleteAllEmployees();
+		managerDAO.deleteAllMembers();
 	}
 	
 	@Test
@@ -51,10 +52,11 @@ public class ManagerDAOTest {
 		assertEquals("25/05/96", e.getBirthday());
 	}
 	
-//	@AfterClass
-//	public static void tearDownClass() {
-//		managerDAO.deleteAllEmployees();
-//		managerDAO.deleteAllMembers();
-//	}
+	@AfterClass
+	public static void tearDownClass() {
+		// Clean the DB
+		managerDAO.deleteAllEmployees();
+		managerDAO.deleteAllMembers();
+	}
 
 }

@@ -11,8 +11,6 @@ import es.deusto.bspq.cinema.server.jdo.data.Ticket;
 
 public interface IManagerDAO {
 	
-	
-	
 	public void storeFilm(Film film)throws Exception;
 	public void storeSession(Session session)throws Exception;
 	public void storeMember(Member member) throws Exception;
@@ -35,13 +33,13 @@ public interface IManagerDAO {
 	public Employee getEmployee (String username);
 	public Room getRoom(int number);
 	
-	
 	public void updateMember(Member member, Ticket t);
 	public void updateEmployee(Employee employee);
 	public void manageMember(Member member) throws Exception;
 	
 	public void deleteAllFilms();
 	public void deleteRoom(int room);
+	public void deleteAllRooms();
 	public void deleteFilm(Film film);
 	public void deleteAllSessions();
 	public void deleteSession(Session session);
@@ -49,6 +47,8 @@ public interface IManagerDAO {
 	public void deleteMember(Member member) throws Exception;
 	public void deleteAllEmployees();
 	public void deleteEmployee(Employee employee) throws Exception;
+	public void deleteAllTickets();
+	public void deleteAllSeats();
 	
 	public String getLastSessionCode();
 	
