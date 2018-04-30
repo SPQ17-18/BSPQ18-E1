@@ -43,6 +43,7 @@ public class LoginWindow extends JDialog {
 	private JLabel lbPasswordE;
 	private JButton btnLogin;
 	private JButton btnCancel;
+	private JButton btnRegister;
 	private JTabbedPane tabbedPane;
  
 	public LoginWindow(String args[]) {
@@ -171,10 +172,21 @@ public class LoginWindow extends JDialog {
 				dispose();
 			}
 		});
+		
+		btnRegister = new JButton("Register");
+		btnRegister.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RMWindow rmWindow = new RMWindow(controller);
+				rmWindow.centreWindow();
+				rmWindow.setVisible(true);
+				dispose();
+			}
+		});
         
 		JPanel bp = new JPanel();
 		bp.add(btnLogin);
 		bp.add(btnCancel);
+		bp.add(btnRegister);
  
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		getContentPane().add(bp, BorderLayout.PAGE_END);
