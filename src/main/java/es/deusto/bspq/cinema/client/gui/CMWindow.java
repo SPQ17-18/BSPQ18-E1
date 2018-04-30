@@ -31,6 +31,11 @@ import org.apache.log4j.Logger;
 import es.deusto.bspq.cinema.client.controller.CMController;
 import es.deusto.bspq.cinema.server.jdo.data.SessionDTO;
 import es.deusto.bspq.cinema.server.jdo.data.TicketDTO;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class CMWindow extends JFrame {
 	
@@ -77,6 +82,9 @@ public class CMWindow extends JFrame {
 	
 	private List<SessionDTO> sessions;
 	private DefaultListModel<String> sessionsList;
+	private JPanel panel;
+	private JButton btnManageMembership;
+	private JLabel lblOptions;
 
 	public CMWindow(CMController controller, String loginEmail) {
 		this.controller = controller;
@@ -89,35 +97,6 @@ public class CMWindow extends JFrame {
 	}
 
 	private void initComponents() {
-		panelSessions = new JPanel();
-		panelListSessions = new JPanel();
-		scrollSessions = new JScrollPane();
-		sessionsList1 = new JList<String>();
-		panelControlP = new JPanel();
-		tabsTable = new JTabbedPane();
-		panelFilm = new JPanel();
-		jLabel3 = new JLabel();
-		film = new JTextField();
-		panelHour = new JPanel();
-		jLabel2 = new JLabel();
-		hour = new JTextField();
-		panelDate = new JPanel();
-		jLabel1 = new JLabel();
-		date = new JTextField();
-		panelButtonsP1 = new JPanel();
-		buttonSearch = new JButton();
-		buttonSearchAll = new JButton();
-		panelTickets = new JPanel();
-		panelSeats = new JPanel();
-		scrollSeats = new JScrollPane();
-		seatList1 = new JList<String>();
-		panelControlM = new JPanel();
-		panelUserTicketFields = new JPanel();
-		panelButton = new JPanel();
-		buttonBuy = new JButton();
-		buttonAddSeat = new JButton();
-
-		getContentPane().setLayout(new GridLayout(2, 1));
 
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
@@ -125,11 +104,6 @@ public class CMWindow extends JFrame {
 				exitForm(evt);
 			}
 		});
-
-		panelSessions.setLayout(new GridLayout(1, 2));
-		panelSessions.setBorder(new TitledBorder(new EtchedBorder(), "Session Section"));
-
-		sessionsList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		ListSelectionListener listSelectionListener = new ListSelectionListener() {
 		      public void valueChanged(ListSelectionEvent listSelectionEvent) {
 		    	  try {
@@ -144,105 +118,179 @@ public class CMWindow extends JFrame {
 		    	  }
 		      }
 		};
-		sessionsList1.addListSelectionListener(listSelectionListener);
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.columnWidths = new int[]{1028, 0};
+		gridBagLayout.rowHeights = new int[]{0, 155, 155, 0};
+		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{1.0, 0.0, 0.0, Double.MIN_VALUE};
+		getContentPane().setLayout(gridBagLayout);
+		panelTickets = new JPanel();
+		panelSeats = new JPanel();
+		scrollSeats = new JScrollPane();
+		seatList1 = new JList<String>();
+		panelControlM = new JPanel();
+		panelUserTicketFields = new JPanel();
+		panelButton = new JPanel();
+		buttonBuy = new JButton();
+		buttonAddSeat = new JButton();
 		
-		scrollSessions.setPreferredSize(new Dimension(100, 110));	
-		scrollSessions.setViewportView(sessionsList1);
-		
-		panelListSessions.setLayout(new BorderLayout());
-		panelListSessions.setBorder(new TitledBorder("Session List"));
-		panelListSessions.add(scrollSessions, BorderLayout.CENTER);
-
-		panelSessions.add(panelListSessions);
-		panelControlP.setLayout(new BorderLayout());
-		panelControlP.setBorder(new TitledBorder(new TitledBorder(""), "Search Settings"));
-		jLabel3.setText("Film:");
-		panelFilm.add(jLabel3);
-
-		film.setColumns(5);
-		panelFilm.add(film);
-
-		tabsTable.addTab("Name", panelFilm);
-
-		jLabel2.setText("Hour (hh:mm): ");
-		panelHour.add(jLabel2);
-
-		hour.setColumns(5);
-		panelHour.add(hour);
-
-		tabsTable.addTab("Hour", panelHour);
-
-		jLabel1.setText("Date (dd-mm-aaaa): ");
-		panelDate.add(jLabel1);
-
-		date.setColumns(10);
-		panelDate.add(date);
-
-		tabsTable.addTab("Date", panelDate);
-
-		panelControlP.add(tabsTable, BorderLayout.CENTER);
-
-		buttonSearch.setText("Search");
-		buttonSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				buttonSearchActionPerformed(evt);
-			}
-		});
-		
-		buttonSearchAll.setText("Search All Sessions");
-		buttonSearchAll.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				buttonSearchAllActionPerformed(evt);
-			}
-		});
-
-		panelButtonsP1.add(buttonSearch);
-		panelButtonsP1.add(buttonSearchAll);
-		panelControlP.add(panelButtonsP1, BorderLayout.SOUTH);
-		panelSessions.add(panelControlP);
-		// Add sessions panel
-		getContentPane().add(panelSessions);
-
-		panelTickets.setLayout(new GridLayout(1, 2));
-		panelTickets.setBorder(new TitledBorder(new EtchedBorder(), "Ticket Section")); 
-		panelSeats.setLayout(new BorderLayout());
-		panelSeats.setBorder(new TitledBorder("Seats"));
-		scrollSeats.setPreferredSize(new Dimension(100, 110));
-		sessionsList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		sessionsList1.setFocusable(false);
-		sessionsList1.setEnabled(true);
-		scrollSeats.setViewportView(seatList1);
-		panelSeats.add(scrollSeats, BorderLayout.CENTER);
-		panelTickets.add(panelSeats);
-
-		panelControlM.setBorder(new TitledBorder(new TitledBorder(""), "Buy a Ticket"));
-		panelControlM.setLayout(new GridLayout(1, 2));
-
-		panelUserTicketFields.setPreferredSize(new Dimension(250, 60));
-
-		panelControlM.add(panelUserTicketFields);
-
-		panelButton.setPreferredSize(new Dimension(250, 36));
-		buttonBuy.setText("Buy");
-		buttonBuy.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				buttonBuyActionPerformed(evt);
-			}
-		});
-		
-		buttonAddSeat.setText("Add Seat");
-		buttonAddSeat.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				buttonAddSeatActionPerformed(evt);
-			}
-		});
-		
-		panelButton.add(buttonAddSeat);
-		panelButton.add(buttonBuy);
-		panelControlM.add(panelButton);
-		panelTickets.add(panelControlM);
-		// Add tickets panel
-		getContentPane().add(panelTickets);
+				panelTickets.setLayout(new GridLayout(1, 2));
+				panelTickets.setBorder(new TitledBorder(new EtchedBorder(), "Ticket Section")); 
+				panelSeats.setLayout(new BorderLayout());
+				panelSeats.setBorder(new TitledBorder("Seats"));
+				scrollSeats.setPreferredSize(new Dimension(100, 110));
+				scrollSeats.setViewportView(seatList1);
+				panelSeats.add(scrollSeats, BorderLayout.CENTER);
+				panelTickets.add(panelSeats);
+				
+						panelControlM.setBorder(new TitledBorder(new TitledBorder(""), "Buy a Ticket"));
+						panelControlM.setLayout(new GridLayout(1, 2));
+						
+								panelUserTicketFields.setPreferredSize(new Dimension(250, 60));
+								
+										panelControlM.add(panelUserTicketFields);
+										
+												panelButton.setPreferredSize(new Dimension(250, 36));
+												buttonBuy.setText("Buy");
+												buttonBuy.addActionListener(new ActionListener() {
+													public void actionPerformed(ActionEvent evt) {
+														buttonBuyActionPerformed(evt);
+													}
+												});
+												
+												buttonAddSeat.setText("Add Seat");
+												buttonAddSeat.addActionListener(new ActionListener() {
+													public void actionPerformed(ActionEvent evt) {
+														buttonAddSeatActionPerformed(evt);
+													}
+												});
+												panelSessions = new JPanel();
+												panelListSessions = new JPanel();
+												scrollSessions = new JScrollPane();
+												sessionsList1 = new JList<String>();
+												panelControlP = new JPanel();
+												tabsTable = new JTabbedPane();
+												panelFilm = new JPanel();
+												jLabel3 = new JLabel();
+												film = new JTextField();
+												panelHour = new JPanel();
+												jLabel2 = new JLabel();
+												hour = new JTextField();
+												panelDate = new JPanel();
+												jLabel1 = new JLabel();
+												date = new JTextField();
+												panelButtonsP1 = new JPanel();
+												buttonSearch = new JButton();
+												buttonSearchAll = new JButton();
+												
+														panelSessions.setLayout(new GridLayout(1, 2));
+														panelSessions.setBorder(new TitledBorder(new EtchedBorder(), "Session Section"));
+														
+																sessionsList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+																sessionsList1.addListSelectionListener(listSelectionListener);
+																
+																scrollSessions.setPreferredSize(new Dimension(100, 110));	
+																scrollSessions.setViewportView(sessionsList1);
+																
+																panelListSessions.setLayout(new BorderLayout());
+																panelListSessions.setBorder(new TitledBorder("Session List"));
+																panelListSessions.add(scrollSessions, BorderLayout.CENTER);
+																
+																		panelSessions.add(panelListSessions);
+																		panelControlP.setLayout(new BorderLayout());
+																		panelControlP.setBorder(new TitledBorder(new TitledBorder(""), "Search Settings"));
+																		jLabel3.setText("Film:");
+																		panelFilm.add(jLabel3);
+																		
+																				film.setColumns(5);
+																				panelFilm.add(film);
+																				
+																						tabsTable.addTab("Name", panelFilm);
+																						
+																								jLabel2.setText("Hour (hh:mm): ");
+																								panelHour.add(jLabel2);
+																								
+																										hour.setColumns(5);
+																										panelHour.add(hour);
+																										
+																												tabsTable.addTab("Hour", panelHour);
+																												
+																														jLabel1.setText("Date (dd-mm-aaaa): ");
+																														panelDate.add(jLabel1);
+																														
+																																date.setColumns(10);
+																																panelDate.add(date);
+																																
+																																		tabsTable.addTab("Date", panelDate);
+																																		
+																																				panelControlP.add(tabsTable, BorderLayout.CENTER);
+																																				
+																																						buttonSearch.setText("Search");
+																																						buttonSearch.addActionListener(new ActionListener() {
+																																							public void actionPerformed(ActionEvent evt) {
+																																								buttonSearchActionPerformed(evt);
+																																							}
+																																						});
+																																						
+																																						buttonSearchAll.setText("Search All Sessions");
+																																						buttonSearchAll.addActionListener(new ActionListener() {
+																																							public void actionPerformed(ActionEvent evt) {
+																																								buttonSearchAllActionPerformed(evt);
+																																							}
+																																						});
+																																								
+																																								panel = new JPanel();
+																																								GridBagConstraints gbc_panel = new GridBagConstraints();
+																																								gbc_panel.insets = new Insets(0, 0, 5, 0);
+																																								gbc_panel.fill = GridBagConstraints.BOTH;
+																																								gbc_panel.gridx = 0;
+																																								gbc_panel.gridy = 0;
+																																								getContentPane().add(panel, gbc_panel);
+																																								
+																																								btnManageMembership = new JButton("Manage Membership");
+																																								btnManageMembership.addMouseListener(new MouseAdapter() {
+																																									@Override
+																																									public void mouseClicked(MouseEvent arg0) {//FIXME
+																																										MIWindow miWindow = new MIWindow(controller, loginEmail);
+																																										miWindow.centreWindow();
+																																										miWindow.setVisible(true);
+																																										dispose();
+																																									}
+																																								});
+																																								btnManageMembership.addActionListener(new ActionListener() {
+																																									public void actionPerformed(ActionEvent arg0) {
+																																									}
+																																								});
+																																								
+																																								lblOptions = new JLabel("OPTIONS:");
+																																								panel.add(lblOptions);
+																																								panel.add(btnManageMembership);
+																																						
+																																								panelButtonsP1.add(buttonSearch);
+																																								panelButtonsP1.add(buttonSearchAll);
+																																								panelControlP.add(panelButtonsP1, BorderLayout.SOUTH);
+																																								panelSessions.add(panelControlP);
+																																								// Add sessions panel
+																																								GridBagConstraints gbc_panelSessions = new GridBagConstraints();
+																																								gbc_panelSessions.fill = GridBagConstraints.BOTH;
+																																								gbc_panelSessions.insets = new Insets(0, 0, 5, 0);
+																																								gbc_panelSessions.gridx = 0;
+																																								gbc_panelSessions.gridy = 1;
+																																								getContentPane().add(panelSessions, gbc_panelSessions);
+																																								sessionsList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+																																								sessionsList1.setFocusable(false);
+																																								sessionsList1.setEnabled(true);
+												
+												panelButton.add(buttonAddSeat);
+												panelButton.add(buttonBuy);
+												panelControlM.add(panelButton);
+												panelTickets.add(panelControlM);
+												// Add tickets panel
+												GridBagConstraints gbc_panelTickets = new GridBagConstraints();
+												gbc_panelTickets.fill = GridBagConstraints.BOTH;
+												gbc_panelTickets.gridx = 0;
+												gbc_panelTickets.gridy = 2;
+												getContentPane().add(panelTickets, gbc_panelTickets);
 
 		pack();
 	}
