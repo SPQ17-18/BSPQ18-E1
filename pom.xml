@@ -100,8 +100,8 @@
 				<configuration>
 					<check>
 						<regexes>
-							<regex>
-								<pattern>es.deusto.bspq.cinema.testing.*</pattern>
+							<regex> 
+								<pattern>es.deusto.bspq.cinema.server.jdo.DAO.*</pattern> 
 								<branchRate>90</branchRate>
 								<lineRate>90</lineRate>
 							</regex>

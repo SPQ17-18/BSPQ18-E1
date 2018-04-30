@@ -95,7 +95,7 @@ public class ManagerDAO implements IManagerDAO {
 			logger.info(" * '" + query.deletePersistentAll() + "' films deleted from the DB.");
 			tx.commit();
 		} catch (Exception ex) {
-			logger.info("   $ Error cleaning the DB: " + ex.getMessage());
+			logger.error("   $ Error cleaning the DB: " + ex.getMessage());
 			ex.printStackTrace();
 		} finally {
 			if (tx != null && tx.isActive()) {
@@ -850,6 +850,29 @@ public class ManagerDAO implements IManagerDAO {
 		}
 
 	}
+	
+	public void deleteAllRooms() {
+		PersistenceManager pm = pmf.getPersistenceManager();
+
+		Transaction tx = pm.currentTransaction();
+
+		try {
+			tx.begin();
+			JDOQuery<Room> query = (JDOQuery<Room>) pm.newQuery(Room.class);
+			logger.info(" * '" + query.deletePersistentAll() + "' rooms deleted from the DB.");
+			tx.commit();
+		} catch (Exception ex) {
+			logger.error("   $ Error cleaning the DB: " + ex.getMessage());
+			ex.printStackTrace();
+		} finally {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			if (pm != null && !pm.isClosed()) {
+				pm.close();
+			}
+		}
+	}
 
 	public String getLastSessionCode() {
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -886,9 +909,54 @@ public class ManagerDAO implements IManagerDAO {
 
 		return sessionCode;
 	}
+	
+	public void deleteAllTickets() {
+		PersistenceManager pm = pmf.getPersistenceManager();
+
+		Transaction tx = pm.currentTransaction();
+
+		try {
+			tx.begin();
+			JDOQuery<Ticket> query = (JDOQuery<Ticket>) pm.newQuery(Ticket.class);
+			logger.info(" * '" + query.deletePersistentAll() + "' tickets deleted from the DB.");
+			tx.commit();
+		} catch (Exception ex) {
+			logger.error("   $ Error cleaning the DB: " + ex.getMessage());
+			ex.printStackTrace();
+		} finally {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			if (pm != null && !pm.isClosed()) {
+				pm.close();
+			}
+		}
+	}
+	
+	public void deleteAllSeats() {
+		PersistenceManager pm = pmf.getPersistenceManager();
+
+		Transaction tx = pm.currentTransaction();
+
+		try {
+			tx.begin();
+			JDOQuery<Seat> query = (JDOQuery<Seat>) pm.newQuery(Seat.class);
+			logger.info(" * '" + query.deletePersistentAll() + "' seats deleted from the DB.");
+			tx.commit();
+		} catch (Exception ex) {
+			logger.error("   $ Error cleaning the DB: " + ex.getMessage());
+			ex.printStackTrace();
+		} finally {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			if (pm != null && !pm.isClosed()) {
+				pm.close();
+			}
+		}
+	}
 
 	public static void main(String[] args) {
-
 		IManagerDAO dao = new ManagerDAO();
 
 		if (args.length != 3) {
@@ -1055,17 +1123,16 @@ public class ManagerDAO implements IManagerDAO {
 		f5.addSession(sF);
 		
 		try {
-		dao.storeFilm(f1);
-
-		dao.storeEmployee(e1);
-		dao.storeEmployee(e2);
-		dao.storeEmployee(e3);
-		dao.storeEmployee(e4);
-		dao.storeEmployee(e5);
-		}catch(Exception e) {
+			dao.storeFilm(f1);
+	
+			dao.storeEmployee(e1);
+			dao.storeEmployee(e2);
+			dao.storeEmployee(e3);
+			dao.storeEmployee(e4);
+			dao.storeEmployee(e5);
+		} catch(Exception e) {
 			
 		}
 		logger.info( "DB filled completely");
-
 	}
 }
