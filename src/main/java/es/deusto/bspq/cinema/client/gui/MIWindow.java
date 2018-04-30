@@ -28,6 +28,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.Color;
 
 public class MIWindow extends JFrame {
 
@@ -45,7 +46,7 @@ public class MIWindow extends JFrame {
 	private JButton btnAction;
 	private JButton btnCancel;
 	private JPanel panelActions;
-	private JPanel panelUpdate;
+	private JPanel panelInfo;
 	private JLabel lblEmail;
 	private JLabel lblName;
 	private JTextField textField;
@@ -55,9 +56,10 @@ public class MIWindow extends JFrame {
 	private JTextField textField_2;
 	private JLabel lblPoints;
 	private JLabel lblPointsShow;
-	private JLabel label_7;
-	private JPasswordField passwordField_1;
+	private JLabel labelPass;
+	private JPasswordField passwordField;
 	private JCheckBox chckbxDelete;
+	private JLabel lblInfo;
 	
 
 	/**
@@ -84,46 +86,97 @@ public class MIWindow extends JFrame {
 		panelActions.setBorder(new TitledBorder(null, "Actions", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelActions.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		label_7 = new JLabel("Password");
-		panelActions.add(label_7);
+		labelPass = new JLabel("Password");
+		panelActions.add(labelPass);
 		
-		passwordField_1 = new JPasswordField();
-		passwordField_1.addFocusListener(new FocusAdapter() {
+		passwordField = new JPasswordField();
+		passwordField.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
 				
 			}
 		});
-		passwordField_1.setColumns(12);
-		panelActions.add(passwordField_1);
+		passwordField.setColumns(12);
+		panelActions.add(passwordField);
 		
 		btnAction = new JButton("Update");
+		btnAction.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				if(chckbxDelete.isSelected()) {
+					btnAction.setText("Delete");
+				} else {
+					btnAction.setText("Update");
+				}
+				if(controller.identifyMember(loginUser, String.valueOf(passwordField.getPassword()))) {
+					btnAction.setEnabled(true);
+				} else {
+					btnAction.setEnabled(false);
+				}
+			}
+		});
+		btnAction.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if(btnAction.isEnabled() && !chckbxDelete.isSelected()) {
+					//TODO Update Member
+				} else if(btnAction.isEnabled() && chckbxDelete.isSelected()) {
+					if(controller.identifyMember(loginUser, String.valueOf(passwordField.getPassword()))) {
+						controller.cancelMembership(loginUser, String.valueOf(passwordField.getPassword()));
+						logger.info("Membership canceled for "+ loginUser);
+					} else {
+						lblInfo.setText("Wrong Pass");
+					}
+				}
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				if(String.valueOf(passwordField.getPassword()).equals("")) {
+					btnAction.setEnabled(false);
+				} else {
+					btnAction.setEnabled(true);
+				}
+			}
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				lblInfo.setText("");
+			}
+		});
 		btnAction.setEnabled(false);
 		panelActions.add(btnAction);
 		
 		btnCancel = new JButton("Cancel");
+		btnCancel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				CMWindow cmWindow = new CMWindow(controller, loginUser);
+				cmWindow.centreWindow();
+				cmWindow.setVisible(true);
+				dispose();
+			}
+		});
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
 		panelActions.add(btnCancel);
 		
-		panelUpdate = new JPanel();
-		frmMemberInfo.getContentPane().add(panelUpdate, BorderLayout.CENTER);
-		panelUpdate.setBorder(new TitledBorder(null, "Info", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		GridBagLayout gbl_panelUpdate = new GridBagLayout();
-		gbl_panelUpdate.columnWidths = new int[]{0, 0, 0};
-		gbl_panelUpdate.rowHeights = new int[] {0, 0, 0, 0, 0, 0};
-		gbl_panelUpdate.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		gbl_panelUpdate.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-		panelUpdate.setLayout(gbl_panelUpdate);
+		panelInfo = new JPanel();
+		frmMemberInfo.getContentPane().add(panelInfo, BorderLayout.CENTER);
+		panelInfo.setBorder(new TitledBorder(null, "Info", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GridBagLayout gbl_panelInfo = new GridBagLayout();
+		gbl_panelInfo.columnWidths = new int[]{0, 0, 0};
+		gbl_panelInfo.rowHeights = new int[] {0, 0, 0, 0, 0, 0};
+		gbl_panelInfo.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		gbl_panelInfo.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+		panelInfo.setLayout(gbl_panelInfo);
 		
 		lblEmail = new JLabel("<dynamic>");
 		GridBagConstraints gbc_lblEmail = new GridBagConstraints();
 		gbc_lblEmail.insets = new Insets(0, 0, 5, 5);
 		gbc_lblEmail.gridx = 0;
 		gbc_lblEmail.gridy = 0;
-		panelUpdate.add(lblEmail, gbc_lblEmail);
+		panelInfo.add(lblEmail, gbc_lblEmail);
 		
 		lblName = new JLabel("Name");
 		GridBagConstraints gbc_lblName = new GridBagConstraints();
@@ -131,7 +184,7 @@ public class MIWindow extends JFrame {
 		gbc_lblName.insets = new Insets(0, 0, 5, 5);
 		gbc_lblName.gridx = 0;
 		gbc_lblName.gridy = 1;
-		panelUpdate.add(lblName, gbc_lblName);
+		panelInfo.add(lblName, gbc_lblName);
 		
 		textField = new JTextField();
 		textField.setColumns(10);
@@ -140,7 +193,7 @@ public class MIWindow extends JFrame {
 		gbc_textField.insets = new Insets(0, 0, 5, 0);
 		gbc_textField.gridx = 1;
 		gbc_textField.gridy = 1;
-		panelUpdate.add(textField, gbc_textField);
+		panelInfo.add(textField, gbc_textField);
 		
 		lblSurname = new JLabel("Surname");
 		GridBagConstraints gbc_lblSurname = new GridBagConstraints();
@@ -148,7 +201,7 @@ public class MIWindow extends JFrame {
 		gbc_lblSurname.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSurname.gridx = 0;
 		gbc_lblSurname.gridy = 2;
-		panelUpdate.add(lblSurname, gbc_lblSurname);
+		panelInfo.add(lblSurname, gbc_lblSurname);
 		
 		textField_1 = new JTextField();
 		textField_1.setColumns(10);
@@ -157,7 +210,7 @@ public class MIWindow extends JFrame {
 		gbc_textField_1.insets = new Insets(0, 0, 5, 0);
 		gbc_textField_1.gridx = 1;
 		gbc_textField_1.gridy = 2;
-		panelUpdate.add(textField_1, gbc_textField_1);
+		panelInfo.add(textField_1, gbc_textField_1);
 		
 		lblBirthDay = new JLabel("Birthday");
 		GridBagConstraints gbc_lblBirthDay = new GridBagConstraints();
@@ -165,7 +218,7 @@ public class MIWindow extends JFrame {
 		gbc_lblBirthDay.insets = new Insets(0, 0, 5, 5);
 		gbc_lblBirthDay.gridx = 0;
 		gbc_lblBirthDay.gridy = 3;
-		panelUpdate.add(lblBirthDay, gbc_lblBirthDay);
+		panelInfo.add(lblBirthDay, gbc_lblBirthDay);
 		
 		textField_2 = new JTextField();
 		textField_2.setColumns(10);
@@ -175,7 +228,7 @@ public class MIWindow extends JFrame {
 		gbc_textField_2.insets = new Insets(0, 0, 5, 0);
 		gbc_textField_2.gridx = 1;
 		gbc_textField_2.gridy = 3;
-		panelUpdate.add(textField_2, gbc_textField_2);
+		panelInfo.add(textField_2, gbc_textField_2);
 		
 		lblPoints = new JLabel("Points");
 		GridBagConstraints gbc_lblPoints = new GridBagConstraints();
@@ -183,14 +236,14 @@ public class MIWindow extends JFrame {
 		gbc_lblPoints.insets = new Insets(0, 0, 5, 5);
 		gbc_lblPoints.gridx = 0;
 		gbc_lblPoints.gridy = 4;
-		panelUpdate.add(lblPoints, gbc_lblPoints);
+		panelInfo.add(lblPoints, gbc_lblPoints);
 		
 		lblPointsShow = new JLabel("");
 		GridBagConstraints gbc_lblPointsShow = new GridBagConstraints();
 		gbc_lblPointsShow.insets = new Insets(0, 0, 5, 0);
 		gbc_lblPointsShow.gridx = 1;
 		gbc_lblPointsShow.gridy = 4;
-		panelUpdate.add(lblPointsShow, gbc_lblPointsShow);
+		panelInfo.add(lblPointsShow, gbc_lblPointsShow);
 		
 		chckbxDelete = new JCheckBox("I wish to delete my account");
 		chckbxDelete.addMouseListener(new MouseAdapter() {
@@ -203,10 +256,18 @@ public class MIWindow extends JFrame {
 				}
 			}
 		});
+		
+		lblInfo = new JLabel("");
+		lblInfo.setForeground(Color.RED);
+		GridBagConstraints gbc_lblInfo = new GridBagConstraints();
+		gbc_lblInfo.insets = new Insets(0, 0, 0, 5);
+		gbc_lblInfo.gridx = 0;
+		gbc_lblInfo.gridy = 5;
+		panelInfo.add(lblInfo, gbc_lblInfo);
 		GridBagConstraints gbc_chckbxDelete = new GridBagConstraints();
 		gbc_chckbxDelete.gridx = 1;
 		gbc_chckbxDelete.gridy = 5;
-		panelUpdate.add(chckbxDelete, gbc_chckbxDelete);
+		panelInfo.add(chckbxDelete, gbc_chckbxDelete);
 	}
 	
 	public void centreWindow() {

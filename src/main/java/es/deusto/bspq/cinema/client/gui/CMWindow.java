@@ -250,7 +250,7 @@ public class CMWindow extends JFrame {
 																																								btnManageMembership = new JButton("Manage Membership");
 																																								btnManageMembership.addMouseListener(new MouseAdapter() {
 																																									@Override
-																																									public void mouseClicked(MouseEvent arg0) {//FIXME
+																																									public void mouseClicked(MouseEvent arg0) {
 																																										MIWindow miWindow = new MIWindow(controller, loginEmail);
 																																										miWindow.centreWindow();
 																																										miWindow.setVisible(true);
