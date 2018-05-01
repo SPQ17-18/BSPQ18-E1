@@ -8,3 +8,4 @@ Order of the commands to execute the server and client
 4) To load the DB : mvn exec:java -Pload
    To execute the client : mvn exec:java -Pclient
    To execute the server : mvn exec:java -Pserver
+5) To test: mvn test

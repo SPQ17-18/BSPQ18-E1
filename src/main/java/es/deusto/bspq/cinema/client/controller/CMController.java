@@ -101,6 +101,36 @@ public class CMController {
 		}
 		return cancel;
 	}
+		
+	public boolean updateMember(MemberDTO memberDTO) {
+		boolean updated = false;
+		try {
+			updated = cmsl.getService().updateMember(memberDTO);
+		} catch (RemoteException e) {
+			logger.error("Error updating a member.");
+		}
+		return updated;
+	}
+	
+	public boolean deleteMember(MemberDTO memberDTO) {
+		boolean deleted = false;
+		try {
+			deleted = cmsl.getService().deleteMember(memberDTO);
+		} catch (RemoteException e) {
+			logger.error("Error deleting a member.");
+		}
+		return deleted;
+	}
+	
+	public boolean registerMember(MemberDTO memberDTO) {
+		boolean registered = false;
+		try {
+			registered = cmsl.getService().registerMember(memberDTO);
+		} catch (RemoteException e) {
+			logger.error("Error deleting a member.");
+		}
+		return registered;
+	}
 	
 	public void exit() {
     	System.exit(0);
