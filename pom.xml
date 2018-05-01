@@ -103,7 +103,7 @@
 						<format>html</format>
 					</formats> 
 					<instrumentation>
-						<ignoreTrivial>true</ignoreTrivial>
+						
 						<excludes>
 							<exclude>es/deusto/bspq/cinema/client/gui/*.class</exclude>
 							<exclude>es/deusto/bspq/cinema/client/Client.class</exclude>
