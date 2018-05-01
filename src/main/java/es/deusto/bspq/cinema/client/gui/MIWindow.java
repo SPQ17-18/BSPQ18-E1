@@ -42,7 +42,6 @@ public class MIWindow extends JFrame {
 	// Login user
 	private String loginUser;
 	
-	private JFrame frmMemberInfo;
 	private JButton btnAction;
 	private JButton btnCancel;
 	private JPanel panelActions;
@@ -61,28 +60,19 @@ public class MIWindow extends JFrame {
 	private JCheckBox chckbxDelete;
 	private JLabel lblInfo;
 	
-
-	/**
-	 * Create the application.
-	 */
 	public MIWindow(CMController controller, String loginUser) {
 		this.controller = controller;
 		this.loginUser = loginUser;
 		initComponents();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initComponents() {
-		frmMemberInfo = new JFrame();
-		frmMemberInfo.setTitle("Member Info");
-		frmMemberInfo.setBounds(100, 100, 360, 280);
-		frmMemberInfo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmMemberInfo.getContentPane().setLayout(new BorderLayout(0, 0));
+		setTitle("Member Info");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		panelActions = new JPanel();
-		frmMemberInfo.getContentPane().add(panelActions, BorderLayout.SOUTH);
+		getContentPane().add(panelActions, BorderLayout.SOUTH);
 		panelActions.setBorder(new TitledBorder(null, "Actions", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelActions.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
@@ -91,7 +81,6 @@ public class MIWindow extends JFrame {
 		
 		passwordField = new JPasswordField();
 		passwordField.addFocusListener(new FocusAdapter() {
-			@Override
 			public void focusLost(FocusEvent arg0) {
 				
 			}
@@ -99,70 +88,39 @@ public class MIWindow extends JFrame {
 		passwordField.setColumns(12);
 		panelActions.add(passwordField);
 		
-		btnAction = new JButton("Update");
-		btnAction.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				if(chckbxDelete.isSelected()) {
-					btnAction.setText("Delete");
-				} else {
-					btnAction.setText("Update");
-				}
-				if(controller.identifyMember(loginUser, String.valueOf(passwordField.getPassword()))) {
-					btnAction.setEnabled(true);
-				} else {
-					btnAction.setEnabled(false);
-				}
-			}
-		});
+		btnAction = new JButton("Delete");
 		btnAction.addMouseListener(new MouseAdapter() {
-			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				if(btnAction.isEnabled() && !chckbxDelete.isSelected()) {
-					//TODO Update Member
-				} else if(btnAction.isEnabled() && chckbxDelete.isSelected()) {
-					if(controller.identifyMember(loginUser, String.valueOf(passwordField.getPassword()))) {
+				if (chckbxDelete.isSelected()) {
+					if (controller.identifyMember(loginUser, String.valueOf(passwordField.getPassword()))) {
 						controller.cancelMembership(loginUser, String.valueOf(passwordField.getPassword()));
 						logger.info("Membership canceled for "+ loginUser);
 					} else {
-						lblInfo.setText("Wrong Pass");
+						lblInfo.setText("Wrong Password");
+						lblInfo.setVisible(true);
 					}
 				}
-			}
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				if(String.valueOf(passwordField.getPassword()).equals("")) {
-					btnAction.setEnabled(false);
-				} else {
-					btnAction.setEnabled(true);
+				else {
+					lblInfo.setText("Checkbox not selected");
+					lblInfo.setVisible(true);
 				}
 			}
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				lblInfo.setText("");
-			}
 		});
-		btnAction.setEnabled(false);
 		panelActions.add(btnAction);
 		
 		btnCancel = new JButton("Cancel");
-		btnCancel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 				CMWindow cmWindow = new CMWindow(controller, loginUser);
 				cmWindow.centreWindow();
 				cmWindow.setVisible(true);
 				dispose();
 			}
 		});
-		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
 		panelActions.add(btnCancel);
 		
 		panelInfo = new JPanel();
-		frmMemberInfo.getContentPane().add(panelInfo, BorderLayout.CENTER);
+		getContentPane().add(panelInfo, BorderLayout.CENTER);
 		panelInfo.setBorder(new TitledBorder(null, "Info", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagLayout gbl_panelInfo = new GridBagLayout();
 		gbl_panelInfo.columnWidths = new int[]{0, 0, 0};
@@ -171,7 +129,7 @@ public class MIWindow extends JFrame {
 		gbl_panelInfo.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		panelInfo.setLayout(gbl_panelInfo);
 		
-		lblEmail = new JLabel("<dynamic>");
+		lblEmail = new JLabel(loginUser);
 		GridBagConstraints gbc_lblEmail = new GridBagConstraints();
 		gbc_lblEmail.insets = new Insets(0, 0, 5, 5);
 		gbc_lblEmail.gridx = 0;
@@ -246,16 +204,6 @@ public class MIWindow extends JFrame {
 		panelInfo.add(lblPointsShow, gbc_lblPointsShow);
 		
 		chckbxDelete = new JCheckBox("I wish to delete my account");
-		chckbxDelete.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				if(chckbxDelete.isSelected()) {
-					btnAction.setText("Delete");
-				} else {
-					btnAction.setText("Update");
-				}
-			}
-		});
 		
 		lblInfo = new JLabel("");
 		lblInfo.setForeground(Color.RED);
@@ -268,6 +216,8 @@ public class MIWindow extends JFrame {
 		gbc_chckbxDelete.gridx = 1;
 		gbc_chckbxDelete.gridy = 5;
 		panelInfo.add(chckbxDelete, gbc_chckbxDelete);
+		
+		pack();
 	}
 	
 	public void centreWindow() {

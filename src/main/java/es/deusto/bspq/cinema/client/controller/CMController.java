@@ -127,7 +127,7 @@ public class CMController {
 		try {
 			registered = cmsl.getService().registerMember(memberDTO);
 		} catch (RemoteException e) {
-			logger.error("Error deleting a member.");
+			logger.error("Error registering a member.");
 		}
 		return registered;
 	}
