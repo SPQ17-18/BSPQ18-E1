@@ -13,7 +13,6 @@ public class Assembler {
 	}
 
 	public Ticket disassembleTicket(TicketDTO ticketDTO) {
-
 		Ticket t = new Ticket();
 		ArrayList<Seat> seats = new ArrayList<>();
 		for (int i = 0; i < ticketDTO.getListSeats().size(); i++) {
@@ -21,11 +20,9 @@ public class Assembler {
 		}
 		t.addSeats(seats);
 		return t;
-	
 	}
 
 	public Film disassembleFilm(FilmDTO filmDTO) {
-
 		Film f = new Film();
 		f.setCountry(filmDTO.getCountry());
 		f.setDirector(filmDTO.getDirector());
@@ -34,11 +31,9 @@ public class Assembler {
 		f.setSessions(new ArrayList<Session>());
 		f.setTitle(filmDTO.getTitle());
 		return f;
-	
 	}
 	
 	public Member disassembleMember(MemberDTO memberDTO) {
-
 		Member m = new Member();
 		m.setBirthday(memberDTO.getBirthday());
 		m.setEmail(memberDTO.getEmail());
@@ -46,11 +41,9 @@ public class Assembler {
 		m.setPassword(memberDTO.getPassword());
 		m.setSurname(memberDTO.getSurname());
 		return m;
-	
 	}
 	
 	public Employee disassembleEmployee(EmployeeDTO employeeDTO) {
-
 		Employee e = new Employee();
 		e.setName(employeeDTO.getName());
 		e.setPassword(employeeDTO.getPassword());
@@ -58,23 +51,18 @@ public class Assembler {
 		e.setSurname(employeeDTO.getSurname());
 		e.setUsername(employeeDTO.getUsername());
 		return e;
-	
 	}
 	
-	public Session disassembleSession(SessionDTO sessionDTO, ArrayList<Session> sessions) {
-
+	public Session disassembleSession(SessionDTO sessionDTO) {
 		Session s = new Session();
 		s.setDate(sessionDTO.getDate());
 		s.setHour(sessionDTO.getHour());
 		s.setPrice(sessionDTO.getPrice());
 		s.setSession(dao.getLastSessionCode());
-
 		return s;
-
 	}
 
 	public ArrayList<FilmDTO> assembleFilm(ArrayList<Film> films) {
-		
 		ArrayList<FilmDTO> filmDTO = new ArrayList<FilmDTO>();
 		for (int i = 0; i < films.size(); i++) {
 			FilmDTO fDTO = new FilmDTO(films.get(i).getTitle(), films.get(i).getDirector(), films.get(i).getRating(),
@@ -82,11 +70,9 @@ public class Assembler {
 			filmDTO.add(fDTO);
 		}
 		return filmDTO;
-		
 	}
 	
 	public ArrayList<MemberDTO> assembleMember(ArrayList<Member> members) {
-		
 		ArrayList<MemberDTO> memberDTO = new ArrayList<MemberDTO>();
 		for (int i = 0; i < members.size(); i++) {
 			MemberDTO mDTO = new MemberDTO(members.get(i).getEmail(), members.get(i).getName(), members.get(i).getSurname(), 
@@ -94,11 +80,9 @@ public class Assembler {
 			memberDTO.add(mDTO);
 		}
 		return memberDTO;
-		
 	}
 
 	public ArrayList<SessionDTO> assembleSession(ArrayList<Film> films) {
-	
 		ArrayList<SessionDTO> sessionDTO = new ArrayList<SessionDTO>();
 		for (int i = 0; i < films.size(); i++) {
 			for (int j = 0; j < films.get(i).getSessions().size(); j++) {
@@ -114,11 +98,9 @@ public class Assembler {
 			}
 		}
 		return sessionDTO;
-		
 	}
 
 	private ArrayList<String> obtainSeats(Session session) {
-
 		ArrayList<String> seatsBuyed = new ArrayList<String>();
 		for (int i = 0; i < session.getTickets().size(); i++) {
 			for (int j = 0; j < session.getTickets().get(i).getSeats().size(); j++) {
@@ -148,6 +130,6 @@ public class Assembler {
 			}
 		}
 		return seatsRemaining;
-		
 	}
+	
 }

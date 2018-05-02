@@ -19,7 +19,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import java.awt.GridBagLayout;
@@ -128,15 +128,26 @@ public class CMAWindow extends JFrame {
 	private final JButton btnManageMembers = new JButton("Go to Manage Memberships");
 
 	public CMAWindow(CMController controller, String loginUser) {
-		textFieldInsertSessionDate_Edit.setColumns(10);
-		setResizable(false);
-		setTitle("CMAWindow");
 		this.controller = controller;
 		this.loginUser = loginUser;
+		initComponents();
+	}
+
+	private void initComponents() {
+		setResizable(false);
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
+				exitForm(evt);
+			}
+		});
+		
+		setTitle("CMAWindow");
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		getContentPane().add(panelOptions, BorderLayout.NORTH);
 		getContentPane().add(panelCentral, BorderLayout.SOUTH);
+		
+		textFieldInsertSessionDate_Edit.setColumns(10);
 		panelCentral.setLayout(new GridLayout(1, 0, 0, 0));
 		
 		panelInsert.setBorder(new TitledBorder(null, "Insert", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -659,10 +670,7 @@ public class CMAWindow extends JFrame {
 		panelOptions.add(new JLabel("OPTIONS: "), BorderLayout.SOUTH);
 		panelOptions.add(btnManageMembers, BorderLayout.SOUTH);
 		
-		initComponents();
-	}
-
-	private void initComponents() {
+		
 		pack();
 	}
 	
@@ -670,11 +678,6 @@ public class CMAWindow extends JFrame {
 		Dimension dim = getToolkit().getScreenSize();
 		Rectangle abounds = getBounds();
 		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
-	}
-
-	/** Exit the Application */
-	private void exitForm(WindowEvent evt) {
-		controller.exit();
 	}
 	
 	private void buttonInsertActionPerformed(ActionEvent evt) {
@@ -716,6 +719,11 @@ public class CMAWindow extends JFrame {
 				btnInsert.setEnabled(true);
 			}
 		}
+	}
+	
+	/** Exit the Application */
+	private void exitForm(WindowEvent evt) {
+		controller.exit();
 	}
 
 }

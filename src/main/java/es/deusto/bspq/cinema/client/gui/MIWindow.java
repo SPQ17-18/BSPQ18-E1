@@ -26,6 +26,8 @@ import java.awt.FlowLayout;
 import javax.swing.JCheckBox;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.Color;
@@ -67,6 +69,13 @@ public class MIWindow extends JFrame {
 	}
 
 	private void initComponents() {
+		setResizable(false);
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
+				exitForm(evt);
+			}
+		});
+		
 		setTitle("Member Info");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
@@ -224,6 +233,11 @@ public class MIWindow extends JFrame {
 		Dimension dim = getToolkit().getScreenSize();
 		Rectangle abounds = getBounds();
 		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
+	}
+	
+	/** Exit the Application */
+	private void exitForm(WindowEvent evt) {
+		controller.exit();
 	}
 	
 }

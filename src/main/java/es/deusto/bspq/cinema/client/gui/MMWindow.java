@@ -84,6 +84,13 @@ public class MMWindow extends JFrame {
 	}
 
 	private void initComponents() {
+		setResizable(false);
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
+				exitForm(evt);
+			}
+		});
+		
 		panelMembers = new JPanel();
 		panelListMembers = new JPanel();
 		scrollMembers = new JScrollPane();
@@ -115,13 +122,6 @@ public class MMWindow extends JFrame {
 		panelPoints = new JPanel();
 		
 		getContentPane().setLayout(new GridLayout(2, 1));
-
-		setResizable(false);
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent evt) {
-				exitForm(evt);
-			}
-		});
 
 		panelMembers.setLayout(new GridLayout(1, 2));
 		panelMembers.setBorder(new TitledBorder(new EtchedBorder(), "Member Section"));
@@ -283,11 +283,6 @@ public class MMWindow extends JFrame {
 		logger.info("Member deleted.");
 	}
 
-	/** Exit the Application */
-	private void exitForm(WindowEvent evt) {
-		controller.exit();
-	}
-
 	private void updateLists(List<MemberDTO> members) {
 		membersList.clear();
 		for (int i = 0; i < members.size(); i++) {
@@ -307,6 +302,11 @@ public class MMWindow extends JFrame {
 		updateName.setText("");
 		updateSurname.setText("");
 		updateBirthday.setText("");
+	}
+	
+	/** Exit the Application */
+	private void exitForm(WindowEvent evt) {
+		controller.exit();
 	}
 	
 }

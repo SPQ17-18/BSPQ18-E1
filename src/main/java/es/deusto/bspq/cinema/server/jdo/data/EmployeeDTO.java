@@ -2,7 +2,6 @@ package es.deusto.bspq.cinema.server.jdo.data;
 
 public class EmployeeDTO {
 	
-	
 	private String username;
 	private String name;
 	private String surname;
@@ -60,9 +59,5 @@ public class EmployeeDTO {
 	public void setSalary(float salary) {
 		this.salary = salary;
 	}
-	
-	
-	
-	
 	
 }

@@ -70,18 +70,12 @@ public class Ticket {
 			seat.get(i).setTicket(this);
 		}
 	}
-
 	
 	public void copyTicket(Ticket t) {
-		
 		for (int i = 0; i < t.getSeats().size(); i++) {
 			this.seats.add(new Seat());
 			this.seats.get(i).copySeat(t.getSeats().get(i));
 		}
-		
-		
-		
 	}
-	
 
 }

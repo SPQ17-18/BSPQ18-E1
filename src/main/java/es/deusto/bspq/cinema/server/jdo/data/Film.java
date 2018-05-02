@@ -23,7 +23,6 @@ public class Film {
 	@Join
 	private List<Session> sessions = new ArrayList<>();
 	
-	
 	public Film() {
 
 	}
@@ -89,11 +88,9 @@ public class Film {
 	public void addSession(Session session) {
 		sessions.add(session);
 		session.setFilm(this);
-
 	}
 	
 	public void copyFilm(Film f) {
-		
 		this.title = f.getTitle();
 		this.director = f.getDirector();
 		this.rating = f.getRating();
@@ -103,7 +100,6 @@ public class Film {
 			this.sessions.add(new Session());
 			this.sessions.get(i).copySession(f.getSessions().get(i));
 		}
-		
 	}
 
 }

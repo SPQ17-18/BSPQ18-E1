@@ -9,13 +9,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import es.deusto.bspq.cinema.server.jdo.DAO.ManagerDAO;
-import es.deusto.bspq.cinema.server.jdo.data.Assembler;
 import es.deusto.bspq.cinema.server.jdo.data.Employee;
-import es.deusto.bspq.cinema.server.jdo.data.EmployeeDTO;
 import es.deusto.bspq.cinema.server.jdo.data.Film;
 import es.deusto.bspq.cinema.server.jdo.data.Member;
-import es.deusto.bspq.cinema.server.jdo.data.MemberDTO;
 import es.deusto.bspq.cinema.server.jdo.data.Room;
 import es.deusto.bspq.cinema.server.jdo.data.Seat;
 import es.deusto.bspq.cinema.server.jdo.data.Session;
@@ -24,17 +20,10 @@ import es.deusto.bspq.cinema.server.jdo.data.Ticket;
 public class ManagerDAOTest {
 	
 	private static ManagerDAO managerDAO;
-	private static Assembler assembler;
-	
-	private static EmployeeDTO employeeDTO;
-	private static MemberDTO memberDTO;
 	
 	@BeforeClass
 	public static void setUpClass() {
 		managerDAO = new ManagerDAO();
-		assembler = new Assembler();
-		employeeDTO = new EmployeeDTO("e10", "laura", "garcía", "e10pass", 20000f);
-		memberDTO = new MemberDTO("test@opendeusto.es", "leire", "rementeria", "testpass", "25/05/96");
 	}
 	
 	@Before
@@ -220,23 +209,64 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
-	public void testEmployee() throws Exception {
-		managerDAO.storeEmployee(assembler.disassembleEmployee(employeeDTO));
+	public void testStoreRoom() throws Exception {
+		Room room = new Room(15, 55);
+		managerDAO.storeRoom(room);
+		Room r = managerDAO.getRoom(15);
+		assertEquals(15, r.getRoomNumber());
+		assertEquals(55, r.getNumberSeats());
+	}
+	
+	@Test
+	public void testStoreFilm() throws Exception {
+		Film film = new Film("Test", "Testy Tester", 12, 111, "EE.UU.");
+		managerDAO.storeFilm(film);
+		Film f = managerDAO.getFilm("Test");
+		assertEquals("Test", f.getTitle());
+		assertEquals("Testy Tester", f.getDirector());
+		assertEquals("EE.UU.", f.getCountry());
+	}
+	
+	@Test
+	public void testStoreEmployee() throws Exception {
+		Employee employee = new Employee("e10", "Laura", "García", "e10pass", 20000f);
+		managerDAO.storeEmployee(employee);
 		Employee e = managerDAO.getEmployee("e10");
-		assertEquals("laura", e.getName());
-		assertEquals("garcía", e.getSurname());
+		assertEquals("Laura", e.getName());
+		assertEquals("García", e.getSurname());
 		assertEquals("e10pass", e.getPassword());
 		assertEquals(true, e.getSalary() == 20000f);
 	}
 	
 	@Test
-	public void testMember() throws Exception {
-		managerDAO.storeMember(assembler.disassembleMember(memberDTO));
+	public void testStoreMember() throws Exception {
+		Member member = new Member("test@opendeusto.es", "Leire", "Rementeria", "leire", "05-12-1995", 0);
+		managerDAO.storeMember(member);
 		Member e = managerDAO.getMember("test@opendeusto.es");
-		assertEquals("leire", e.getName());
-		assertEquals("rementeria", e.getSurname());
-		assertEquals("testpass", e.getPassword());
-		assertEquals("25/05/96", e.getBirthday());
+		assertEquals("Leire", e.getName());
+		assertEquals("Rementeria", e.getSurname());
+		assertEquals("leire", e.getPassword());
+		assertEquals("05-12-1995", e.getBirthday());
+	}
+	
+	@Test
+	public void testStoreTicket() throws Exception {
+		Seat s1 = new Seat("F3");
+		Seat s2 = new Seat("F4");
+		Seat s3 = new Seat("F5");
+		ArrayList<Seat> seats = new ArrayList<Seat>();
+		seats.add(s1);
+		seats.add(s2);
+		seats.add(s3);
+		Ticket ticket = new Ticket();
+		ticket.addSeats(seats);
+		Member member = new Member("test@opendeusto.es", "Test", "Testy", "test", "05-12-1995", 0);
+		Session session = new Session("S25", "14-12-2018", "17:00", (float) 8.90);
+		ticket.setMember(member);
+		ticket.setSession(session);
+		managerDAO.storeTicket(ticket);
+		Member m = managerDAO.getMember("test@opendeusto.es");
+		assertEquals(1, m.getTickets().size());
 	}
 	
 	@Test
@@ -249,35 +279,72 @@ public class ManagerDAOTest {
 	public void testDeleteFilm() throws Exception {
 		Film film = new Film("Inmersion", "Wim Wenders", 12, 111, "EE.UU.");
 		managerDAO.deleteFilm(film);
-		assertEquals(4,managerDAO.getFilms().size());
+		assertEquals(4, managerDAO.getFilms().size());
 	}
 	
 	@Test
 	public void testDeleteEmployee() throws Exception {
 		Employee employee = new Employee("e1", "Juan", "Garcia Perez", "e1", 1500);
 		managerDAO.deleteEmployee(employee);
-		assertEquals(4,managerDAO.getEmployees().size());
-		
-		
+		assertEquals(4, managerDAO.getEmployees().size());
+	}
+	
+	@Test
+	public void testDeleteMember() throws Exception {
+		Member member = new Member("unaibermejofdez@opendeusto.es", "Unai", "Bermejo", "unai", "23-08-1997", 0);
+		managerDAO.deleteMember(member);
+		assertEquals(4, managerDAO.getMembers().size());
 	}
 	
 	@Test
 	public void testDeleteSession() throws Exception {
-		Session s4 = new Session("S4", "14-04-2018", "17:00", (float) 8.90);
-		assertEquals("S4",managerDAO.getSession(s4).getSession());
-		managerDAO.deleteSession(s4);
-		assertEquals(14,managerDAO.getSessions().size());
-		assertEquals(2,managerDAO.getSessions("Pacific Rim: Insurrecion").size());
-		
-		
+		Session session = new Session("S4", "14-04-2018", "17:00", (float) 8.90);
+		assertEquals("S4",managerDAO.getSession(session).getSession());
+		managerDAO.deleteSession(session);
+		assertEquals(14, managerDAO.getSessions().size());
+		assertEquals(2, managerDAO.getSessions("Pacific Rim: Insurrecion").size());
 	}
 	
+	@Test
+	public void testInsertTicket() throws Exception {
+		// ------------- avoid e-mail spam -------------
+		Member member = new Member("test@opendeusto.es", "Test", "Testy", "test", "05-12-1995", 0);
+		managerDAO.storeMember(member);
+		// ---------------------------------------------
+		Seat s1 = new Seat("F3");
+		Seat s2 = new Seat("F4");
+		Seat s3 = new Seat("F5");
+		ArrayList<Seat> seats = new ArrayList<Seat>();
+		seats.add(s1);
+		seats.add(s2);
+		seats.add(s3);
+		Ticket ticket = new Ticket();
+		ticket.addSeats(seats);
+		managerDAO.insertTicket(ticket, "S4", "test@opendeusto.es");
+		Member e = managerDAO.getMember("test@opendeusto.es");
+		assertEquals(1, e.getTickets().size());
+	}
+	
+	@Test
+	public void testManageMember() throws Exception {
+		Member member = new Member("unaibermejofdez@opendeusto.es", "Unai", "Fernández", "test", "23-04-1997", 0);
+		managerDAO.manageMember(member);
+		Member m = managerDAO.getMember("unaibermejofdez@opendeusto.es");
+		assertEquals("Fernández", m.getSurname());
+		assertEquals("test", m.getPassword());
+		assertEquals("23-04-1997", m.getBirthday());
+	}
 	
 	@AfterClass
 	public static void tearDownClass() {
 		// Clean the DB
 		managerDAO.deleteAllEmployees();
 		managerDAO.deleteAllMembers();
+		managerDAO.deleteAllTickets();
+		managerDAO.deleteAllSessions();
+		managerDAO.deleteAllFilms();
+		managerDAO.deleteAllRooms();
+		managerDAO.deleteAllSeats();
 	}
 
 }

@@ -85,7 +85,4 @@ public class MemberDTO implements Serializable {
 		this.points = points;
 	}
 	
-	
-	
-	
 }
