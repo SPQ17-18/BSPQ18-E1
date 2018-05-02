@@ -397,6 +397,19 @@ public class CMControllerTest {
 		SessionDTO sessionDTO = new SessionDTO("28-05-2018", "20:00", 8f, 3, 25, "Inmersion");
 		assertEquals(true, controller.insertSession(sessionDTO));
 	}
+	
+	@Test
+	public void testInsertSession2() {
+		logger.info("Test Insert a session - Inserting a session to the DB - Valid");
+		SessionDTO sessionDTO = new SessionDTO();
+		sessionDTO.setDate("28-05-2018");
+		sessionDTO.setHour("20:00");
+		sessionDTO.setPrice(8f);
+		sessionDTO.setRoom(3);
+		sessionDTO.setNumberSeats(25);
+		sessionDTO.setTitleFilm("Inmersion");
+		assertEquals(true, controller.insertSession(sessionDTO));
+	}
 
 	@Test
 	public void testBuyTicket() {

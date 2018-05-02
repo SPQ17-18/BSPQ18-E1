@@ -132,4 +132,14 @@ public class Assembler {
 		return seatsRemaining;
 	}
 	
+	public EmployeeDTO assembleEmployee(Employee employee) {
+		EmployeeDTO employeeDTO = new EmployeeDTO();
+		employeeDTO.setName(employee.getName());
+		employeeDTO.setPassword(employee.getPassword());
+		employeeDTO.setSalary(employee.getSalary());
+		employeeDTO.setSurname(employee.getSurname());
+		employeeDTO.setUsername(employee.getUsername());
+		return employeeDTO;
+	}
+	
 }

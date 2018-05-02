@@ -33,5 +33,16 @@ public class AssemblerTest {
 		assertEquals("e1", e.getPassword());
 		assertEquals(true, e.getSalary() == 20000f);
 	}
+	
+	@Test
+	public void testAssembleEmployee() throws Exception {
+		Employee e = new Employee("e1", "Some", "Somer", "e1", 20000f);
+		EmployeeDTO employeeDTO = assembler.assembleEmployee(e);
+		assertEquals("e1", employeeDTO.getUsername());
+		assertEquals("Some", employeeDTO.getName());
+		assertEquals("Somer", employeeDTO.getSurname());
+		assertEquals("e1", employeeDTO.getPassword());
+		assertEquals(true, employeeDTO.getSalary() == 20000f);
+	}
 
 }
