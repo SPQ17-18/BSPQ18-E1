@@ -730,7 +730,7 @@ public class ManagerDAO implements IManagerDAO {
 
 		try {
 			tx.begin();
-			Query<?> q = pm.newQuery("SELECT FROM " + Session.class.getName() + " WHERE film.title='" + film + "'");
+			Query<?> q = pm.newQuery("SELECT FROM " + Session.class.getName() + " WHERE film.title=='" + film + "'");
 			@SuppressWarnings("unchecked")
 			List<Session> result = (List<Session>) q.execute();
 

@@ -156,7 +156,9 @@ public class CMControllerTest {
 		Room r2 = new Room(2, 70);
 		Room r3 = new Room(3, 80);
 		Room r4 = new Room(4, 60);
-		Room r5 = new Room(5, 60);
+		Room r5 = new Room();
+		r5.setNumberSeats(60);
+		r5.setRoomNumber(5);
 
 		Seat se1 = new Seat("A3");
 		Seat se2 = new Seat("A4");
@@ -213,6 +215,7 @@ public class CMControllerTest {
 		t5.addSeats(ss5);
 		Ticket t6 = new Ticket();
 		t6.addSeats(ss6);
+	
 
 		Member m1 = new Member("ariane.fernandez@opendeusto.es", "Ariane", "Fernandez", "ariane", "26-04-1997", 0);
 		Member m2 = new Member("unaibermejofdez@opendeusto.es", "Unai", "Bermejo", "unai", "23-08-1997", 0);
@@ -305,11 +308,86 @@ public class CMControllerTest {
 			
 		}
 	}
+	
+	
+	@Test
+	public void testCreateTicket() {
+		logger.info("Test Create a ticket - Creting a ticket - Valid");
+		Member m = new Member();
+		m.setBirthday("01-01-1998");
+		m.setEmail("test@opendeusto.es");
+		m.setName("test");
+		m.setPassword("test");
+		m.setPoints(0);
+		m.setSurname("test");
+		
+		Session s = new Session();
+		s.setDate("13-05-2018");
+		s.setHour("14:00");
+		s.setPrice((float)4.56);
+		s.setSession("S8");
+		
+		ArrayList<Seat> seats = new ArrayList<Seat>();
+		Seat s1= new Seat();
+		s1.setSeatCode("A5");
+		Seat s2 = new Seat("B6");
+		seats.add(s1);
+		seats.add(s2);
+		Ticket t7 = new Ticket(m,s,seats);
+		assertEquals("test", t7.getMember().getName());
+		assertEquals("13-05-2018", t7.getSession().getDate());
+		assertEquals("14:00", t7.getSession().getHour());
+		assertTrue((float)4.56==t7.getSession().getPrice());
+		assertEquals("A5", t7.getSeats().get(0).getSeatCode());
+		
+		TicketDTO ticket = new TicketDTO();
+		
+		ticket.setDate("13-05-2018");
+		ticket.setEmail("test@opendeusto.es");
+		ticket.setHour("14:00");
+		ticket.setListSeats(new ArrayList<String>());
+		ticket.getListSeats().add("A1");
+		ticket.getListSeats().add("A2");
+		ticket.setTitleFilm("Test");
+		
+		assertEquals("test@opendeusto.es", ticket.getEmail());
+		assertEquals("13-05-2018", ticket.getDate());
+		assertEquals("14:00", ticket.getHour());
+		assertEquals("A1", ticket.getListSeats().get(0));
+		
+		
+	}
 
 	@Test
 	public void testInsertFilm() {
 		logger.info("Test Insert a film - Inserting a film to the DB - Valid");
 		FilmDTO filmDTO = new FilmDTO("Avengers Infinity War", "Anthony Russo", 3, 2, "EEUU");
+		assertEquals(true, controller.insertFilm(filmDTO));
+	}
+	
+	@Test
+	public void testRegisterMember() {
+		logger.info("Test Register a member - Inserting a member to the DB - Valid");
+		MemberDTO memberDTO = new MemberDTO("test@opendeusto.es", "test", "test", "test", "26-06-1997", 0);
+		assertEquals(true, controller.registerMember(memberDTO));
+	}
+	
+	@Test
+	public void testCancelMember() {
+		logger.info("Test Cancel a member - Cancelling a member from the DB - Valid");
+		MemberDTO memberDTO = new MemberDTO("ander.arguinano@opendeusto.es", "Ander", "Arguinano", "ander", "26-06-1997", 0);
+		assertEquals(true, controller.cancelMembership(memberDTO.getEmail(), memberDTO.getPassword()));
+	}
+	
+	@Test
+	public void testInsertFilm2() {
+		logger.info("Test Insert a film - Inserting a film to the DB with set methods- Valid");
+		FilmDTO filmDTO = new FilmDTO();
+		filmDTO.setCountry("Spain");
+		filmDTO.setDirector("Juan Garcia");
+		filmDTO.setDuration(134);
+		filmDTO.setRating(8);
+		filmDTO.setTitle("Cuerpo de elite");
 		assertEquals(true, controller.insertFilm(filmDTO));
 	}
 
@@ -365,7 +443,13 @@ public class CMControllerTest {
 	public void testDeleteMember() {
 		logger.info("Test Delete a member - Deleting a member from the DB - Valid");
 		List<MemberDTO> members = null;
-		MemberDTO memberDTO = new MemberDTO("ariane.fernandez@opendeusto.es", "Ariane", "Fernandez", "ariane", "26-04-1997");
+		MemberDTO memberDTO = new MemberDTO();
+		memberDTO.setBirthday("26-04-1997");
+		memberDTO.setEmail("ariane.fernandez@opendeusto.es");
+		memberDTO.setName("Ariane");
+		memberDTO.setPassword("ariane");
+		memberDTO.setSurname("Fernandez");
+		memberDTO.setPoints(0);
 		controller.deleteMember(memberDTO);
 		members = controller.getAllMembers();
 		assertEquals(4, members.size());
