@@ -28,8 +28,6 @@ public class Seat {
 		this.seatCode = seatCode;
 	}
 	
-	
-	
 	public Ticket getTicket() {
 		return ticket;
 	}
@@ -39,10 +37,7 @@ public class Seat {
 	}
 
 	public void copySeat(Seat s) {
-		
 		this.seatCode = s.getSeatCode();
-		
-		
 	}
 
 }

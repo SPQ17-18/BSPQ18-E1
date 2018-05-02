@@ -38,7 +38,7 @@ public class MailSender{
 		props.put("mail.smtp.debug", "false");
 	}
 
-	public boolean sendMessage(String text,String subject) {
+	public boolean sendMessage(String text, String subject) {
 		try {
 			Authenticator auth = new SMTPAuthenticator();
 			Session session = Session.getInstance(props, auth);

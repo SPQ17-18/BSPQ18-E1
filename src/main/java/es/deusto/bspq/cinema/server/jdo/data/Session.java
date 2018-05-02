@@ -30,7 +30,6 @@ public class Session {
 
 	public Session() {
 		this.film = new Film();
-		
 	}
 
 	public Session(String session, String date, String hour, float price) {
@@ -80,7 +79,6 @@ public class Session {
 
 	public void setFilm(Film film) {
 		this.film = film;
-		
 	}
 	
 	public String getSession() {
@@ -95,7 +93,6 @@ public class Session {
 		return new ArrayList<String>(); //TODO
 	}
 	
-
 	public List<Ticket> getTickets() {
 		return tickets;
 	}
@@ -121,9 +118,6 @@ public class Session {
 			this.tickets.add(new Ticket());
 			this.tickets.get(i).copyTicket(s.getTickets().get(i));
 		}
-		
 	}
-	
-	
 	
 }

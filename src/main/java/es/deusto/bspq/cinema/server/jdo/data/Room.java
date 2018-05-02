@@ -35,26 +35,21 @@ public class Room {
 		return roomNumber;
 	}
 
-
 	public void setRoomNumber(int roomNumber) {
 		this.roomNumber = roomNumber;
 	}
-
 
 	public int getNumberSeats() {
 		return numberSeats;
 	}
 
-
 	public void setNumberSeats(int numberSeats) {
 		this.numberSeats = numberSeats;
 	}
 
-
 	public List<Session> getSessions() {
 		return sessions;
 	}
-
 
 	public void setSessions(List<Session> sessions) {
 		this.sessions = sessions;
@@ -68,8 +63,6 @@ public class Room {
 	public void copyRoom(Room r) {
 		this.roomNumber = r.getRoomNumber();
 		this.numberSeats = r.getNumberSeats();
-		
-
 	}
 	
 	public void obtainRoom(Room r) {
@@ -79,8 +72,6 @@ public class Room {
 			sessions.add(r.getSessions().get(i));
 			r.getSessions().get(i).setRoom(this);
 		}
-
 	}
-	
-	
+
 }

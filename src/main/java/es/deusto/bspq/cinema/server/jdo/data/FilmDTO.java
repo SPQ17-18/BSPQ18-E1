@@ -4,15 +4,12 @@ import java.io.Serializable;
 
 public class FilmDTO implements Serializable{
 	
-	
 	private static final long serialVersionUID = 1L;
 	private String title;
 	private String director;
 	private int rating;
 	private long duration;
 	private String country;
-
-	
 
 	public FilmDTO(String title, String director, int rating, long duration, String country) {
 		super();
@@ -21,7 +18,6 @@ public class FilmDTO implements Serializable{
 		this.rating = rating;
 		this.duration = duration;
 		this.country = country;
-		
 	}
 
 	public FilmDTO() {
@@ -68,7 +64,4 @@ public class FilmDTO implements Serializable{
 		this.country = country;
 	}
 
-	
-
-	
 }

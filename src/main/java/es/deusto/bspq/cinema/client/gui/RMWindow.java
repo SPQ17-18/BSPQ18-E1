@@ -28,7 +28,17 @@ public class RMWindow extends JFrame implements ActionListener {
 
 	public RMWindow(CMController controller) {
 		this.controller = controller;
-
+		initComponents();
+	}
+	
+	private void initComponents() {
+		setResizable(false);
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
+				exitForm(evt);
+			}
+		});
+		
 		getContentPane().setLayout(new GridLayout(3, 1));
 		
 		buttons = new JPanel();
@@ -80,14 +90,14 @@ public class RMWindow extends JFrame implements ActionListener {
 		getContentPane().add(fields);
 		getContentPane().add(password);
 		getContentPane().add(buttons);
-		setResizable(false);
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent evt) {
-				exitForm(evt);
-			}
-		});
 		
 		pack();
+	}
+	
+	public void centreWindow() {
+		Dimension dim = getToolkit().getScreenSize();
+		Rectangle abounds = getBounds();
+		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -137,12 +147,6 @@ public class RMWindow extends JFrame implements ActionListener {
 			tf3.setText("");
 			tf4.setText("");
 		}
-	}
-	
-	public void centreWindow() {
-		Dimension dim = getToolkit().getScreenSize();
-		Rectangle abounds = getBounds();
-		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
 	}
 	
 	/** Exit the Application */

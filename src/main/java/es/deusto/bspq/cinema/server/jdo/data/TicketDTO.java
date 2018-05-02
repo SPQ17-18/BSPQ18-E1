@@ -3,21 +3,15 @@ package es.deusto.bspq.cinema.server.jdo.data;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class TicketDTO implements Serializable{
+public class TicketDTO implements Serializable {
 	
-
 	private static final long serialVersionUID = 1L;
-
-	//Data about the buyer
-	private String email;
 	
-	//Data about the session
+	private String email;
 	
 	private String titleFilm;
 	private String date;
 	private String hour;
-	
-	//Data about the seats
 	
 	private ArrayList <String> listSeats;
 
@@ -73,7 +67,5 @@ public class TicketDTO implements Serializable{
 	public void setListSeats(ArrayList<String> listSeats) {
 		this.listSeats = listSeats;
 	}
-	
-	
 	
 }

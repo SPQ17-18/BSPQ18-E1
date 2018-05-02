@@ -31,11 +31,6 @@ import org.apache.log4j.Logger;
 import es.deusto.bspq.cinema.client.controller.CMController;
 import es.deusto.bspq.cinema.server.jdo.data.SessionDTO;
 import es.deusto.bspq.cinema.server.jdo.data.TicketDTO;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class CMWindow extends JFrame {
 	
@@ -104,6 +99,7 @@ public class CMWindow extends JFrame {
 				exitForm(evt);
 			}
 		});
+		
 		ListSelectionListener listSelectionListener = new ListSelectionListener() {
 		      public void valueChanged(ListSelectionEvent listSelectionEvent) {
 		    	  try {
@@ -307,11 +303,6 @@ public class CMWindow extends JFrame {
 		logger.info("All sessions retrieved.");
 	}
 
-	/** Exit the Application */
-	private void exitForm(WindowEvent evt) {
-		controller.exit();
-	}
-
 	private void updateLists(List<SessionDTO> sessions) {
 		sessionsList.clear();
 		for (int i = 0; i < sessions.size(); i++) {
@@ -330,6 +321,11 @@ public class CMWindow extends JFrame {
 		film.setText("");
 		hour.setText("");
 		date.setText("");
+	}
+	
+	/** Exit the Application */
+	private void exitForm(WindowEvent evt) {
+		controller.exit();
 	}
 	
 }

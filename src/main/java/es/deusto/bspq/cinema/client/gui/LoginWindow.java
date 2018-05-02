@@ -8,6 +8,8 @@ import java.awt.GridBagLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.rmi.RemoteException;
 
 import javax.swing.JButton;
@@ -47,15 +49,22 @@ public class LoginWindow extends JDialog {
 	private JTabbedPane tabbedPane;
  
 	public LoginWindow(String args[]) {
-		
 		try {
 			controller = new CMController(args);
 		} catch (RemoteException e) {
 			logger.error("Remote exception: " + e.getMessage());
 			e.printStackTrace();
 		}
-
+		initComponents();
+	}
+	
+	private void initComponents() {
 		setResizable(false);
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
+				exitForm(evt);
+			}
+		});
 		
 		JPanel panelEmployee = new JPanel(new GridBagLayout());
 		JPanel panelMember = new JPanel(new GridBagLayout());
@@ -198,6 +207,11 @@ public class LoginWindow extends JDialog {
 		Dimension dim = getToolkit().getScreenSize();
 		Rectangle abounds = getBounds();
 		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
+	}
+	
+	/** Exit the Application */
+	private void exitForm(WindowEvent evt) {
+		controller.exit();
 	}
     
 }

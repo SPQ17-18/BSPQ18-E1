@@ -133,7 +133,7 @@ public class CMController {
 	}
 	
 	public void exit() {
-    	System.exit(0);
-    }
+		System.exit(0);
+	}
 	
 }

@@ -107,26 +107,21 @@ public class Member {
 	}
 	
 	public void copyMember(Member m) {
-		
 		this.email = m.getEmail();
 		this.name = m.getName();
 		this.password = m.getPassword();
 		this.surname = m.getSurname();
 		this.birthday = m.getBirthday();
 		this.points=m.getPoints();
-		
 		for (int i = 0; i < m.getTickets().size(); i++) {
 			this.tickets.add(new Ticket());
 			this.tickets.get(i).copyTicket(m.getTickets().get(i));
 		}
-		
 	}
 	
 	public void addTicket(Ticket t) {
 		tickets.add(t);
 		t.setMember(this);
 	}
-	
-	
 	
 }
