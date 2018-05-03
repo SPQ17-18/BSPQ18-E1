@@ -9,11 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.databene.contiperf.PerfTest;
+import org.databene.contiperf.Required;
+import org.databene.contiperf.junit.ContiPerfRule;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-
+import org.junit.Rule;
 import org.junit.Test;
+
 
 import es.deusto.bspq.cinema.server.Server;
 import es.deusto.bspq.cinema.server.jdo.DAO.IManagerDAO;
@@ -32,6 +36,7 @@ import es.deusto.bspq.cinema.server.jdo.data.TicketDTO;
 import es.deusto.bspq.cinema.server.remote.IRemoteFacade;
 import junit.framework.JUnit4TestAdapter;
 
+
 public class CMControllerTest {
 	
 	private static final Logger logger = Logger.getLogger(CMControllerTest.class);
@@ -43,6 +48,8 @@ public class CMControllerTest {
 	private CMController controller;
 	private static IManagerDAO managerDAO;
 
+	@Rule public ContiPerfRule rule = new ContiPerfRule();
+	
 	public static junit.framework.Test suite() {
 		return new JUnit4TestAdapter(CMControllerTest.class);
 	}
@@ -311,6 +318,8 @@ public class CMControllerTest {
 	
 	
 	@Test
+	@PerfTest(duration = 2000)
+    @Required(max = 120, average = 30)
 	public void testCreateTicket() {
 		logger.info("Test Create a ticket - Creting a ticket - Valid");
 		Member m = new Member();
@@ -357,8 +366,9 @@ public class CMControllerTest {
 		
 		
 	}
-
+	
 	@Test
+	@Required(throughput = 20)
 	public void testInsertFilm() {
 		logger.info("Test Insert a film - Inserting a film to the DB - Valid");
 		FilmDTO filmDTO = new FilmDTO("Avengers Infinity War", "Anthony Russo", 3, 2, "EEUU");
@@ -366,13 +376,16 @@ public class CMControllerTest {
 	}
 	
 	@Test
+	@Required(totalTime = 5000)
 	public void testRegisterMember() {
+	
 		logger.info("Test Register a member - Inserting a member to the DB - Valid");
 		MemberDTO memberDTO = new MemberDTO("test@opendeusto.es", "test", "test", "test", "26-06-1997", 0);
 		assertEquals(true, controller.registerMember(memberDTO));
 	}
 	
 	@Test
+	@Required(average = 100)
 	public void testCancelMember() {
 		logger.info("Test Cancel a member - Cancelling a member from the DB - Valid");
 		MemberDTO memberDTO = new MemberDTO("ander.arguinano@opendeusto.es", "Ander", "Arguinano", "ander", "26-06-1997", 0);
@@ -380,6 +393,7 @@ public class CMControllerTest {
 	}
 	
 	@Test
+	@Required(percentile90 = 3000)
 	public void testInsertFilm2() {
 		logger.info("Test Insert a film - Inserting a film to the DB with set methods- Valid");
 		FilmDTO filmDTO = new FilmDTO();
@@ -392,6 +406,7 @@ public class CMControllerTest {
 	}
 
 	@Test
+	@Required(average = 100)
 	public void testInsertSession() {
 		logger.info("Test Insert a session - Inserting a session to the DB - Valid");
 		SessionDTO sessionDTO = new SessionDTO("28-05-2018", "20:00", 8f, 3, 25, "Inmersion");
@@ -399,6 +414,7 @@ public class CMControllerTest {
 	}
 	
 	@Test
+	@Required(totalTime = 5000)
 	public void testInsertSession2() {
 		logger.info("Test Insert a session - Inserting a session to the DB - Valid");
 		SessionDTO sessionDTO = new SessionDTO();
@@ -412,6 +428,7 @@ public class CMControllerTest {
 	}
 
 	@Test
+	@Required(max = 120, average = 30)
 	public void testBuyTicket() {
 		logger.info("Test Buy a ticket - Buying a ticket - Valid");
 		ArrayList<String> listSeats =  new ArrayList<String>();
@@ -421,6 +438,7 @@ public class CMControllerTest {
 	}
 
 	@Test
+	@Required(max = 120, average = 30)
 	public void testIdentifyMember() {
 		logger.info("Test Identify a member - Logging as a member - Valid");
 		assertEquals(false, controller.identifyMember("unaibermejofdez@opendeusto.es", "wrongpassword"));
@@ -430,6 +448,7 @@ public class CMControllerTest {
 	}
 
 	@Test
+	@Required(max = 120, average = 30)
 	public void testIdentifyEmployee() {
 		logger.info("Test Identify an employee - Logging as an employee - Valid");
 		assertEquals(false, controller.identifyEmployee("e1", "wrongpassword"));
@@ -439,6 +458,7 @@ public class CMControllerTest {
 	}
 	
 	@Test
+	@Required(max = 120, average = 30)
 	public void testUpdateMember() {
 		logger.info("Test Update a member - Updating a member from the DB - Valid");
 		List<MemberDTO> members = null;
@@ -453,6 +473,7 @@ public class CMControllerTest {
 	}
 
 	@Test
+	@Required(max = 120)
 	public void testDeleteMember() {
 		logger.info("Test Delete a member - Deleting a member from the DB - Valid");
 		List<MemberDTO> members = null;
@@ -469,6 +490,7 @@ public class CMControllerTest {
 	}
 
 	@Test
+	@Required(max = 120, average = 30)
 	public void testGetAllMembers() {
 		logger.info("Test Get all members - Retrieving all the members from the DB - Valid");
 		List<MemberDTO> members = null;
@@ -482,6 +504,7 @@ public class CMControllerTest {
 	}
 	
 	@Test
+	@Required(max = 120, average = 30)
 	public void testGetAllSessions() {
 		logger.info("Test Get all sessions - Retrieving all the sessions from the DB - Valid");
 		List<SessionDTO> sessions = null;
