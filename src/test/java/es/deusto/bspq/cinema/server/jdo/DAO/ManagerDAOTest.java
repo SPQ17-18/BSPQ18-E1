@@ -4,9 +4,12 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
+import org.databene.contiperf.Required;
+import org.databene.contiperf.junit.ContiPerfRule;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
 
 import es.deusto.bspq.cinema.server.jdo.data.Employee;
@@ -20,6 +23,8 @@ import es.deusto.bspq.cinema.server.jdo.data.Ticket;
 public class ManagerDAOTest {
 	
 	private static ManagerDAO managerDAO;
+	
+	@Rule public ContiPerfRule rule = new ContiPerfRule();
 	
 	@BeforeClass
 	public static void setUpClass() {
@@ -209,6 +214,7 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
+    @Required(max = 120, average = 30)
 	public void testStoreRoom() throws Exception {
 		Room room = new Room(15, 55);
 		managerDAO.storeRoom(room);
@@ -218,6 +224,7 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
+	@Required(max = 120, average = 30)
 	public void testStoreFilm() throws Exception {
 		Film film = new Film("Test", "Testy Tester", 12, 111, "EE.UU.");
 		managerDAO.storeFilm(film);
@@ -228,6 +235,7 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
+	@Required(max = 120, average = 30)
 	public void testStoreEmployee() throws Exception {
 		Employee employee = new Employee("e10", "Laura", "García", "e10pass", 20000f);
 		managerDAO.storeEmployee(employee);
@@ -239,6 +247,7 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
+	@Required(max = 120, average = 30)
 	public void testStoreMember() throws Exception {
 		Member member = new Member("test@opendeusto.es", "Leire", "Rementeria", "leire", "05-12-1995", 0);
 		managerDAO.storeMember(member);
@@ -250,6 +259,7 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
+	@Required(max = 120, average = 30)
 	public void testStoreTicket() throws Exception {
 		Seat s1 = new Seat("F3");
 		Seat s2 = new Seat("F4");
@@ -270,12 +280,14 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
+	@Required(max = 120, average = 30)
 	public void testDeleteRoom() throws Exception {
 		managerDAO.deleteRoom(2);
 		assertEquals(0, managerDAO.getRoom(2).getRoomNumber());
 	}
 	
 	@Test
+	@Required(max = 120, average = 30)
 	public void testDeleteFilm() throws Exception {
 		Film film = new Film("Inmersion", "Wim Wenders", 12, 111, "EE.UU.");
 		managerDAO.deleteFilm(film);
@@ -283,6 +295,7 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
+	@Required(max = 120, average = 30)
 	public void testDeleteEmployee() throws Exception {
 		Employee employee = new Employee("e1", "Juan", "Garcia Perez", "e1", 1500);
 		managerDAO.deleteEmployee(employee);
@@ -290,6 +303,7 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
+	@Required(throughput = 20)
 	public void testDeleteMember() throws Exception {
 		Member member = new Member("unaibermejofdez@opendeusto.es", "Unai", "Bermejo", "unai", "23-08-1997", 0);
 		managerDAO.deleteMember(member);
@@ -297,6 +311,7 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
+	@Required(totalTime = 5000)
 	public void testDeleteSession() throws Exception {
 		Session session = new Session("S4", "14-04-2018", "17:00", (float) 8.90);
 		assertEquals("S4",managerDAO.getSession(session).getSession());
@@ -306,6 +321,7 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
+	@Required(average = 100)
 	public void testInsertTicket() throws Exception {
 		// ------------- avoid e-mail spam -------------
 		Member member = new Member("test@opendeusto.es", "Test", "Testy", "test", "05-12-1995", 0);
@@ -326,6 +342,7 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
+	@Required(percentile90 = 3000)
 	public void testManageMember() throws Exception {
 		Member member = new Member("unaibermejofdez@opendeusto.es", "Unai", "Fernández", "test", "23-04-1997", 0);
 		managerDAO.manageMember(member);

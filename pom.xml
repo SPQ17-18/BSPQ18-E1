@@ -54,7 +54,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>4.10</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -62,6 +62,12 @@
 			<artifactId>log4j</artifactId>
 			<version>[1.2.17, )</version>
 		</dependency>
+		<dependency>
+		<groupId>org.databene</groupId>
+		<artifactId>contiperf</artifactId>
+		<version>2.3.4</version>
+		<scope>test</scope>
+	</dependency>
 	</dependencies>
 
 	<build>
@@ -101,13 +107,14 @@
 					<formats>
 						<format>xml</format>
 						<format>html</format>
-					</formats> 
+					</formats>
 					<instrumentation>
 						<excludes>
 							<exclude>es/deusto/bspq/cinema/client/gui/*.class</exclude>
 							<exclude>es/deusto/bspq/cinema/client/Client.class</exclude>
 							<exclude>es/deusto/bspq/cinema/server/remote/*.class</exclude>
-						</excludes> 
+							<exclude>es/deusto/bspq/cinema/server/jdo/**/I*.class</exclude>
+						</excludes>
 					</instrumentation>
 					<check>
 						<branchRate>50</branchRate>
