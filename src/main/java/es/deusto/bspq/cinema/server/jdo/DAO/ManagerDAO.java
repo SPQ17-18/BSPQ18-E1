@@ -369,8 +369,6 @@ public class ManagerDAO implements IManagerDAO {
 
 			Session s = (Session) result.iterator().next();
 			
-			logger.info("The session we want to delete is: "+s.getSession()+ " - "+s.getDate() );
-
 			query.close(result);
 
 			pm.deletePersistent(s);
