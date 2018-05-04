@@ -15,3 +15,6 @@ Order of the commands to execute the server and client
    To execute the client : mvn exec:java -Pclient
    To execute the server : mvn exec:java -Pserver
 5) To test: mvn test
+		This command will generate the Contiperf report
+6) To generate Cobertura report: mvn cobertura:cobertura
+		To consult the percentage tested: mvn cobertura:check
