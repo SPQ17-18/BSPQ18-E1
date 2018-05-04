@@ -61,6 +61,15 @@ public class Assembler {
 		s.setDate(sessionDTO.getDate());
 		return s;
 	}
+	
+	public Session disassembleSessionDEL(SessionDTO sessionDTO) {
+		Session s = new Session();
+		s.setHour(sessionDTO.getHour());
+		s.setPrice(sessionDTO.getPrice());
+		s.setSession(dao.getSessionCode(sessionDTO.getDate(), sessionDTO.getHour(), sessionDTO.getTitleFilm()));
+		s.setDate(sessionDTO.getDate());
+		return s;
+	}
 
 	public ArrayList<FilmDTO> assembleFilm(ArrayList<Film> films) {
 		ArrayList<FilmDTO> filmDTO = new ArrayList<FilmDTO>();

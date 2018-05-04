@@ -51,5 +51,6 @@ public interface IManagerDAO {
 	public void deleteAllSeats();
 	
 	public String getLastSessionCode();
+	public String getSessionCode(String date, String hour, String film);
 	
 }

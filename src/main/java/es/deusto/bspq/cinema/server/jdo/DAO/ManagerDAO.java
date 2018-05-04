@@ -566,7 +566,7 @@ public class ManagerDAO implements IManagerDAO {
 		try {
 			tx.begin();
 			Query<?> query = pm.newQuery("SELECT FROM " + Session.class.getName() + " WHERE date == '" + date
-					+ "' AND hour=='" + hour + "' AND film.title='" + session.getFilm().getTitle() + "'");
+					+ "' && hour=='" + hour + "' && film.title='" + session.getFilm().getTitle() + "'");
 			query.setUnique(true);
 			Session result = (Session) query.execute();
 			session.copySession(result);
@@ -899,6 +899,34 @@ public class ManagerDAO implements IManagerDAO {
 			int number = codes.get(codes.size() - 1);
 			number++;
 			sessionCode = "S" + number;
+			tx.commit();
+		} catch (Exception ex) {
+			logger.error("Error the last session code: " + ex.getMessage());
+		} finally {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+
+		return sessionCode;
+	}
+	
+	public String getSessionCode(String date, String hour, String film) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+
+		pm.getFetchPlan().setMaxFetchDepth(4);
+		Transaction tx = pm.currentTransaction();
+		String sessionCode = "";
+
+		try {
+			tx.begin();
+			Query<?> q = pm.newQuery("SELECT FROM " + Session.class.getName() +  " WHERE date == '" + date
+					+ "' && hour=='" + hour + "' && film.title='" + film + "'");
+		
+			Session result = (Session) q.execute();
+			
+			sessionCode = result.getSession();
 			tx.commit();
 		} catch (Exception ex) {
 			logger.error("Error the last session code: " + ex.getMessage());
