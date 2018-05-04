@@ -37,6 +37,13 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		assembler = new Assembler();
 	}
 	
+
+	public boolean deleteSession(SessionDTO sessionDTO) throws RemoteException {
+		
+		return false;
+	}
+
+	
 	public ArrayList<SessionDTO> getSessions() throws RemoteException {
 		ArrayList<Film> films = dao.getFilms();
 		logger.info("Client asked for the sessions");
@@ -258,5 +265,6 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 			e.printStackTrace();
 		}
 	}
+
 
 }

@@ -55,10 +55,10 @@ public class Assembler {
 	
 	public Session disassembleSession(SessionDTO sessionDTO) {
 		Session s = new Session();
-		s.setDate(sessionDTO.getDate());
 		s.setHour(sessionDTO.getHour());
 		s.setPrice(sessionDTO.getPrice());
 		s.setSession(dao.getLastSessionCode());
+		s.setDate(sessionDTO.getDate());
 		return s;
 	}
 

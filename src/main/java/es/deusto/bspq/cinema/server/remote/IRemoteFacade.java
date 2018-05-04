@@ -12,6 +12,7 @@ import es.deusto.bspq.cinema.server.jdo.data.TicketDTO;
 
 public interface IRemoteFacade extends Remote{	
 	
+	public boolean deleteSession (SessionDTO sessionDTO) throws RemoteException;
 	public boolean updateMember (MemberDTO memberDTO) throws RemoteException;
 	public boolean insertFilm (FilmDTO filmDTO) throws RemoteException;
 	public boolean insertSession (SessionDTO sessionDTO) throws RemoteException;
