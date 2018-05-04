@@ -490,7 +490,8 @@ public class CMControllerTest {
 		members = controller.getAllMembers();
 		assertEquals(4, members.size());
 	}
-
+	
+	
 	@Test
 	@Required(max = 120, average = 30)
 	public void testGetAllMembers() {

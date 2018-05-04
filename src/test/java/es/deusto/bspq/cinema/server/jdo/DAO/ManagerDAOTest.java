@@ -356,6 +356,14 @@ public class ManagerDAOTest {
 		assertEquals("23-04-1997", m.getBirthday());
 	}
 	
+	@Test
+	@Required(percentile90 = 3000)
+	public void testGetSessionCode() throws Exception {
+
+		assertEquals("S15", managerDAO.getSessionCode("15-04-2018", "20:00", "Ready Player One"));
+	
+	}
+	
 	@AfterClass
 	public static void tearDownClass() {
 		// Clean the DB

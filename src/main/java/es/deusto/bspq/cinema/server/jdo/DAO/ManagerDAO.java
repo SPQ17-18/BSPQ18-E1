@@ -936,7 +936,7 @@ public class ManagerDAO implements IManagerDAO {
 			}
 			pm.close();
 		}
-
+	
 		return sessionCode;
 	}
 	
