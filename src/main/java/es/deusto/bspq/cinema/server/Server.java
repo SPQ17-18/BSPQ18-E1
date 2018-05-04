@@ -39,8 +39,16 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 	
 
 	public boolean deleteSession(SessionDTO sessionDTO) throws RemoteException {
+		try {
+			Session session = assembler.disassembleSessionDEL(sessionDTO);
+			dao.deleteSession(session);
+			logger.info("Deleted the session with the code " + session.getSession());
+			return true;
+		} catch (Exception e) {
+			logger.error("Error deleting the session");
+			return false;
+		}
 		
-		return false;
 	}
 
 	

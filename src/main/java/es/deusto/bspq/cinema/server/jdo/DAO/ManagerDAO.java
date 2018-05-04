@@ -566,7 +566,7 @@ public class ManagerDAO implements IManagerDAO {
 		try {
 			tx.begin();
 			Query<?> query = pm.newQuery("SELECT FROM " + Session.class.getName() + " WHERE date == '" + date
-					+ "' && hour=='" + hour + "' && film.title='" + session.getFilm().getTitle() + "'");
+					+ "' && hour=='" + hour + "' && film.title=='" + session.getFilm().getTitle() + "'");
 			query.setUnique(true);
 			Session result = (Session) query.execute();
 			session.copySession(result);
@@ -922,14 +922,14 @@ public class ManagerDAO implements IManagerDAO {
 		try {
 			tx.begin();
 			Query<?> q = pm.newQuery("SELECT FROM " + Session.class.getName() +  " WHERE date == '" + date
-					+ "' && hour=='" + hour + "' && film.title='" + film + "'");
-		
-			Session result = (Session) q.execute();
+					+ "' && hour=='" + hour + "'"+"&& film.title=='" + film + "'");
+			@SuppressWarnings("unchecked")
+			List<Session> result = (List<Session>) q.execute();
 			
-			sessionCode = result.getSession();
+			sessionCode = result.get(0).getSession();
 			tx.commit();
 		} catch (Exception ex) {
-			logger.error("Error the last session code: " + ex.getMessage());
+			logger.error("Error the session code for the method film,date,hour: " + ex.getMessage());
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
