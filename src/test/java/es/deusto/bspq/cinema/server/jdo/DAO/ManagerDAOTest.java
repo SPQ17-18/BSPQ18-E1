@@ -316,6 +316,7 @@ public class ManagerDAOTest {
 	@Test
 	@Required(totalTime = 5000)
 	public void testDeleteSession() throws Exception {
+		
 		Session session = new Session("S4", "14-04-2018", "17:00", (float) 8.90);
 		assertEquals("S4",managerDAO.getSession(session).getSession());
 		managerDAO.deleteSession(session);

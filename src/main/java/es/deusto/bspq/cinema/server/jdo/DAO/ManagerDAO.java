@@ -353,7 +353,9 @@ public class ManagerDAO implements IManagerDAO {
 
 	}
 
+	//Method for deleting the session 
 	public void deleteSession(Session session) {
+		
 		PersistenceManager pm = pmf.getPersistenceManager();
 
 		Transaction tx = pm.currentTransaction();
@@ -366,6 +368,8 @@ public class ManagerDAO implements IManagerDAO {
 			Collection<?> result = (Collection<?>) query.execute();
 
 			Session s = (Session) result.iterator().next();
+			
+			logger.info("The session we want to delete is: "+s.getSession()+ " - "+s.getDate() );
 
 			query.close(result);
 
