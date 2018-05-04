@@ -48,6 +48,7 @@ public class CMControllerTest {
 	private CMController controller;
 	private static IManagerDAO managerDAO;
 
+	//This line is for Contiperf tests
 	@Rule public ContiPerfRule rule = new ContiPerfRule();
 	
 	public static junit.framework.Test suite() {
@@ -427,6 +428,7 @@ public class CMControllerTest {
 		assertEquals(true, controller.insertSession(sessionDTO));
 	}
 
+	//This test failed in my computer
 	@Test
 	@Required(max = 120, average = 30)
 	public void testBuyTicket() {

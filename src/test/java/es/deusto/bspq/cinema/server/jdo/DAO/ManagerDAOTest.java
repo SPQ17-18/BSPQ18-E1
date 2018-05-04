@@ -24,6 +24,7 @@ public class ManagerDAOTest {
 	
 	private static ManagerDAO managerDAO;
 	
+	//We use this for Contiperf tests
 	@Rule public ContiPerfRule rule = new ContiPerfRule();
 	
 	@BeforeClass
@@ -213,6 +214,7 @@ public class ManagerDAOTest {
 		}
 	}
 	
+	//This test has to fulfil the maximum of 120 and the average 30
 	@Test
     @Required(max = 120, average = 30)
 	public void testStoreRoom() throws Exception {
@@ -286,6 +288,7 @@ public class ManagerDAOTest {
 		assertEquals(0, managerDAO.getRoom(2).getRoomNumber());
 	}
 	
+	//This test failed in my computer
 	@Test
 	@Required(max = 120, average = 30)
 	public void testDeleteFilm() throws Exception {
