@@ -1,6 +1,5 @@
 package es.deusto.bspq.cinema.client.gui;
 
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
@@ -28,6 +27,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ResourceBundle;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.Color;
@@ -62,9 +62,12 @@ public class MIWindow extends JFrame {
 	private JCheckBox chckbxDelete;
 	private JLabel lblInfo;
 	
-	public MIWindow(CMController controller, String loginUser) {
+	ResourceBundle messages;
+	
+	public MIWindow(CMController controller, ResourceBundle messages, String loginUser) {
 		this.controller = controller;
 		this.loginUser = loginUser;
+		this.messages = messages;
 		initComponents();
 	}
 
@@ -76,16 +79,16 @@ public class MIWindow extends JFrame {
 			}
 		});
 		
-		setTitle("Member Info");
+		setTitle(messages.getString("memberInfo"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		panelActions = new JPanel();
 		getContentPane().add(panelActions, BorderLayout.SOUTH);
-		panelActions.setBorder(new TitledBorder(null, "Actions", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelActions.setBorder(new TitledBorder(null, messages.getString("actions"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelActions.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		labelPass = new JLabel("Password");
+		labelPass = new JLabel(messages.getString("password"));
 		panelActions.add(labelPass);
 		
 		passwordField = new JPasswordField();
@@ -97,7 +100,7 @@ public class MIWindow extends JFrame {
 		passwordField.setColumns(12);
 		panelActions.add(passwordField);
 		
-		btnAction = new JButton("Delete");
+		btnAction = new JButton(messages.getString("delete"));
 		btnAction.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
 				if (chckbxDelete.isSelected()) {
@@ -105,22 +108,22 @@ public class MIWindow extends JFrame {
 						controller.cancelMembership(loginUser, String.valueOf(passwordField.getPassword()));
 						logger.info("Membership canceled for "+ loginUser);
 					} else {
-						lblInfo.setText("Wrong Password");
+						lblInfo.setText(messages.getString("wrongPassword"));
 						lblInfo.setVisible(true);
 					}
 				}
 				else {
-					lblInfo.setText("Checkbox not selected");
+					lblInfo.setText(messages.getString("checkboxNotSelected"));
 					lblInfo.setVisible(true);
 				}
 			}
 		});
 		panelActions.add(btnAction);
 		
-		btnCancel = new JButton("Cancel");
+		btnCancel = new JButton(messages.getString("cancel"));
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				CMWindow cmWindow = new CMWindow(controller, loginUser);
+				CMWindow cmWindow = new CMWindow(controller, messages, loginUser);
 				cmWindow.centreWindow();
 				cmWindow.setVisible(true);
 				dispose();
@@ -130,7 +133,7 @@ public class MIWindow extends JFrame {
 		
 		panelInfo = new JPanel();
 		getContentPane().add(panelInfo, BorderLayout.CENTER);
-		panelInfo.setBorder(new TitledBorder(null, "Info", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelInfo.setBorder(new TitledBorder(null, messages.getString("info"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagLayout gbl_panelInfo = new GridBagLayout();
 		gbl_panelInfo.columnWidths = new int[]{0, 0, 0};
 		gbl_panelInfo.rowHeights = new int[] {0, 0, 0, 0, 0, 0};
@@ -145,7 +148,7 @@ public class MIWindow extends JFrame {
 		gbc_lblEmail.gridy = 0;
 		panelInfo.add(lblEmail, gbc_lblEmail);
 		
-		lblName = new JLabel("Name");
+		lblName = new JLabel(messages.getString("name"));
 		GridBagConstraints gbc_lblName = new GridBagConstraints();
 		gbc_lblName.anchor = GridBagConstraints.WEST;
 		gbc_lblName.insets = new Insets(0, 0, 5, 5);
@@ -162,7 +165,7 @@ public class MIWindow extends JFrame {
 		gbc_textField.gridy = 1;
 		panelInfo.add(textField, gbc_textField);
 		
-		lblSurname = new JLabel("Surname");
+		lblSurname = new JLabel(messages.getString("surname"));
 		GridBagConstraints gbc_lblSurname = new GridBagConstraints();
 		gbc_lblSurname.anchor = GridBagConstraints.WEST;
 		gbc_lblSurname.insets = new Insets(0, 0, 5, 5);
@@ -179,7 +182,7 @@ public class MIWindow extends JFrame {
 		gbc_textField_1.gridy = 2;
 		panelInfo.add(textField_1, gbc_textField_1);
 		
-		lblBirthDay = new JLabel("Birthday");
+		lblBirthDay = new JLabel(messages.getString("birthday"));
 		GridBagConstraints gbc_lblBirthDay = new GridBagConstraints();
 		gbc_lblBirthDay.anchor = GridBagConstraints.WEST;
 		gbc_lblBirthDay.insets = new Insets(0, 0, 5, 5);
@@ -197,7 +200,7 @@ public class MIWindow extends JFrame {
 		gbc_textField_2.gridy = 3;
 		panelInfo.add(textField_2, gbc_textField_2);
 		
-		lblPoints = new JLabel("Points");
+		lblPoints = new JLabel(messages.getString("points"));
 		GridBagConstraints gbc_lblPoints = new GridBagConstraints();
 		gbc_lblPoints.anchor = GridBagConstraints.WEST;
 		gbc_lblPoints.insets = new Insets(0, 0, 5, 5);
@@ -212,7 +215,7 @@ public class MIWindow extends JFrame {
 		gbc_lblPointsShow.gridy = 4;
 		panelInfo.add(lblPointsShow, gbc_lblPointsShow);
 		
-		chckbxDelete = new JCheckBox("I wish to delete my account");
+		chckbxDelete = new JCheckBox(messages.getString("wishToDeleteAccount"));
 		
 		lblInfo = new JLabel("");
 		lblInfo.setForeground(Color.RED);

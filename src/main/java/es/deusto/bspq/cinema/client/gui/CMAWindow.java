@@ -21,7 +21,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
+import java.util.ResourceBundle;
 import java.awt.GridBagLayout;
 import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
@@ -66,10 +66,12 @@ public class CMAWindow extends JFrame {
 	private JTabbedPane tabbedPaneDelete = new JTabbedPane(JTabbedPane.TOP);
 	private JPanel panelDeleteSession = new JPanel();
 	private JComboBox comboBoxDeleteSession = new JComboBox(foo);
-	private JButton btnDeleteSession = new JButton("Delete");
+	private JButton btnDeleteSession;
 	private JPanel panelDeleteFilm = new JPanel();
 	private JComboBox comboBoxDeleteFilm = new JComboBox(foo);
-	private JButton btnDeleteFilm = new JButton("Delete");
+	private JButton btnDeleteFilm;
+	private JButton btnUpdate;
+	private JButton btnInsert;
 	private final JPanel panelInsertFilm = new JPanel();
 	private final JTextField textFieldInsertFilmTitle = new JTextField();
 	private final JTextField textFieldInsertFilmTitle_Edit = new JTextField();
@@ -82,7 +84,6 @@ public class CMAWindow extends JFrame {
 	private final JTextField textFieldInsertFilmCountry = new JTextField();
 	private final JTextField textFieldInsertFilmCountry_Edit = new JTextField();
 	private final JPanel panelInsertButton = new JPanel();
-	private final JButton btnInsert = new JButton("Insert");
 	private final JPanel panelInsertSession = new JPanel();
 	private final JTextField textFieldInsertSessionFilm = new JTextField();
 	private final JTextField textFieldInsertSessionFilm_Edit = new JTextField();
@@ -115,7 +116,6 @@ public class CMAWindow extends JFrame {
 	private final JTextField textFieldUpdateFilmCountry = new JTextField();
 	private final JTextField textFieldUpdateFilmCountry_Edit = new JTextField();
 	private final JPanel panelUpdateButton = new JPanel();
-	private final JButton btnUpdate = new JButton("Update");
 	private final JPanel panelInsertSessionPrice = new JPanel();
 	private final JSpinner spinnerInsertFilmPrice = new JSpinner();
 	private final JPanel panelInsertSessionHour = new JPanel();
@@ -125,11 +125,14 @@ public class CMAWindow extends JFrame {
 	private final JSpinner spinnerInsertSessionRoom = new JSpinner();
 	
 	private JPanel panelOptions = new JPanel();
-	private final JButton btnManageMembers = new JButton("Go to Manage Memberships");
+	private JButton btnManageMembers;
+	
+	ResourceBundle messages;
 
-	public CMAWindow(CMController controller, String loginUser) {
+	public CMAWindow(CMController controller, ResourceBundle messages, String loginUser) {
 		this.controller = controller;
 		this.loginUser = loginUser;
+		this.messages = messages;
 		initComponents();
 	}
 
@@ -150,7 +153,7 @@ public class CMAWindow extends JFrame {
 		textFieldInsertSessionDate_Edit.setColumns(10);
 		panelCentral.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		panelInsert.setBorder(new TitledBorder(null, "Insert", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelInsert.setBorder(new TitledBorder(null, messages.getString("insert"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelCentral.add(panelInsert);
 		panelCentral.setMaximumSize(new Dimension(600, 120));
 		panelInsert.setLayout(new BorderLayout(0, 0));
@@ -162,6 +165,11 @@ public class CMAWindow extends JFrame {
 		
 		panelInsert.add(tabbedPaneInsert);
 		panelInsertSession.setBorder(null);
+		
+		btnUpdate = new JButton(messages.getString("update"));
+		btnInsert = new JButton(messages.getString("insert"));
+		btnDeleteFilm = new JButton(messages.getString("delete"));
+		btnDeleteSession = new JButton(messages.getString("delete"));
 		
 		tabbedPaneInsert.addTab("Session", null, panelInsertSession, null);
 		GridBagLayout gbl_panelInsertSession = new GridBagLayout();
@@ -176,7 +184,7 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldInsertSessionFilm.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldInsertSessionFilm.gridx = 0;
 		gbc_textFieldInsertSessionFilm.gridy = 0;
-		textFieldInsertSessionFilm.setText("Film");
+		textFieldInsertSessionFilm.setText(messages.getString("film"));
 		textFieldInsertSessionFilm.setEditable(false);
 		textFieldInsertSessionFilm.setColumns(10);
 		panelInsertSession.add(textFieldInsertSessionFilm, gbc_textFieldInsertSessionFilm);
@@ -194,7 +202,7 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldInsertSessionRoom.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldInsertSessionRoom.gridx = 0;
 		gbc_textFieldInsertSessionRoom.gridy = 1;
-		textFieldInsertSessionRoom.setText("Room");
+		textFieldInsertSessionRoom.setText(messages.getString("room"));
 		textFieldInsertSessionRoom.setEditable(false);
 		textFieldInsertSessionRoom.setColumns(10);
 		panelInsertSession.add(textFieldInsertSessionRoom, gbc_textFieldInsertSessionRoom);
@@ -216,7 +224,7 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldInsertSessionDate.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldInsertSessionDate.gridx = 0;
 		gbc_textFieldInsertSessionDate.gridy = 2;
-		textFieldInsertSessionDate.setText("Date");
+		textFieldInsertSessionDate.setText(messages.getString("date"));
 		textFieldInsertSessionDate.setEditable(false);
 		textFieldInsertSessionDate.setColumns(10);
 		panelInsertSession.add(textFieldInsertSessionDate, gbc_textFieldInsertSessionDate);
@@ -233,7 +241,7 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldInsertSessionHour.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldInsertSessionHour.gridx = 0;
 		gbc_textFieldInsertSessionHour.gridy = 3;
-		textFieldInsertSessionHour.setText("Hour");
+		textFieldInsertSessionHour.setText(messages.getString("hour"));
 		textFieldInsertSessionHour.setEditable(false);
 		textFieldInsertSessionHour.setColumns(10);
 		panelInsertSession.add(textFieldInsertSessionHour, gbc_textFieldInsertSessionHour);
@@ -298,7 +306,7 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldInsertFilmTitle.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldInsertFilmTitle.gridx = 0;
 		gbc_textFieldInsertFilmTitle.gridy = 0;
-		textFieldInsertFilmTitle.setText("Title");
+		textFieldInsertFilmTitle.setText(messages.getString("title"));
 		textFieldInsertFilmTitle.setEditable(false);
 		textFieldInsertFilmTitle.setColumns(10);
 		panelInsertFilm.add(textFieldInsertFilmTitle, gbc_textFieldInsertFilmTitle);
@@ -321,7 +329,7 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldInsertFilmDirector.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldInsertFilmDirector.gridx = 0;
 		gbc_textFieldInsertFilmDirector.gridy = 1;
-		textFieldInsertFilmDirector.setText("Director");
+		textFieldInsertFilmDirector.setText(messages.getString("director"));
 		textFieldInsertFilmDirector.setEditable(false);
 		textFieldInsertFilmDirector.setColumns(10);
 		panelInsertFilm.add(textFieldInsertFilmDirector, gbc_textFieldInsertFilmDirector);
@@ -344,7 +352,7 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldInsertFilmRating.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldInsertFilmRating.gridx = 0;
 		gbc_textFieldInsertFilmRating.gridy = 2;
-		textFieldInsertFilmRating.setText("Rating");
+		textFieldInsertFilmRating.setText(messages.getString("rating"));
 		textFieldInsertFilmRating.setEditable(false);
 		textFieldInsertFilmRating.setColumns(10);
 		panelInsertFilm.add(textFieldInsertFilmRating, gbc_textFieldInsertFilmRating);
@@ -360,7 +368,7 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldInsertFilmDuration.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldInsertFilmDuration.gridx = 0;
 		gbc_textFieldInsertFilmDuration.gridy = 3;
-		textFieldInsertFilmDuration.setText("Duration (mins)");
+		textFieldInsertFilmDuration.setText(messages.getString("duration") + " (mins)");
 		textFieldInsertFilmDuration.setEditable(false);
 		textFieldInsertFilmDuration.setColumns(10);
 		panelInsertFilm.add(textFieldInsertFilmDuration, gbc_textFieldInsertFilmDuration);
@@ -382,7 +390,7 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldInsertFilmCountry.insets = new Insets(0, 0, 0, 5);
 		gbc_textFieldInsertFilmCountry.gridx = 0;
 		gbc_textFieldInsertFilmCountry.gridy = 4;
-		textFieldInsertFilmCountry.setText("Country");
+		textFieldInsertFilmCountry.setText(messages.getString("country"));
 		textFieldInsertFilmCountry.setEditable(false);
 		textFieldInsertFilmCountry.setColumns(10);
 		panelInsertFilm.add(textFieldInsertFilmCountry, gbc_textFieldInsertFilmCountry);
@@ -418,14 +426,14 @@ public class CMAWindow extends JFrame {
 		});
 		panelInsertButton.add(btnInsert);
 		
-		panelUpdate.setBorder(new TitledBorder(null, "Update", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelUpdate.setBorder(new TitledBorder(null, messages.getString("update"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelCentral.add(panelUpdate);
 		panelUpdate.setLayout(new BorderLayout(0, 0));
 		
 		panelUpdate.add(tabbedPaneUpdate);
 		panelUpdateSession.setBorder(null);
 		
-		tabbedPaneUpdate.addTab("Session", null, panelUpdateSession, null);
+		tabbedPaneUpdate.addTab(messages.getString("session"), null, panelUpdateSession, null);
 		GridBagLayout gbl_panelUpdateSession = new GridBagLayout();
 		gbl_panelUpdateSession.columnWidths = new int[]{86, 158, 0};
 		gbl_panelUpdateSession.rowHeights = new int[]{0, 20, 20, 20, 20, 20, 0};
@@ -445,7 +453,7 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldUpdateSessionFilm.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldUpdateSessionFilm.gridx = 0;
 		gbc_textFieldUpdateSessionFilm.gridy = 1;
-		textFieldUpdateSessionFilm.setText("Film");
+		textFieldUpdateSessionFilm.setText(messages.getString("film"));
 		textFieldUpdateSessionFilm.setEditable(false);
 		textFieldUpdateSessionFilm.setColumns(10);
 		panelUpdateSession.add(textFieldUpdateSessionFilm, gbc_textFieldUpdateSessionFilm);
@@ -463,7 +471,7 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldUpdateSessionRoom.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldUpdateSessionRoom.gridx = 0;
 		gbc_textFieldUpdateSessionRoom.gridy = 2;
-		textFieldUpdateSessionRoom.setText("Room");
+		textFieldUpdateSessionRoom.setText(messages.getString("room"));
 		textFieldUpdateSessionRoom.setEditable(false);
 		textFieldUpdateSessionRoom.setColumns(10);
 		panelUpdateSession.add(textFieldUpdateSessionRoom, gbc_textFieldUpdateSessionRoom);
@@ -481,7 +489,7 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldUpdateSessionDate.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldUpdateSessionDate.gridx = 0;
 		gbc_textFieldUpdateSessionDate.gridy = 3;
-		textFieldUpdateSessionDate.setText("Date");
+		textFieldUpdateSessionDate.setText(messages.getString("date"));
 		textFieldUpdateSessionDate.setEditable(false);
 		textFieldUpdateSessionDate.setColumns(10);
 		panelUpdateSession.add(textFieldUpdateSessionDate, gbc_textFieldUpdateSessionDate);
@@ -500,7 +508,7 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldUpdateSessionHour.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldUpdateSessionHour.gridx = 0;
 		gbc_textFieldUpdateSessionHour.gridy = 4;
-		textFieldUpdateSessionHour.setText("Hour");
+		textFieldUpdateSessionHour.setText(messages.getString("hour"));
 		textFieldUpdateSessionHour.setEditable(false);
 		textFieldUpdateSessionHour.setColumns(10);
 		panelUpdateSession.add(textFieldUpdateSessionHour, gbc_textFieldUpdateSessionHour);
@@ -519,7 +527,7 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldUpdateSessionPrice.insets = new Insets(0, 0, 0, 5);
 		gbc_textFieldUpdateSessionPrice.gridx = 0;
 		gbc_textFieldUpdateSessionPrice.gridy = 5;
-		textFieldUpdateSessionPrice.setText("Price");
+		textFieldUpdateSessionPrice.setText(messages.getString("price"));
 		textFieldUpdateSessionPrice.setEditable(false);
 		textFieldUpdateSessionPrice.setColumns(10);
 		panelUpdateSession.add(textFieldUpdateSessionPrice, gbc_textFieldUpdateSessionPrice);
@@ -533,7 +541,7 @@ public class CMAWindow extends JFrame {
 		panelUpdateSession.add(textFieldUpdateSession_Price, gbc_textFieldUpdateSession_Price);
 		panelUpdateFilm.setBorder(null);
 		
-		tabbedPaneUpdate.addTab("Film", null, panelUpdateFilm, null);
+		tabbedPaneUpdate.addTab(messages.getString("film"), null, panelUpdateFilm, null);
 		GridBagLayout gbl_panelUpdateFilm = new GridBagLayout();
 		gbl_panelUpdateFilm.columnWidths = new int[]{0, 0, 0};
 		gbl_panelUpdateFilm.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
@@ -552,7 +560,7 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldUpdateFilmTitle.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldUpdateFilmTitle.gridx = 0;
 		gbc_textFieldUpdateFilmTitle.gridy = 1;
-		textFieldUpdateFilmTitle.setText("Title");
+		textFieldUpdateFilmTitle.setText(messages.getString("title"));
 		textFieldUpdateFilmTitle.setEditable(false);
 		textFieldUpdateFilmTitle.setColumns(10);
 		panelUpdateFilm.add(textFieldUpdateFilmTitle, gbc_textFieldUpdateFilmTitle);
@@ -569,7 +577,7 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldUpdateFilmDirector.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldUpdateFilmDirector.gridx = 0;
 		gbc_textFieldUpdateFilmDirector.gridy = 2;
-		textFieldUpdateFilmDirector.setText("Director");
+		textFieldUpdateFilmDirector.setText(messages.getString("director"));
 		textFieldUpdateFilmDirector.setEditable(false);
 		textFieldUpdateFilmDirector.setColumns(10);
 		panelUpdateFilm.add(textFieldUpdateFilmDirector, gbc_textFieldUpdateFilmDirector);
@@ -586,7 +594,7 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldUpdateFilmRating.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldUpdateFilmRating.gridx = 0;
 		gbc_textFieldUpdateFilmRating.gridy = 3;
-		textFieldUpdateFilmRating.setText("Rating");
+		textFieldUpdateFilmRating.setText(messages.getString("rating"));
 		textFieldUpdateFilmRating.setEditable(false);
 		textFieldUpdateFilmRating.setColumns(10);
 		panelUpdateFilm.add(textFieldUpdateFilmRating, gbc_textFieldUpdateFilmRating);
@@ -602,7 +610,7 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldUpdateFilmDuration.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldUpdateFilmDuration.gridx = 0;
 		gbc_textFieldUpdateFilmDuration.gridy = 4;
-		textFieldUpdateFilmDuration.setText("Duration (mins)");
+		textFieldUpdateFilmDuration.setText(messages.getString("duration") + " (mins)");
 		textFieldUpdateFilmDuration.setEditable(false);
 		textFieldUpdateFilmDuration.setColumns(10);
 		panelUpdateFilm.add(textFieldUpdateFilmDuration, gbc_textFieldUpdateFilmDuration);
@@ -618,7 +626,7 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldUpdateFilmCountry.insets = new Insets(0, 0, 0, 5);
 		gbc_textFieldUpdateFilmCountry.gridx = 0;
 		gbc_textFieldUpdateFilmCountry.gridy = 5;
-		textFieldUpdateFilmCountry.setText("Country");
+		textFieldUpdateFilmCountry.setText(messages.getString("country"));
 		textFieldUpdateFilmCountry.setEditable(false);
 		textFieldUpdateFilmCountry.setColumns(10);
 		panelUpdateFilm.add(textFieldUpdateFilmCountry, gbc_textFieldUpdateFilmCountry);
@@ -634,12 +642,12 @@ public class CMAWindow extends JFrame {
 		
 		panelUpdateButton.add(btnUpdate);
 		
-		panelDelete.setBorder(new TitledBorder(null, "Delete", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelDelete.setBorder(new TitledBorder(null, messages.getString("delete"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelCentral.add(panelDelete);
 		
 		panelDelete.add(tabbedPaneDelete);
 		
-		tabbedPaneDelete.addTab("Session", null, panelDeleteSession, null);
+		tabbedPaneDelete.addTab(messages.getString("session"), null, panelDeleteSession, null);
 		
 		panelDeleteSession.add(comboBoxDeleteSession);
 		btnDeleteSession.addMouseListener(new MouseAdapter() {
@@ -651,7 +659,7 @@ public class CMAWindow extends JFrame {
 		
 		panelDeleteSession.add(btnDeleteSession);
 		
-		tabbedPaneDelete.addTab("Film", null, panelDeleteFilm, null);
+		tabbedPaneDelete.addTab(messages.getString("film"), null, panelDeleteFilm, null);
 		
 		panelDeleteFilm.add(comboBoxDeleteFilm);
 		btnDeleteFilm.addMouseListener(new MouseAdapter() {
@@ -662,14 +670,14 @@ public class CMAWindow extends JFrame {
 		});
 		panelDeleteFilm.add(btnDeleteFilm);
 		
+		btnManageMembers = new JButton(messages.getString("goToManageMemberships"));
 		btnManageMembers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				buttonManageMembersActionPerformed(evt);
 			}
 		});
-		panelOptions.add(new JLabel("OPTIONS: "), BorderLayout.SOUTH);
+		panelOptions.add(new JLabel(messages.getString("options") + ": "), BorderLayout.SOUTH);
 		panelOptions.add(btnManageMembers, BorderLayout.SOUTH);
-		
 		
 		pack();
 	}
@@ -699,7 +707,7 @@ public class CMAWindow extends JFrame {
 	}
 	
 	private void buttonManageMembersActionPerformed(ActionEvent evt) {
-		MMWindow mmWindow = new MMWindow(controller, loginUser);
+		MMWindow mmWindow = new MMWindow(controller, messages, loginUser);
 		mmWindow.centreWindow();
 		mmWindow.setVisible(true);
 		dispose();

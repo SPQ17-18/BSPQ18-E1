@@ -8,6 +8,7 @@ import es.deusto.bspq.cinema.client.controller.CMController;
 import es.deusto.bspq.cinema.server.jdo.data.MemberDTO;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ResourceBundle;
 
 public class RMWindow extends JFrame implements ActionListener {
 	
@@ -25,9 +26,12 @@ public class RMWindow extends JFrame implements ActionListener {
 	
 	// App controller
 	private CMController controller;
+	
+	ResourceBundle messages;
 
-	public RMWindow(CMController controller) {
+	public RMWindow(CMController controller, ResourceBundle messages) {
 		this.controller = controller;
+		this.messages = messages;
 		initComponents();
 	}
 	
@@ -44,25 +48,25 @@ public class RMWindow extends JFrame implements ActionListener {
 		buttons = new JPanel();
 		fields = new JPanel();
 		password = new JPanel();
-		l2 = new JLabel("Name:");
-		l3 = new JLabel("Surname:");
-		l4 = new JLabel("Email:");
-		l5 = new JLabel("Create Password:");
-		l6 = new JLabel("Confirm Password:");
-		l7 = new JLabel("Birthday:");
+		l2 = new JLabel(messages.getString("name") + ":");
+		l3 = new JLabel(messages.getString("surname") + ":");
+		l4 = new JLabel(messages.getString("email") + ":");
+		l5 = new JLabel(messages.getString("createPassword") + ":");
+		l6 = new JLabel(messages.getString("confirmPassword") + ":");
+		l7 = new JLabel(messages.getString("birthday") + ":");
 		tf1 = new JTextField();
 		tf2 = new JTextField();
 		tf3 = new JTextField();
 		tf4 = new JTextField();
 		p1 = new JPasswordField();
 		p2 = new JPasswordField();
-		btn1 = new JButton("Submit");
-		btn2 = new JButton("Clear");
+		btn1 = new JButton(messages.getString("submit"));
+		btn2 = new JButton(messages.getString("clear"));
 
 		btn1.addActionListener(this);
 		btn2.addActionListener(this);
 
-		l1 = new JLabel("Register as a Member");
+		l1 = new JLabel(messages.getString("registerAsAMember"));
 		l1.setForeground(Color.black);
 		
 		buttons.add(btn1);
@@ -115,7 +119,7 @@ public class RMWindow extends JFrame implements ActionListener {
 
 			if ((tf1.getText().equals("")) || (tf2.getText().equals("")) || (tf3.getText().equals(""))
 					|| (tf4.getText().equals("") || (s4.isEmpty()) || s5.isEmpty())) {
-				JOptionPane.showMessageDialog(btn1, "Fields are empty");
+				JOptionPane.showMessageDialog(btn1, messages.getString("emptyFields"));
 			} 
 			else {
 				if ((s4.equals(s5)) && (!(s4.isEmpty()) || !(s5.isEmpty()))) {
@@ -135,7 +139,7 @@ public class RMWindow extends JFrame implements ActionListener {
 					}
 				} 
 				else {
-					JOptionPane.showMessageDialog(btn1, "Passwords do not match");
+					JOptionPane.showMessageDialog(btn1, messages.getString("passwordsMatch"));
 				}
 			}
 		} 

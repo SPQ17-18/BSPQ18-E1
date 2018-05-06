@@ -11,6 +11,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.rmi.RemoteException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -47,7 +49,9 @@ public class LoginWindow extends JDialog {
 	private JButton btnCancel;
 	private JButton btnRegister;
 	private JTabbedPane tabbedPane;
- 
+	
+	ResourceBundle messages;
+	
 	public LoginWindow(String args[]) {
 		try {
 			controller = new CMController(args);
@@ -55,6 +59,10 @@ public class LoginWindow extends JDialog {
 			logger.error("Remote exception: " + e.getMessage());
 			e.printStackTrace();
 		}
+		String language = new String(args[3]);
+		String country = new String(args[4]);
+		Locale currentLocale = new Locale(language, country);
+		messages = ResourceBundle.getBundle("lang/messages", currentLocale);
 		initComponents();
 	}
 	
@@ -70,13 +78,13 @@ public class LoginWindow extends JDialog {
 		JPanel panelMember = new JPanel(new GridBagLayout());
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.addTab("Employee", null, panelEmployee, null);
-		tabbedPane.addTab("Member", null, panelMember, null);
+		tabbedPane.addTab(messages.getString("employee"), null, panelEmployee, null);
+		tabbedPane.addTab(messages.getString("member"), null, panelMember, null);
 	 
 		GridBagConstraints cs = new GridBagConstraints();
 		cs.fill = GridBagConstraints.HORIZONTAL;
  
-		lbEmailM = new JLabel("Email: ");
+		lbEmailM = new JLabel(messages.getString("email") + ": ");
 		cs.gridx = 0;
 		cs.gridy = 0;
 		cs.gridwidth = 1;
@@ -89,7 +97,7 @@ public class LoginWindow extends JDialog {
 		cs.gridwidth = 2;
 		panelMember.add(tfEmailM, cs);
  
-		lbPasswordM = new JLabel("Password: ");
+		lbPasswordM = new JLabel(messages.getString("password") + ": ");
 		cs.gridx = 0;
 		cs.gridy = 1;
 		cs.gridwidth = 1;
@@ -104,7 +112,7 @@ public class LoginWindow extends JDialog {
         
 		cs.fill = GridBagConstraints.HORIZONTAL;
  
-		lbUsernameE = new JLabel("Username: ");
+		lbUsernameE = new JLabel(messages.getString("username") + ": ");
 		cs.gridx = 0;
 		cs.gridy = 0;
 		cs.gridwidth = 1;
@@ -116,7 +124,7 @@ public class LoginWindow extends JDialog {
 		cs.gridwidth = 2;
 		panelEmployee.add(tfUsernameE, cs);
  
-		lbPasswordE = new JLabel("Password: ");
+		lbPasswordE = new JLabel(messages.getString("password") + ": ");
 		cs.gridx = 0;
 		cs.gridy = 1;
 		cs.gridwidth = 1;
@@ -129,25 +137,25 @@ public class LoginWindow extends JDialog {
 		panelEmployee.add(pfPasswordE, cs);
 		panelEmployee.setBorder(new LineBorder(Color.GRAY));
  
-		btnLogin = new JButton("Sign in");
+		btnLogin = new JButton(messages.getString("signIn"));
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (tabbedPane.getSelectedIndex() == 0) {
 					if (controller.identifyEmployee(tfUsernameE.getText().trim(), String.valueOf(pfPasswordE.getPassword()))) {
 						JOptionPane.showMessageDialog(LoginWindow.this,
-								"Hi " + tfUsernameE.getText().trim() + "! You have successfully logged in Cinema Manager as an employee.",
+								messages.getString("greetings") + " " + tfUsernameE.getText().trim() + "! " + messages.getString("welcomeMessage") + " " + messages.getString("employee"),
 								"Login",
 								JOptionPane.INFORMATION_MESSAGE);
 						logger.info("Successfully logged as an employee.");
-						CMAWindow cmaWindow = new CMAWindow(controller, tfUsernameE.getText().trim());
+						CMAWindow cmaWindow = new CMAWindow(controller, messages, tfUsernameE.getText().trim());
 						cmaWindow.centreWindow();
 						cmaWindow.setVisible(true);
 						dispose();
 					}
 					else {
 						JOptionPane.showMessageDialog(LoginWindow.this,
-								"Wrong username or password.",
-								"Bad credentials",
+								messages.getString("wrongSignIn"),
+								messages.getString("badCredentials"),
 								JOptionPane.INFORMATION_MESSAGE);
 						logger.info("Wrong username or password: " + tfUsernameE.getText().trim() + " " +  String.valueOf(pfPasswordE.getPassword()));
 					}
@@ -155,19 +163,19 @@ public class LoginWindow extends JDialog {
 				else {
 					if (controller.identifyMember(tfEmailM.getText().trim(), String.valueOf(pfPasswordM.getPassword()))) {
 						JOptionPane.showMessageDialog(LoginWindow.this,
-								"Hi " + tfEmailM.getText().trim() + "! You have successfully logged in Cinema Manager as a member.",
+								messages.getString("greetings") + " " + tfEmailM.getText().trim() + "! " + messages.getString("welcomeMessage") + " " + messages.getString("member"),
 								"Login",
 								JOptionPane.INFORMATION_MESSAGE);
 						logger.info("Successfully logged as a member.");
-						CMWindow cmWindow = new CMWindow(controller, tfEmailM.getText().trim());
+						CMWindow cmWindow = new CMWindow(controller, messages, tfEmailM.getText().trim());
 						cmWindow.centreWindow();
 						cmWindow.setVisible(true);
 						dispose();
 					}
 					else {
 						JOptionPane.showMessageDialog(LoginWindow.this,
-								"Wrong email or password.",
-								"Bad credentials",
+								messages.getString("wrongSignIn"),
+								messages.getString("badCredentials"),
 								JOptionPane.INFORMATION_MESSAGE);
 						logger.info("Wrong email or password: " + tfEmailM.getText().trim() + " " +  String.valueOf(pfPasswordM.getPassword()));
 					}
@@ -175,17 +183,17 @@ public class LoginWindow extends JDialog {
 		    }
 		});
 		
-		btnCancel = new JButton("Cancel");
+		btnCancel = new JButton(messages.getString("cancel"));
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
 		
-		btnRegister = new JButton("Register");
+		btnRegister = new JButton(messages.getString("register"));
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RMWindow rmWindow = new RMWindow(controller);
+				RMWindow rmWindow = new RMWindow(controller, messages);
 				rmWindow.centreWindow();
 				rmWindow.setVisible(true);
 				dispose();
