@@ -10,6 +10,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -81,10 +82,13 @@ public class CMWindow extends JFrame {
 	private JPanel panelOptions;
 	private JButton btnManageMembership;
 	private JLabel lblOptions;
+	
+	ResourceBundle messages;
 
-	public CMWindow(CMController controller, String loginEmail) {
+	public CMWindow(CMController controller, ResourceBundle messages, String loginEmail) {
 		this.controller = controller;
 		this.loginEmail = loginEmail;
+		this.messages = messages;
 		initComponents();
 		sessionsList = new DefaultListModel<String>();
 		seatList = new DefaultListModel<String>();
@@ -127,15 +131,15 @@ public class CMWindow extends JFrame {
 		buttonAddSeat = new JButton();
 
 		panelTickets.setLayout(new GridLayout(1, 2));
-		panelTickets.setBorder(new TitledBorder(new EtchedBorder(), "Ticket Section")); 
+		panelTickets.setBorder(new TitledBorder(new EtchedBorder(), messages.getString("ticketSection"))); 
 		panelSeats.setLayout(new BorderLayout());
-		panelSeats.setBorder(new TitledBorder("Seats"));
+		panelSeats.setBorder(new TitledBorder(messages.getString("seats")));
 		scrollSeats.setPreferredSize(new Dimension(100, 110));
 		scrollSeats.setViewportView(seatList1);
 		panelSeats.add(scrollSeats, BorderLayout.CENTER);
 		panelTickets.add(panelSeats);
 				
-		panelControlM.setBorder(new TitledBorder(new TitledBorder(""), "Buy a Ticket"));
+		panelControlM.setBorder(new TitledBorder(new TitledBorder(""), messages.getString("buyTicket")));
 		panelControlM.setLayout(new GridLayout(1, 2));
 
 		panelUserTicketFields.setPreferredSize(new Dimension(250, 60));
@@ -143,14 +147,14 @@ public class CMWindow extends JFrame {
 		panelControlM.add(panelUserTicketFields);
 										
 		panelButton.setPreferredSize(new Dimension(250, 36));
-		buttonBuy.setText("Buy");
+		buttonBuy.setText(messages.getString("buy"));
 		buttonBuy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				buttonBuyActionPerformed(evt);
 			}
 		});
 		
-		buttonAddSeat.setText("Add Seat");
+		buttonAddSeat.setText(messages.getString("addSeat"));
 		buttonAddSeat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				buttonAddSeatActionPerformed(evt);
@@ -176,7 +180,7 @@ public class CMWindow extends JFrame {
 		buttonSearchAll = new JButton();
 												
 		panelSessions.setLayout(new GridLayout(1, 2));
-		panelSessions.setBorder(new TitledBorder(new EtchedBorder(), "Session Section"));
+		panelSessions.setBorder(new TitledBorder(new EtchedBorder(), messages.getString("sessionSection")));
 
 		sessionsList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		sessionsList1.addListSelectionListener(listSelectionListener);
@@ -185,46 +189,46 @@ public class CMWindow extends JFrame {
 		scrollSessions.setViewportView(sessionsList1);
 		
 		panelListSessions.setLayout(new BorderLayout());
-		panelListSessions.setBorder(new TitledBorder("Session List"));
+		panelListSessions.setBorder(new TitledBorder(messages.getString("sessionList")));
 		panelListSessions.add(scrollSessions, BorderLayout.CENTER);
 		
 		panelSessions.add(panelListSessions);
 		panelControlP.setLayout(new BorderLayout());
-		panelControlP.setBorder(new TitledBorder(new TitledBorder(""), "Search Settings"));
-		jLabel3.setText("Film:");
+		panelControlP.setBorder(new TitledBorder(new TitledBorder(""), messages.getString("searchSettings")));
+		jLabel3.setText(messages.getString("film") + ":");
 		panelFilm.add(jLabel3);
 																		
 		film.setColumns(5);
 		panelFilm.add(film);
 		
-		tabsTable.addTab("Name", panelFilm);
+		tabsTable.addTab(messages.getString("name"), panelFilm);
 		
-		jLabel2.setText("Hour (hh:mm): ");
+		jLabel2.setText(messages.getString("hour") + " (hh:mm): ");
 		panelHour.add(jLabel2);
 			
 		hour.setColumns(5);
 		panelHour.add(hour);
 					
-		tabsTable.addTab("Hour", panelHour);
+		tabsTable.addTab(messages.getString("hour"), panelHour);
 							
-		jLabel1.setText("Date (dd-mm-aaaa): ");
+		jLabel1.setText(messages.getString("date") + " (dd-mm-aaaa): ");
 		panelDate.add(jLabel1);
 									
 		date.setColumns(10);
 		panelDate.add(date);
 											
-		tabsTable.addTab("Date", panelDate);
+		tabsTable.addTab(messages.getString("date"), panelDate);
 													
 		panelControlP.add(tabsTable, BorderLayout.CENTER);
 															
-		buttonSearch.setText("Search");
+		buttonSearch.setText(messages.getString("search"));
 		buttonSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				buttonSearchActionPerformed(evt);
 			}
 		});
 		
-		buttonSearchAll.setText("Search All Sessions");
+		buttonSearchAll.setText(messages.getString("searchAll"));
 		buttonSearchAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				buttonSearchAllActionPerformed(evt);
@@ -233,17 +237,17 @@ public class CMWindow extends JFrame {
 																			
 		panelOptions = new JPanel();
 		
-		btnManageMembership = new JButton("Manage Membership");
+		btnManageMembership = new JButton(messages.getString("manage") + messages.getString("membership"));
 		btnManageMembership.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				MIWindow miWindow = new MIWindow(controller, loginEmail);
+				MIWindow miWindow = new MIWindow(controller, messages, loginEmail);
 				miWindow.centreWindow();
 				miWindow.setVisible(true);
 				dispose();
 			}
 		});
 		
-		lblOptions = new JLabel("OPTIONS:");
+		lblOptions = new JLabel(messages.getString("options") + ":");
 		panelOptions.add(lblOptions);
 		panelOptions.add(btnManageMembership);
 	
@@ -307,7 +311,7 @@ public class CMWindow extends JFrame {
 		sessionsList.clear();
 		for (int i = 0; i < sessions.size(); i++) {
 			SessionDTO session = (SessionDTO) sessions.get(i);
-			sessionsList.addElement(session.getTitleFilm() + " HOUR: " + session.getHour() + " DATE: " + session.getDate());
+			sessionsList.addElement(session.getTitleFilm() + messages.getString("hour") + " : " + session.getHour() + messages.getString("date") + " : " + session.getDate());
 		}
 		sessionsList1.setSelectedIndex(0);
 		seatList.clear();
