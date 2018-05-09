@@ -104,6 +104,8 @@ public class Assembler {
 						films.get(i).getCountry(), seats));
 				sessionDTO.get(sessionDTO.size() - 1)
 						.setRemainingSeatsCode(obtainSeats(films.get(i).getSessions().get(j)));
+				sessionDTO.get(sessionDTO.size() - 1)
+						.setSession(films.get(i).getSessions().get(j).getSession());
 			}
 		}
 		return sessionDTO;

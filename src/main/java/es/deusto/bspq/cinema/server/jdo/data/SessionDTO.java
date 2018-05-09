@@ -7,6 +7,8 @@ public class SessionDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	private String session;
+	
 	private String date;
 	private String hour;
 	private float price;
@@ -51,6 +53,14 @@ public class SessionDTO implements Serializable {
 		this.numberSeats = numberSeats;
 		this.titleFilm = titleFilm;
 		this.remainingSeatsCode = new ArrayList<String>();
+	}
+	
+	public String getSession() {
+		return session;
+	}
+
+	public void setSession(String session) {
+		this.session = session;
 	}
 
 	public String getDate() {

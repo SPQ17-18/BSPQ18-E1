@@ -21,6 +21,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.awt.GridBagLayout;
 import javax.swing.JTextField;
@@ -43,7 +45,7 @@ public class CMAWindow extends JFrame {
 	
 	final static Logger logger = Logger.getLogger(CMWindow.class);
 
-	private static String[] foo = {"1", "2", "3", "4"};
+	private static String[] foo = {"1", "2", "3", "4", "5"};
 	private final int seatsPerSession = 25;
 	
 	// App controller
@@ -85,6 +87,7 @@ public class CMAWindow extends JFrame {
 	private final JTextField textFieldInsertFilmCountry_Edit = new JTextField();
 	private final JPanel panelInsertButton = new JPanel();
 	private final JPanel panelInsertSession = new JPanel();
+	private final JTextField textFieldUpdateSessionSession = new JTextField();
 	private final JTextField textFieldInsertSessionFilm = new JTextField();
 	private final JTextField textFieldInsertSessionFilm_Edit = new JTextField();
 	private final JTextField textFieldInsertSessionRoom = new JTextField();
@@ -92,11 +95,11 @@ public class CMAWindow extends JFrame {
 	private final JTextField textFieldInsertSessionHour = new JTextField();
 	private final JTextField textFieldInsertSessionPrice = new JTextField();
 	private final JPanel panelUpdateSession = new JPanel();
-	private final JComboBox comboBoxUpdateSession_SelectSession = new JComboBox(foo);
+	private final JComboBox<String> comboBoxUpdateSession_SelectSession = new JComboBox();
 	private final JTextField textFieldUpdateSessionFilm = new JTextField();
-	private final JComboBox comboBoxUpdateSessionFilm = new JComboBox(foo);
+	private final JComboBox<String> comboBoxUpdateSession_SelectFilm = new JComboBox();
 	private final JTextField textFieldUpdateSessionRoom = new JTextField();
-	private final JComboBox comboBoxUpdateSessionRoom = new JComboBox(foo);
+	private final JComboBox<String> comboBoxUpdateSession_SelectRoom = new JComboBox(foo);
 	private final JTextField textFieldUpdateSessionDate = new JTextField();
 	private final JTextField textFieldUpdateSessionDate_Edit = new JTextField();
 	private final JTextField textFieldUpdateSessionHour = new JTextField();
@@ -441,6 +444,16 @@ public class CMAWindow extends JFrame {
 		gbl_panelUpdateSession.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelUpdateSession.setLayout(gbl_panelUpdateSession);
 		
+		GridBagConstraints gbc_textFieldUpdateSessionSession = new GridBagConstraints();
+		gbc_textFieldUpdateSessionSession.anchor = GridBagConstraints.NORTH;
+		gbc_textFieldUpdateSessionSession.insets = new Insets(0, 0, 5, 5);
+		gbc_textFieldUpdateSessionSession.gridx = 0;
+		gbc_textFieldUpdateSessionSession.gridy = 0;
+		textFieldUpdateSessionSession.setText(messages.getString("session"));
+		textFieldUpdateSessionSession.setEditable(false);
+		textFieldUpdateSessionSession.setColumns(10);
+		panelUpdateSession.add(textFieldUpdateSessionSession, gbc_textFieldUpdateSessionSession);
+		
 		GridBagConstraints gbc_comboBoxUpdateSession_SelectSession = new GridBagConstraints();
 		gbc_comboBoxUpdateSession_SelectSession.fill = GridBagConstraints.HORIZONTAL;
 		gbc_comboBoxUpdateSession_SelectSession.insets = new Insets(0, 0, 5, 0);
@@ -464,7 +477,7 @@ public class CMAWindow extends JFrame {
 		gbc_comboBoxUpdateSessionFilm.insets = new Insets(0, 0, 5, 0);
 		gbc_comboBoxUpdateSessionFilm.gridx = 1;
 		gbc_comboBoxUpdateSessionFilm.gridy = 1;
-		panelUpdateSession.add(comboBoxUpdateSessionFilm, gbc_comboBoxUpdateSessionFilm);
+		panelUpdateSession.add(comboBoxUpdateSession_SelectFilm, gbc_comboBoxUpdateSessionFilm);
 		
 		GridBagConstraints gbc_textFieldUpdateSessionRoom = new GridBagConstraints();
 		gbc_textFieldUpdateSessionRoom.anchor = GridBagConstraints.NORTH;
@@ -482,7 +495,7 @@ public class CMAWindow extends JFrame {
 		gbc_comboBoxUpdateSessionRoom.insets = new Insets(0, 0, 5, 0);
 		gbc_comboBoxUpdateSessionRoom.gridx = 1;
 		gbc_comboBoxUpdateSessionRoom.gridy = 2;
-		panelUpdateSession.add(comboBoxUpdateSessionRoom, gbc_comboBoxUpdateSessionRoom);
+		panelUpdateSession.add(comboBoxUpdateSession_SelectRoom, gbc_comboBoxUpdateSessionRoom);
 		
 		GridBagConstraints gbc_textFieldUpdateSessionDate = new GridBagConstraints();
 		gbc_textFieldUpdateSessionDate.anchor = GridBagConstraints.NORTH;
@@ -679,6 +692,9 @@ public class CMAWindow extends JFrame {
 		panelOptions.add(new JLabel(messages.getString("options") + ": "), BorderLayout.SOUTH);
 		panelOptions.add(btnManageMembers, BorderLayout.SOUTH);
 		
+		updateSessionFilmsComboBox();
+		updateSessionSessionsComboBox();
+		
 		pack();
 	}
 	
@@ -695,6 +711,7 @@ public class CMAWindow extends JFrame {
 					Integer.parseInt((String) comboBoxInsertFilmRating.getSelectedItem()), 
 					new Long((int) spinnerInsertFilmDuration.getValue()), 
 					textFieldInsertFilmCountry_Edit.getText()));
+			updateSessionFilmsComboBox();
 			
 		} else {
 			controller.insertSession(new SessionDTO(textFieldInsertSessionDate_Edit.getText(),
@@ -703,6 +720,7 @@ public class CMAWindow extends JFrame {
 					(int) spinnerInsertSessionRoom.getValue(),
 					seatsPerSession,
 					textFieldInsertSessionFilm_Edit.getText()));
+			updateSessionSessionsComboBox();
 		}
 	}
 	
@@ -726,6 +744,24 @@ public class CMAWindow extends JFrame {
 			} else {
 				btnInsert.setEnabled(true);
 			}
+		}
+	}
+	
+	private void updateSessionFilmsComboBox() {
+		comboBoxUpdateSession_SelectFilm.removeAllItems();
+		List<FilmDTO> filmsDTO = new ArrayList<FilmDTO>();
+		filmsDTO = controller.getAllFilms();
+		for (FilmDTO filmDTO: filmsDTO) {
+			comboBoxUpdateSession_SelectFilm.addItem(filmDTO.getTitle());
+		}
+	}
+	
+	private void updateSessionSessionsComboBox() {
+		comboBoxUpdateSession_SelectSession.removeAllItems();
+		List<SessionDTO> sessionsDTO = new ArrayList<SessionDTO>();
+		sessionsDTO = controller.getAllSessions();
+		for (SessionDTO sessionDTO: sessionsDTO) {
+			comboBoxUpdateSession_SelectSession.addItem(sessionDTO.getSession());
 		}
 	}
 	

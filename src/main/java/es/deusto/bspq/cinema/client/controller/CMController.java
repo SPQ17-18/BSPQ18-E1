@@ -52,6 +52,16 @@ public class CMController {
 		return sessions;
 	}
 	
+	public List<FilmDTO> getAllFilms() {
+		List<FilmDTO> films = null;
+		try {
+			films = cmsl.getService().getFilms();
+		} catch (RemoteException e) {
+			logger.error("Error getting films from server.");
+		}
+		return films;
+	}
+	
 	public boolean buyTicket(TicketDTO ticketDTO) {
 		boolean ticket = false;
 		try {
