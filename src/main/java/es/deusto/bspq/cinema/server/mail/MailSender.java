@@ -13,7 +13,7 @@ import javax.mail.internet.MimeMessage;
 import org.apache.log4j.Logger;
 
 
-public class MailSender{
+public class MailSender {
 	
 	private static final Logger logger = Logger.getLogger(MailSender.class);
 	
