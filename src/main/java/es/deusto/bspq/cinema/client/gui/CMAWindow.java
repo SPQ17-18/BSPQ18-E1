@@ -130,6 +130,9 @@ public class CMAWindow extends JFrame {
 	private JPanel panelOptions = new JPanel();
 	private JButton btnManageMembers;
 	
+	private List<SessionDTO> sessionsDTO;
+	private List<FilmDTO> filmsDTO;
+	
 	ResourceBundle messages;
 
 	public CMAWindow(CMController controller, ResourceBundle messages, String loginUser) {
@@ -653,6 +656,11 @@ public class CMAWindow extends JFrame {
 		
 		panelUpdate.add(panelUpdateButton, BorderLayout.SOUTH);
 		
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				buttonUpdateActionPerformed(evt);
+			}
+		});
 		panelUpdateButton.add(btnUpdate);
 		
 		panelDelete.setBorder(new TitledBorder(null, messages.getString("delete"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -663,22 +671,21 @@ public class CMAWindow extends JFrame {
 		tabbedPaneDelete.addTab(messages.getString("session"), null, panelDeleteSession, null);
 		
 		panelDeleteSession.add(comboBoxDeleteSession);
-		btnDeleteSession.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				//TODO Delete Session
+		
+		btnDeleteSession.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				buttonDeleteSessionActionPerformed(evt);
 			}
 		});
-		
 		panelDeleteSession.add(btnDeleteSession);
 		
 		tabbedPaneDelete.addTab(messages.getString("film"), null, panelDeleteFilm, null);
 		
 		panelDeleteFilm.add(comboBoxDeleteFilm);
-		btnDeleteFilm.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				//TODO Delete Film
+		
+		btnDeleteFilm.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				buttonDeleteFilmActionPerformed(evt);
 			}
 		});
 		panelDeleteFilm.add(btnDeleteFilm);
@@ -749,7 +756,7 @@ public class CMAWindow extends JFrame {
 	
 	private void updateSessionFilmsComboBox() {
 		comboBoxUpdateSession_SelectFilm.removeAllItems();
-		List<FilmDTO> filmsDTO = new ArrayList<FilmDTO>();
+		filmsDTO = new ArrayList<FilmDTO>();
 		filmsDTO = controller.getAllFilms();
 		for (FilmDTO filmDTO: filmsDTO) {
 			comboBoxUpdateSession_SelectFilm.addItem(filmDTO.getTitle());
@@ -758,11 +765,43 @@ public class CMAWindow extends JFrame {
 	
 	private void updateSessionSessionsComboBox() {
 		comboBoxUpdateSession_SelectSession.removeAllItems();
-		List<SessionDTO> sessionsDTO = new ArrayList<SessionDTO>();
+		sessionsDTO = new ArrayList<SessionDTO>();
 		sessionsDTO = controller.getAllSessions();
 		for (SessionDTO sessionDTO: sessionsDTO) {
 			comboBoxUpdateSession_SelectSession.addItem(sessionDTO.getSession());
 		}
+	}
+	
+	private void buttonUpdateActionPerformed(ActionEvent evt) {
+		if (tabbedPaneUpdate.getSelectedIndex() == 0) {
+			for (SessionDTO sessionDTO: sessionsDTO) {
+				if (sessionDTO.getSession().equals((String) comboBoxUpdateSession_SelectSession.getSelectedItem())) {
+					sessionDTO.setTitleFilm((String) comboBoxUpdateSession_SelectFilm.getSelectedItem());
+					sessionDTO.setRoom(Integer.parseInt((String) comboBoxUpdateSession_SelectRoom.getSelectedItem()));
+					sessionDTO.setDate(textFieldUpdateSessionDate_Edit.getText().trim());
+					sessionDTO.setHour(textFieldUpdateSessionHour_Edit.getText().trim());
+					sessionDTO.setPrice(Float.parseFloat(textFieldUpdateSession_Price.getText().trim()));
+					if (controller.updateSession(sessionDTO)) {
+						logger.info(messages.getString("updatedSession"));
+						updateSessionSessionsComboBox();
+					}
+				}
+			}
+		}
+		else {
+			logger.info(messages.getString("updatedFilm")); //TODO
+			updateSessionFilmsComboBox();
+		}
+	}
+	
+	private void buttonDeleteSessionActionPerformed(ActionEvent evt) {
+		logger.info(messages.getString("deletedSession")); //TODO
+		updateSessionSessionsComboBox();
+	}
+	
+	private void buttonDeleteFilmActionPerformed(ActionEvent evt) {
+		logger.info(messages.getString("deletedFilm")); //TODO
+		updateSessionFilmsComboBox();
 	}
 	
 	/** Exit the Application */

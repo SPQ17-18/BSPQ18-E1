@@ -51,12 +51,13 @@ public class ManagerDAO implements IManagerDAO {
 			result.setDate(session.getDate());
 			result.setHour(session.getHour());
 			result.setPrice(session.getPrice());
+//			result.setFilm(session.getFilm());
+//			result.setRoom(session.getRoom());
 			
-
 			tx.commit();
-
 		} catch (Exception ex) {
-			logger.error("Error updating a member: " + ex.getMessage());
+			ex.printStackTrace();
+			logger.error("Error updating a session: " + ex.getMessage());
 			throw new Exception();
 		} finally {
 			if (tx != null && tx.isActive()) {

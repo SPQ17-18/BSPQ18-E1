@@ -42,6 +42,16 @@ public class CMController {
 		return session;
 	}
 	
+	public boolean updateSession(SessionDTO sessionDTO) {
+		boolean updated = false;
+		try {
+			updated = cmsl.getService().updateSession(sessionDTO);
+		} catch (RemoteException e) {
+			logger.error("Error updating a session.");
+		}
+		return updated;
+	}
+	
 	public List<SessionDTO> getAllSessions() {
 		List<SessionDTO> sessions = null;
 		try {
