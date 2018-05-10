@@ -288,8 +288,6 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		try {
 			IRemoteFacade server = new Server();
 			Naming.rebind(name, server);
-			SessionDTO se = new SessionDTO("14-05-2018", "18:00", 10f, 2, 60, "Inmersion","S1");
-			server.updateSession(se);
 			logger.info("Server '" + name + "' active and waiting...");
 			java.io.InputStreamReader inputStreamReader = new java.io.InputStreamReader(System.in);
 			java.io.BufferedReader stdin = new java.io.BufferedReader(inputStreamReader);
