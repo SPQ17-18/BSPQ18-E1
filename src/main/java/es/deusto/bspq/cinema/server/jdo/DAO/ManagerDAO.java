@@ -44,10 +44,10 @@ public class ManagerDAO implements IManagerDAO {
 			tx.begin();
 			Query<?> q = pm.newQuery("SELECT FROM " + Member.class.getName() +  " WHERE email == '" + 
 					email+ "'");
-		
-			Member result = (Member) q.execute();
+			@SuppressWarnings("unchecked")
+			List<Member> result = (List<Member>) q.execute();
 			
-			points = result.getPoints();
+			points = result.get(0).getPoints();
 			tx.commit();
 		} catch (Exception ex) {
 			logger.error("Error obtaining the points of the member with email: "+email + ex.getMessage());
@@ -1102,7 +1102,7 @@ public class ManagerDAO implements IManagerDAO {
 
 		Member m1 = new Member("ariane.fernandez@opendeusto.es", "Ariane", "Fernandez", "ariane", "26-04-1997", 0);
 		Member m2 = new Member("unaibermejofdez@opendeusto.es", "Unai", "Bermejo", "unai", "23-08-1997", 0);
-		Member m3 = new Member("ander.arguinano@opendeusto.es", "Ander", "Arguinano", "ander", "26-10-1997", 0);
+		Member m3 = new Member("ander.arguinano@opendeusto.es", "Ander", "Arguinano", "ander", "26-10-1997", 20);
 		Member m4 = new Member("inigogc@opendeusto.es", "Inigo", "Garcia", "inigo", "10-02-1997", 0);
 		Member m5 = new Member("fischer.wolfgang@opendeusto.es", "Wolfgang ", "Fischer", "wolfgang", "05-09-1997", 0);
 

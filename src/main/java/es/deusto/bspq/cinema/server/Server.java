@@ -26,13 +26,6 @@ import es.deusto.bspq.cinema.server.remote.IRemoteFacade;
 public class Server extends UnicastRemoteObject implements IRemoteFacade {
 
 	private static final long serialVersionUID = 1L;
-	
-
-	public int getMemberPoints(String email) throws RemoteException {
-		
-		return 0;
-	}
-
 
 	private static final Logger logger = Logger.getLogger(Server.class);
 
@@ -42,6 +35,17 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 	public Server() throws RemoteException {
 		dao = new ManagerDAO();
 		assembler = new Assembler();
+	}
+	
+	public int getMemberPoints(String email) throws RemoteException {
+		int points = -1;
+		try {
+			points = dao.getMemberPoints(email);
+			logger.info("Obtaining points of the member  " + email );
+		} catch (Exception e) {
+			logger.error("Error obtaining points of the member " + email);
+		}
+		return points;
 	}
 	
 
@@ -271,6 +275,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		try {
 			IRemoteFacade server = new Server();
 			Naming.rebind(name, server);
+			System.out.println("Ander tiene "+server.getMemberPoints("unaibermejofdez@opendeusto.es")+" puntos");
 			logger.info("Server '" + name + "' active and waiting...");
 			java.io.InputStreamReader inputStreamReader = new java.io.InputStreamReader(System.in);
 			java.io.BufferedReader stdin = new java.io.BufferedReader(inputStreamReader);
