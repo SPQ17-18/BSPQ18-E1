@@ -8,6 +8,7 @@ public class SessionDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String session;
+
 	private String date;
 	private String hour;
 	private float price;
@@ -178,6 +179,5 @@ public class SessionDTO implements Serializable {
 	public void setSession(String session) {
 		this.session = session;
 	}
-
 	
 }

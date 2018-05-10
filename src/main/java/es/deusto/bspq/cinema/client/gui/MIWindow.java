@@ -48,6 +48,7 @@ public class MIWindow extends JFrame {
 	private JButton btnCancel;
 	private JPanel panelActions;
 	private JPanel panelInfo;
+	private JPanel panelPoints;
 	private JLabel lblEmail;
 	private JLabel lblName;
 	private JTextField textField;
@@ -55,12 +56,12 @@ public class MIWindow extends JFrame {
 	private JTextField textField_1;
 	private JLabel lblBirthDay;
 	private JTextField textField_2;
-	private JLabel lblPoints;
-	private JLabel lblPointsShow;
 	private JLabel labelPass;
 	private JPasswordField passwordField;
 	private JCheckBox chckbxDelete;
 	private JLabel lblInfo;
+	private JLabel lblPoints;
+	private JLabel lblPointsNumber;
 	
 	ResourceBundle messages;
 	
@@ -82,6 +83,15 @@ public class MIWindow extends JFrame {
 		setTitle(messages.getString("memberInfo"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
+		
+		panelPoints = new JPanel();
+		getContentPane().add(panelPoints, BorderLayout.CENTER);
+		panelPoints.setBorder(new TitledBorder(null, messages.getString("points"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelPoints.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		lblPoints = new JLabel(messages.getString("currentPoints"));
+		panelPoints.add(lblPoints);
+		lblPointsNumber = new JLabel("controller call here"); //TODO controller.getMemberPoints(loginUser);
+		panelPoints.add(lblPointsNumber);
 		
 		panelActions = new JPanel();
 		getContentPane().add(panelActions, BorderLayout.SOUTH);
@@ -132,7 +142,7 @@ public class MIWindow extends JFrame {
 		panelActions.add(btnCancel);
 		
 		panelInfo = new JPanel();
-		getContentPane().add(panelInfo, BorderLayout.CENTER);
+		getContentPane().add(panelInfo, BorderLayout.NORTH);
 		panelInfo.setBorder(new TitledBorder(null, messages.getString("info"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagLayout gbl_panelInfo = new GridBagLayout();
 		gbl_panelInfo.columnWidths = new int[]{0, 0, 0};
@@ -199,22 +209,7 @@ public class MIWindow extends JFrame {
 		gbc_textField_2.gridx = 1;
 		gbc_textField_2.gridy = 3;
 		panelInfo.add(textField_2, gbc_textField_2);
-		
-		lblPoints = new JLabel(messages.getString("points"));
-		GridBagConstraints gbc_lblPoints = new GridBagConstraints();
-		gbc_lblPoints.anchor = GridBagConstraints.WEST;
-		gbc_lblPoints.insets = new Insets(0, 0, 5, 5);
-		gbc_lblPoints.gridx = 0;
-		gbc_lblPoints.gridy = 4;
-		panelInfo.add(lblPoints, gbc_lblPoints);
-		
-		lblPointsShow = new JLabel("");
-		GridBagConstraints gbc_lblPointsShow = new GridBagConstraints();
-		gbc_lblPointsShow.insets = new Insets(0, 0, 5, 0);
-		gbc_lblPointsShow.gridx = 1;
-		gbc_lblPointsShow.gridy = 4;
-		panelInfo.add(lblPointsShow, gbc_lblPointsShow);
-		
+	
 		chckbxDelete = new JCheckBox(messages.getString("wishToDeleteAccount"));
 		
 		lblInfo = new JLabel("");

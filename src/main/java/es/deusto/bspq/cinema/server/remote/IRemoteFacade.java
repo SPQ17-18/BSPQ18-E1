@@ -10,7 +10,7 @@ import es.deusto.bspq.cinema.server.jdo.data.MemberDTO;
 import es.deusto.bspq.cinema.server.jdo.data.SessionDTO;
 import es.deusto.bspq.cinema.server.jdo.data.TicketDTO;
 
-public interface IRemoteFacade extends Remote{	
+public interface IRemoteFacade extends Remote {	
 	
 	public boolean updateSession (SessionDTO sessionDTO) throws RemoteException;
 	public int getMemberPoints (String email) throws RemoteException;

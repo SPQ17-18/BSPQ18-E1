@@ -77,6 +77,8 @@ public class Assembler {
 		s.setPrice(sessionDTO.getPrice());
 		s.setSession(sessionDTO.getSession());
 		s.setDate(sessionDTO.getDate());
+//		s.setFilm(dao.getFilm(sessionDTO.getTitleFilm()));
+//		s.setRoom(dao.getRoom(sessionDTO.getRoom()));
 		return s;
 	}
 
@@ -113,6 +115,8 @@ public class Assembler {
 						films.get(i).getCountry(), seats,films.get(i).getSessions().get(j).getSession()));
 				sessionDTO.get(sessionDTO.size() - 1)
 						.setRemainingSeatsCode(obtainSeats(films.get(i).getSessions().get(j)));
+				sessionDTO.get(sessionDTO.size() - 1)
+						.setSession(films.get(i).getSessions().get(j).getSession());
 			}
 		}
 		return sessionDTO;

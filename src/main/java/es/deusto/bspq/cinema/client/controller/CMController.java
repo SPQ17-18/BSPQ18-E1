@@ -42,6 +42,16 @@ public class CMController {
 		return session;
 	}
 	
+	public boolean updateSession(SessionDTO sessionDTO) {
+		boolean updated = false;
+		try {
+			updated = cmsl.getService().updateSession(sessionDTO);
+		} catch (RemoteException e) {
+			logger.error("Error updating a session.");
+		}
+		return updated;
+	}
+	
 	public List<SessionDTO> getAllSessions() {
 		List<SessionDTO> sessions = null;
 		try {
@@ -50,6 +60,16 @@ public class CMController {
 			logger.error("Error getting sessions from server.");
 		}
 		return sessions;
+	}
+	
+	public List<FilmDTO> getAllFilms() {
+		List<FilmDTO> films = null;
+		try {
+			films = cmsl.getService().getFilms();
+		} catch (RemoteException e) {
+			logger.error("Error getting films from server.");
+		}
+		return films;
 	}
 	
 	public boolean buyTicket(TicketDTO ticketDTO) {
