@@ -34,6 +34,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Logger;
@@ -436,6 +439,11 @@ public class CMAWindow extends JFrame {
 		panelCentral.add(panelUpdate);
 		panelUpdate.setLayout(new BorderLayout(0, 0));
 		
+		tabbedPaneUpdate.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				enableButtonUpdate();
+			}
+		});
 		panelUpdate.add(tabbedPaneUpdate);
 		panelUpdateSession.setBorder(null);
 		
@@ -517,6 +525,17 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldUpdateSessionDate_Edit.gridx = 1;
 		gbc_textFieldUpdateSessionDate_Edit.gridy = 3;
 		textFieldUpdateSessionDate_Edit.setColumns(10);
+		textFieldUpdateSessionDate_Edit.addKeyListener(new KeyListener() {
+			public void keyTyped(KeyEvent e) {
+				enableButtonUpdate();
+			}
+			public void keyPressed(KeyEvent e) {
+				enableButtonUpdate();
+			}
+			public void keyReleased(KeyEvent e) {
+				enableButtonUpdate();
+			}
+		});
 		panelUpdateSession.add(textFieldUpdateSessionDate_Edit, gbc_textFieldUpdateSessionDate_Edit);
 		
 		GridBagConstraints gbc_textFieldUpdateSessionHour = new GridBagConstraints();
@@ -536,6 +555,17 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldUpdateSessionHour_Edit.gridx = 1;
 		gbc_textFieldUpdateSessionHour_Edit.gridy = 4;
 		textFieldUpdateSessionHour_Edit.setColumns(10);
+		textFieldUpdateSessionHour_Edit.addKeyListener(new KeyListener() {
+			public void keyTyped(KeyEvent e) {
+				enableButtonUpdate();
+			}
+			public void keyPressed(KeyEvent e) {
+				enableButtonUpdate();
+			}
+			public void keyReleased(KeyEvent e) {
+				enableButtonUpdate();
+			}
+		});
 		panelUpdateSession.add(textFieldUpdateSessionHour_Edit, gbc_textFieldUpdateSessionHour_Edit);
 		
 		GridBagConstraints gbc_textFieldUpdateSessionPrice = new GridBagConstraints();
@@ -554,6 +584,17 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldUpdateSession_Price.gridx = 1;
 		gbc_textFieldUpdateSession_Price.gridy = 5;
 		textFieldUpdateSession_Price.setColumns(10);
+		textFieldUpdateSession_Price.addKeyListener(new KeyListener() {
+			public void keyTyped(KeyEvent e) {
+				enableButtonUpdate();
+			}
+			public void keyPressed(KeyEvent e) {
+				enableButtonUpdate();
+			}
+			public void keyReleased(KeyEvent e) {
+				enableButtonUpdate();
+			}
+		});
 		panelUpdateSession.add(textFieldUpdateSession_Price, gbc_textFieldUpdateSession_Price);
 		panelUpdateFilm.setBorder(null);
 		
@@ -661,6 +702,7 @@ public class CMAWindow extends JFrame {
 				buttonUpdateActionPerformed(evt);
 			}
 		});
+		btnUpdate.setEnabled(false);
 		panelUpdateButton.add(btnUpdate);
 		
 		panelDelete.setBorder(new TitledBorder(null, messages.getString("delete"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -754,6 +796,18 @@ public class CMAWindow extends JFrame {
 		}
 	}
 	
+	private void enableButtonUpdate() {
+		if (tabbedPaneUpdate.getSelectedIndex() == 0) {
+			if (textFieldUpdateSessionDate_Edit.getText().equals("") || textFieldUpdateSessionHour_Edit.getText().equals("") || textFieldUpdateSession_Price.getText().equals("")) {
+				btnUpdate.setEnabled(false);
+			} else {
+				btnUpdate.setEnabled(true);
+			}
+		} else if (tabbedPaneUpdate.getSelectedIndex() == 1) {
+			//TODO
+		}
+	}
+	
 	private void updateSessionFilmsComboBox() {
 		comboBoxUpdateSession_SelectFilm.removeAllItems();
 		filmsDTO = new ArrayList<FilmDTO>();
@@ -787,6 +841,8 @@ public class CMAWindow extends JFrame {
 					}
 				}
 			}
+			cleanUpdateSessionDetails();
+			btnUpdate.setEnabled(false);
 		}
 		else {
 			logger.info(messages.getString("updatedFilm")); //TODO
@@ -802,6 +858,15 @@ public class CMAWindow extends JFrame {
 	private void buttonDeleteFilmActionPerformed(ActionEvent evt) {
 		logger.info(messages.getString("deletedFilm")); //TODO
 		updateSessionFilmsComboBox();
+	}
+	
+	private void cleanUpdateSessionDetails() {
+		comboBoxUpdateSession_SelectSession.setSelectedIndex(0);
+		comboBoxUpdateSession_SelectFilm.setSelectedIndex(0);
+		comboBoxUpdateSession_SelectRoom.setSelectedIndex(0);
+		textFieldUpdateSessionDate_Edit.setText("");
+		textFieldUpdateSessionHour_Edit.setText("");
+		textFieldUpdateSession_Price.setText("");
 	}
 	
 	/** Exit the Application */
