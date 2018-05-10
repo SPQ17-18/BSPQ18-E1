@@ -26,6 +26,13 @@ import es.deusto.bspq.cinema.server.remote.IRemoteFacade;
 public class Server extends UnicastRemoteObject implements IRemoteFacade {
 
 	private static final long serialVersionUID = 1L;
+	
+
+	public int getMemberPoints(String email) throws RemoteException {
+		
+		return 0;
+	}
+
 
 	private static final Logger logger = Logger.getLogger(Server.class);
 
@@ -274,5 +281,7 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		}
 	}
 
+
+	
 
 }

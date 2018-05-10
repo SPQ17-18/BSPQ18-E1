@@ -52,5 +52,6 @@ public interface IManagerDAO {
 	
 	public String getLastSessionCode();
 	public String getSessionCode(String date, String hour, String film);
+	public int getMemberPoints(String email);
 	
 }

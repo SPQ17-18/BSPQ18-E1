@@ -32,6 +32,34 @@ public class ManagerDAO implements IManagerDAO {
 	public ManagerDAO() {
 		pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
 	}
+	
+	public int getMemberPoints(String email) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+
+		pm.getFetchPlan().setMaxFetchDepth(4);
+		Transaction tx = pm.currentTransaction();
+		int points = 0;
+
+		try {
+			tx.begin();
+			Query<?> q = pm.newQuery("SELECT FROM " + Member.class.getName() +  " WHERE email == '" + 
+					email+ "'");
+		
+			Member result = (Member) q.execute();
+			
+			points = result.getPoints();
+			tx.commit();
+		} catch (Exception ex) {
+			logger.error("Error obtaining the points of the member with email: "+email + ex.getMessage());
+		} finally {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+	
+		return points;
+	}
 
 	private void storeObject(Object object) throws Exception{
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -1165,4 +1193,7 @@ public class ManagerDAO implements IManagerDAO {
 		}
 		logger.info( "DB filled completely");
 	}
+
+
+	
 }
