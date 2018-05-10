@@ -8,7 +8,7 @@ public class SessionDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String session;
-	
+
 	private String date;
 	private String hour;
 	private float price;
@@ -55,12 +55,33 @@ public class SessionDTO implements Serializable {
 		this.remainingSeatsCode = new ArrayList<String>();
 	}
 	
-	public String getSession() {
-		return session;
+	public SessionDTO(String date, String hour, float price, int room, int numberSeats, String titleFilm,
+			String director, int rating, long duration, String country, ArrayList<String> seatsCode,String session) {
+		super();
+		this.date = date;
+		this.hour = hour;
+		this.price = price;
+		this.room = room;
+		this.numberSeats = numberSeats;
+		this.titleFilm = titleFilm;
+		this.director = director;
+		this.rating = rating;
+		this.duration = duration;
+		this.country = country;
+		this.remainingSeatsCode = seatsCode;
+		this.session=session;
 	}
-
-	public void setSession(String session) {
-		this.session = session;
+	
+	public SessionDTO(String date, String hour, float price, int room, int numberSeats, String titleFilm,String session) {
+		super();
+		this.date = date;
+		this.hour = hour;
+		this.price = price;
+		this.room = room;
+		this.numberSeats = numberSeats;
+		this.titleFilm = titleFilm;
+		this.remainingSeatsCode = new ArrayList<String>();
+		this.session=session;
 	}
 
 	public String getDate() {
@@ -151,4 +172,12 @@ public class SessionDTO implements Serializable {
 		this.remainingSeatsCode = remainingSeatsCode;
 	}
 
+	public String getSession() {
+		return session;
+	}
+
+	public void setSession(String session) {
+		this.session = session;
+	}
+	
 }

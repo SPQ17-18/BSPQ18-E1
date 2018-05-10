@@ -473,6 +473,22 @@ public class CMControllerTest {
 			}
 		}
 	}
+	
+	@Test
+	@Required(max = 120, average = 30)
+	public void testUpdateSession() {
+		logger.info("Test Update a session - Updating a session from the DB - Valid");
+		List<MemberDTO> members = null;
+		SessionDTO sessionDTO = new SessionDTO("15-05-2018","18:00",10f,2,60,"Inmersion","S1");
+		//TODO
+		
+		members = controller.getAllMembers();
+		for (int i=0;i<members.size();i++) {
+			if (members.get(i).getEmail().equals("ariane.fernandez@opendeusto.es")) {
+				assertEquals("Paloma", members.get(i).getName());
+			}
+		}
+	}
 
 	@Test
 	@Required(max = 120)

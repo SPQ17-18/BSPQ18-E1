@@ -124,7 +124,7 @@ public class ManagerDAOTest {
 
 		Member m1 = new Member("ariane.fernandez@opendeusto.es", "Ariane", "Fernandez", "ariane", "26-04-1997", 0);
 		Member m2 = new Member("unaibermejofdez@opendeusto.es", "Unai", "Bermejo", "unai", "23-08-1997", 0);
-		Member m3 = new Member("ander.arguinano@opendeusto.es", "Ander", "Arguinano", "ander", "26-10-1997", 0);
+		Member m3 = new Member("ander.arguinano@opendeusto.es", "Ander", "Arguinano", "ander", "26-10-1997", 20);
 		Member m4 = new Member("inigogc@opendeusto.es", "Inigo", "Garcia", "inigo", "10-02-1997", 0);
 		Member m5 = new Member("fischer.wolfgang@opendeusto.es", "Wolfgang ", "Fischer", "wolfgang", "05-09-1997", 0);
 
@@ -361,6 +361,16 @@ public class ManagerDAOTest {
 	public void testGetSessionCode() throws Exception {
 
 		assertEquals("S15", managerDAO.getSessionCode("15-04-2018", "20:00", "Ready Player One"));
+	
+	}
+	
+	@Test
+	@Required(percentile90 = 3000)
+	public void testGetMemberPoints() throws Exception {
+
+		assertEquals(20, managerDAO.getMemberPoints("ander.arguinano@opendeusto.es"));
+		assertEquals(0, managerDAO.getMemberPoints("unaibermejofdez@opendeusto.es"));
+		
 	
 	}
 	
