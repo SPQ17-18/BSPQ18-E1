@@ -35,6 +35,7 @@ public interface IManagerDAO {
 	
 	public void updateMember(Member member, Ticket t);
 	public void updateEmployee(Employee employee);
+	public void updateSession(Session session) throws Exception;
 	public void manageMember(Member member) throws Exception;
 	
 	public void deleteAllFilms();
@@ -52,5 +53,6 @@ public interface IManagerDAO {
 	
 	public String getLastSessionCode();
 	public String getSessionCode(String date, String hour, String film);
+	public int getMemberPoints(String email);
 	
 }

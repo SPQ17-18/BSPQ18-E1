@@ -70,6 +70,15 @@ public class Assembler {
 		s.setDate(sessionDTO.getDate());
 		return s;
 	}
+	
+	public Session disassembleSessionD(SessionDTO sessionDTO) {
+		Session s = new Session();
+		s.setHour(sessionDTO.getHour());
+		s.setPrice(sessionDTO.getPrice());
+		s.setSession(sessionDTO.getSession());
+		s.setDate(sessionDTO.getDate());
+		return s;
+	}
 
 	public ArrayList<FilmDTO> assembleFilm(ArrayList<Film> films) {
 		ArrayList<FilmDTO> filmDTO = new ArrayList<FilmDTO>();
@@ -101,7 +110,7 @@ public class Assembler {
 						films.get(i).getSessions().get(j).getRoom().getRoomNumber(),
 						films.get(i).getSessions().get(j).getRoom().getNumberSeats(), films.get(i).getTitle(),
 						films.get(i).getDirector(), films.get(i).getRating(), films.get(i).getDuration(),
-						films.get(i).getCountry(), seats));
+						films.get(i).getCountry(), seats,films.get(i).getSessions().get(j).getSession()));
 				sessionDTO.get(sessionDTO.size() - 1)
 						.setRemainingSeatsCode(obtainSeats(films.get(i).getSessions().get(j)));
 			}
