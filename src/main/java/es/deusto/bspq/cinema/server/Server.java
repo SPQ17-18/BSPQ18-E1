@@ -37,6 +37,19 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		assembler = new Assembler();
 	}
 	
+	
+	public boolean updateSession(SessionDTO sessionDTO) throws RemoteException {
+		try {
+			Session session = assembler.disassembleSessionDEL(sessionDTO);
+			dao.updateSession(session);
+			logger.info("Updated the session with the code " + session.getSession());
+			return true;
+		} catch (Exception e) {
+			logger.error("Error updating the session");
+			return false;
+		}
+	}
+	
 	public int getMemberPoints(String email) throws RemoteException {
 		int points = -1;
 		try {

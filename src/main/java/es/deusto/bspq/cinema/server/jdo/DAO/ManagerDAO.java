@@ -33,6 +33,40 @@ public class ManagerDAO implements IManagerDAO {
 		pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
 	}
 	
+	
+	public void updateSession(Session session) throws Exception {
+		
+
+		PersistenceManager pm = pmf.getPersistenceManager();
+
+		Transaction tx = pm.currentTransaction();
+
+		try {
+			tx.begin();
+			Query<?> query = pm
+					.newQuery("SELECT FROM " + Session.class.getName() + " WHERE  session== '" + session.getSession() + "'");
+			query.setUnique(true);
+			Session result = (Session) query.execute();
+
+			result.setDate(session.getDate());
+			result.setHour(session.getHour());
+			result.setPrice(session.getPrice());
+			
+
+			tx.commit();
+
+		} catch (Exception ex) {
+			logger.error("Error updating a member: " + ex.getMessage());
+			throw new Exception();
+		} finally {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+
+	}
+	
 	public int getMemberPoints(String email) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -1193,7 +1227,6 @@ public class ManagerDAO implements IManagerDAO {
 		}
 		logger.info( "DB filled completely");
 	}
-
 
 	
 }
