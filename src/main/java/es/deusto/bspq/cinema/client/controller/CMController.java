@@ -52,6 +52,8 @@ public class CMController {
 		return updated;
 	}
 	
+	// public boolean deleteSession
+	
 	public List<SessionDTO> getAllSessions() {
 		List<SessionDTO> sessions = null;
 		try {
