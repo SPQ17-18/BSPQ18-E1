@@ -77,8 +77,8 @@ public class Assembler {
 		s.setPrice(sessionDTO.getPrice());
 		s.setSession(sessionDTO.getSession());
 		s.setDate(sessionDTO.getDate());
-//		s.setFilm(dao.getFilm(sessionDTO.getTitleFilm()));
-//		s.setRoom(dao.getRoom(sessionDTO.getRoom()));
+		s.setFilm(dao.getFilm(sessionDTO.getTitleFilm()));
+		s.setRoom(dao.getRoom(sessionDTO.getRoom()));
 		return s;
 	}
 
