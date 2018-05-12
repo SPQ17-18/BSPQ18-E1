@@ -40,21 +40,49 @@ public class ManagerDAO implements IManagerDAO {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
 		Transaction tx = pm.currentTransaction();
+		
+		pm.getFetchPlan().setMaxFetchDepth(4);
 
 		try {
 			tx.begin();
+			
 			Query<?> query = pm
 					.newQuery("SELECT FROM " + Session.class.getName() + " WHERE  session== '" + session.getSession() + "'");
 			query.setUnique(true);
 			Session result = (Session) query.execute();
+			
+			Session s = new Session(session.getSession(), session.getDate(), session.getHour(), session.getPrice());
+			
+			Query<?> query2 = pm
+					.newQuery("SELECT FROM " + Film.class.getName() + " WHERE  title== '" + session.getFilm().getTitle()+ "'");
+			query2.setUnique(true);
+			Film result2 = (Film) query2.execute();
 
-			result.setDate(session.getDate());
-			result.setHour(session.getHour());
-			result.setPrice(session.getPrice());
-//			result.setFilm(session.getFilm());
-//			result.setRoom(session.getRoom());
+			Query<?> query3 = pm
+					.newQuery("SELECT FROM " + Room.class.getName() + " WHERE  roomNumber== " + session.getRoom().getRoomNumber() + "");
+			query3.setUnique(true);
+			Room result3 = (Room) query3.execute();
+			
+			Query<?> query4 = pm
+					.newQuery("SELECT FROM " + Film.class.getName() + " WHERE  title=='" + result.getFilm().getTitle()+ "'");
+			query4.setUnique(true);
+			Film result4 = (Film) query4.execute();
+			
+			int i=0;
+			for (Session ses : result4.getSessions()) {
+				if (ses.getSession().equals(session.getSession())) {
+					result4.getSessions().remove(i);
+					i++;
+				}
+			}
+			
+			s.setRoom(result3);
+			s.setFilm(result2);
+			
+			result2.addSession(s);
 			
 			tx.commit();
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			logger.error("Error updating a session: " + ex.getMessage());
@@ -179,6 +207,38 @@ public class ManagerDAO implements IManagerDAO {
 			tx.begin();
 
 			Query<Film> query = pm.newQuery(Film.class, "title =='" + film.getTitle() + "'");
+
+			Collection<?> result = (Collection<?>) query.execute();
+
+			Film f = (Film) result.iterator().next();
+
+			query.close(result);
+
+			pm.deletePersistent(f);
+
+			tx.commit();
+		} catch (Exception ex) {
+			logger.error( "Error cleaning a film: " + ex.getMessage());
+		
+		} finally {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			if (pm != null && !pm.isClosed()) {
+				pm.close();
+			}
+		}
+	}
+
+	public void deleteFilm(String title) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+
+		Transaction tx = pm.currentTransaction();
+
+		try {
+			tx.begin();
+
+			Query<Film> query = pm.newQuery(Film.class, "title =='" + title + "'");
 
 			Collection<?> result = (Collection<?>) query.execute();
 
