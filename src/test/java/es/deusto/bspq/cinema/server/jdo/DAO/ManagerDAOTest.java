@@ -288,14 +288,6 @@ public class ManagerDAOTest {
 		assertEquals(0, managerDAO.getRoom(2).getRoomNumber());
 	}
 	
-	//This test failed in my computer
-	@Test
-	@Required(max = 120, average = 30)
-	public void testDeleteFilm() throws Exception {
-		Film film = new Film("Inmersion", "Wim Wenders", 12, 111, "EE.UU.");
-		managerDAO.deleteFilm(film);
-		assertEquals(4, managerDAO.getFilms().size());
-	}
 	
 	@Test
 	@Required(max = 120, average = 30)
@@ -390,6 +382,16 @@ public class ManagerDAOTest {
 		
 	
 	}
+	
+	//This test failed in my computer
+		@Test
+		@Required(max = 120, average = 30)
+		public void testDeleteFilm() throws Exception {
+			Film film = new Film("Inmersion", "Wim Wenders", 12, 111, "EE.UU.");
+			managerDAO.deleteFilm(film);
+			assertEquals(4, managerDAO.getFilms().size());
+		}
+		
 	
 	@AfterClass
 	public static void tearDownClass() {
