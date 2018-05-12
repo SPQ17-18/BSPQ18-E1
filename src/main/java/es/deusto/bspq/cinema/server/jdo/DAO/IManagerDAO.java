@@ -42,6 +42,7 @@ public interface IManagerDAO {
 	public void deleteRoom(int room);
 	public void deleteAllRooms();
 	public void deleteFilm(Film film);
+	public void deleteFilm(String title);
 	public void deleteAllSessions();
 	public void deleteSession(Session session);
 	public void deleteAllMembers();

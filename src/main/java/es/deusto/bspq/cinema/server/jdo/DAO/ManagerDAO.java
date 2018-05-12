@@ -230,6 +230,38 @@ public class ManagerDAO implements IManagerDAO {
 		}
 	}
 
+	public void deleteFilm(String title) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+
+		Transaction tx = pm.currentTransaction();
+
+		try {
+			tx.begin();
+
+			Query<Film> query = pm.newQuery(Film.class, "title =='" + title + "'");
+
+			Collection<?> result = (Collection<?>) query.execute();
+
+			Film f = (Film) result.iterator().next();
+
+			query.close(result);
+
+			pm.deletePersistent(f);
+
+			tx.commit();
+		} catch (Exception ex) {
+			logger.error( "Error cleaning a film: " + ex.getMessage());
+		
+		} finally {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			if (pm != null && !pm.isClosed()) {
+				pm.close();
+			}
+		}
+	}
+
 	public Film getFilm(String name) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
