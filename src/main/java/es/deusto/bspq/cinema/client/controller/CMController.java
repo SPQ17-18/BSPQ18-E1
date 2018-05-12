@@ -13,7 +13,7 @@ import es.deusto.bspq.cinema.server.jdo.data.TicketDTO;
 
 public class CMController {
 	
-	final static Logger logger = Logger.getLogger(CMController.class);
+	final static jdk.internal.instrumentation.Logger logger = Logger.getLogger(CMController.class);
 
 	private CMServiceLocator cmsl;
 	
@@ -150,6 +150,15 @@ public class CMController {
 			logger.error("Error registering a member.");
 		}
 		return registered;
+	}
+	
+	public boolean deleteFilm(FilmDTO filmDTO) {
+		boolean deleted = false;
+		try {
+			deleted = cmsl.getService().deleteFilm(filmDTO.getTitle());
+		} catch (RemoteException e) {
+			logger.error("Error deleting a film.");
+		}
 	}
 	
 	public void exit() {
