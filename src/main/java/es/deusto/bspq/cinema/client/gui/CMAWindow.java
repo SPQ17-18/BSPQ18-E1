@@ -856,7 +856,9 @@ public class CMAWindow extends JFrame {
 	}
 	
 	private void buttonDeleteFilmActionPerformed(ActionEvent evt) {
-		logger.info(messages.getString("deletedFilm")); //TODO
+		String filmTitle = String.valueOf(comboBoxDeleteFilm.getSelectedItem());
+		controller.deleteFilm(filmTitle);
+		logger.info(messages.getString("deletedFilm"));
 		updateSessionFilmsComboBox();
 	}
 	

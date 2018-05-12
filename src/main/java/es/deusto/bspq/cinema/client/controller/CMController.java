@@ -152,10 +152,10 @@ public class CMController {
 		return registered;
 	}
 	
-	public boolean deleteFilm(FilmDTO filmDTO) {
+	public boolean deleteFilm(String filmTitle) {
 		boolean deleted = false;
 		try {
-			deleted = cmsl.getService().deleteFilm(filmDTO.getTitle());
+			deleted = cmsl.getService().deleteFilm(filmTitle);
 		} catch (RemoteException e) {
 			logger.error("Error deleting a film.");
 		}
