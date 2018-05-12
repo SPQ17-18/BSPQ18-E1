@@ -180,7 +180,7 @@ public class CMAWindow extends JFrame {
 		btnDeleteFilm = new JButton(messages.getString("delete"));
 		btnDeleteSession = new JButton(messages.getString("delete"));
 		
-		tabbedPaneInsert.addTab("Session", null, panelInsertSession, null);
+		tabbedPaneInsert.addTab(messages.getString("session"), null, panelInsertSession, null);
 		GridBagLayout gbl_panelInsertSession = new GridBagLayout();
 		gbl_panelInsertSession.columnWidths = new int[]{86, 158, 0};
 		gbl_panelInsertSession.rowHeights = new int[]{20, 20, 20, 20, 20, 0};
@@ -303,7 +303,7 @@ public class CMAWindow extends JFrame {
 		panelInsertSessionPrice.add(spinnerInsertFilmPrice);
 		panelInsertFilm.setBorder(null);
 		
-		tabbedPaneInsert.addTab("Film", null, panelInsertFilm, null);
+		tabbedPaneInsert.addTab(messages.getString("film"), null, panelInsertFilm, null);
 		GridBagLayout gbl_panelInsertFilm = new GridBagLayout();
 		gbl_panelInsertFilm.columnWidths = new int[]{0, 0, 0};
 		gbl_panelInsertFilm.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
