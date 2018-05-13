@@ -66,6 +66,12 @@ public class LoginWindow extends JDialog {
 		initComponents();
 	}
 	
+	public LoginWindow(CMController controller, ResourceBundle messages) {
+		this.controller = controller;
+		this.messages = messages;
+		initComponents();
+	}
+	
 	private void initComponents() {
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
