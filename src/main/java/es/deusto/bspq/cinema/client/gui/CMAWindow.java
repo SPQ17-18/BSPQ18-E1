@@ -56,7 +56,7 @@ public class CMAWindow extends JFrame {
 	
 	// Login user
 	private String loginUser;
-	
+
 	private SessionDTO insertSessionDTO;
 	private FilmDTO insertFilmDTO;
 	
@@ -134,7 +134,7 @@ public class CMAWindow extends JFrame {
 	private JButton btnManageMembers;
 	
 	private List<SessionDTO> sessionsDTO;
-	private List<FilmDTO> filmsDTO;
+    private List<FilmDTO> filmsDTO;
 	
 	ResourceBundle messages;
 
@@ -171,7 +171,6 @@ public class CMAWindow extends JFrame {
 				enableButtonInsert();
 			}
 		});
-		
 		panelInsert.add(tabbedPaneInsert);
 		panelInsertSession.setBorder(null);
 		
@@ -826,6 +825,15 @@ public class CMAWindow extends JFrame {
 		}
 	}
 	
+	private void updateDeleteSessionComboBox() {
+		comboBoxUpdateSession_SelectSession.removeAllItems();
+		sessionsDTO = new ArrayList<SessionDTO>();
+		sessionsDTO = controller.getAllSessions();
+		for (SessionDTO sessionDTO: sessionsDTO) {
+			comboBoxUpdateSession_SelectSession.addItem(sessionDTO.getSession());
+		}
+	}
+	
 	private void buttonUpdateActionPerformed(ActionEvent evt) {
 		if (tabbedPaneUpdate.getSelectedIndex() == 0) {
 			for (SessionDTO sessionDTO: sessionsDTO) {
@@ -851,8 +859,24 @@ public class CMAWindow extends JFrame {
 	}
 	
 	private void buttonDeleteSessionActionPerformed(ActionEvent evt) {
-		logger.info(messages.getString("deletedSession")); //TODO
-		updateSessionSessionsComboBox();
+		if (tabbedPaneUpdate.getSelectedIndex() == 0) {
+		for (SessionDTO sessionDTO: sessionsDTO) {
+			if (sessionDTO.getSession().equals((String) comboBoxUpdateSession_SelectSession.getSelectedItem())) {
+			
+				if (controller.deleteSession(sessionDTO)) {
+					
+					logger.info(messages.getString("deletedSession")); //TODO
+					updateSessionSessionsComboBox();
+				}
+			}
+		}
+		cleanUpdateSessionDetails();
+		btnUpdate.setEnabled(false);
+	}
+	else {
+	}
+		updateDeleteSessionComboBox();
+		
 	}
 	
 	private void buttonDeleteFilmActionPerformed(ActionEvent evt) {
