@@ -57,6 +57,7 @@ public class MMWindow extends JFrame {
 	private JList<String> membersList1;
 	private JTextField name;
 	private JTextField surname;
+	private JPanel panelManageMembers;
 	private JPanel panelButtons;
 	private JPanel panelMembers;
 	private JPanel panelControlM;
@@ -75,6 +76,9 @@ public class MMWindow extends JFrame {
 	
 	private List<MemberDTO> members;
 	private DefaultListModel<String> membersList;
+	
+	private JPanel panelOptions = new JPanel();
+	private JButton buttonManageCinema;
 	
 	ResourceBundle messages;
 
@@ -95,6 +99,7 @@ public class MMWindow extends JFrame {
 			}
 		});
 		
+		panelManageMembers = new JPanel();
 		panelMembers = new JPanel();
 		panelListMembers = new JPanel();
 		scrollMembers = new JScrollPane();
@@ -124,8 +129,22 @@ public class MMWindow extends JFrame {
 		jLabel6 = new JLabel();
 		panelFields = new JPanel();
 		panelPoints = new JPanel();
+		buttonManageCinema = new JButton();
 		
-		getContentPane().setLayout(new GridLayout(2, 1));
+		getContentPane().setLayout(new BorderLayout(0, 0));
+		
+		panelManageMembers.setLayout(new GridLayout(2, 1));
+		
+		buttonManageCinema = new JButton(messages.getString("goToManageCinemaWindow"));
+		buttonManageCinema.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				buttonManageCinemaActionPerformed(evt);
+			}
+		});
+		panelOptions.add(new JLabel(messages.getString("options") + ": "));
+		panelOptions.add(buttonManageCinema);
+		
+		getContentPane().add(panelOptions, BorderLayout.NORTH);
 
 		panelMembers.setLayout(new GridLayout(1, 2));
 		panelMembers.setBorder(new TitledBorder(new EtchedBorder(), messages.getString("memberSection")));
@@ -210,7 +229,7 @@ public class MMWindow extends JFrame {
 		panelMembers.add(panelControlM);
 		
 		// Add members panel
-		getContentPane().add(panelMembers);
+		panelManageMembers.add(panelMembers);
 		
 		updateName.setColumns(7);
 		updateSurname.setColumns(7);
@@ -229,13 +248,15 @@ public class MMWindow extends JFrame {
 		//TODO
 		panelPoints.setBorder(new TitledBorder(messages.getString("updateMemberPoints")));
 		
-		panelUpdate.setBorder(new TitledBorder(messages.getString("update") + messages.getString("member")));
+		panelUpdate.setBorder(new TitledBorder(messages.getString("update") + " " + messages.getString("member")));
 		panelUpdate.setLayout(new GridLayout(1, 2));
 		panelUpdate.add(panelFields);
 		panelUpdate.add(panelPoints);
 		
 		// Add update panel
-		getContentPane().add(panelUpdate);
+		panelManageMembers.add(panelUpdate);
+		
+		getContentPane().add(panelManageMembers, BorderLayout.SOUTH);
 
 		membersList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		membersList1.setFocusable(false);
@@ -250,6 +271,13 @@ public class MMWindow extends JFrame {
 		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
 	}
 	
+	private void buttonManageCinemaActionPerformed(ActionEvent evt) {
+		CMAWindow cmaWindow = new CMAWindow(controller, messages, loginUser);
+		cmaWindow.centreWindow();
+		cmaWindow.setVisible(true);
+		dispose();
+	}
+	
 	private void buttonSearchActionPerformed(ActionEvent evt) {
 		
 	}
@@ -258,7 +286,7 @@ public class MMWindow extends JFrame {
 		members = controller.getAllMembers();
 		updateLists(members);
 		cleanSearchDetails();
-		logger.info("All members retrieved.");
+		logger.info(messages.getString("allMembersRetrieved"));
 	}
 	
 	private void buttonUpdateActionPerformed(ActionEvent evt) {
@@ -277,14 +305,14 @@ public class MMWindow extends JFrame {
 		updateLists(members);
 		cleanUpdateDetails();
 		cleanSearchDetails();
-		logger.info("Member updated.");
+		logger.info(messages.getString("memberUpdated"));
 	}
 	
 	private void buttonDeleteActionPerformed(ActionEvent evt) {
 		controller.deleteMember(members.get(membersList1.getSelectedIndex()));
 		members.remove(membersList1.getSelectedIndex());
 		updateLists(members);
-		logger.info("Member deleted.");
+		logger.info(messages.getString("memberDeleted"));
 	}
 
 	private void updateLists(List<MemberDTO> members) {

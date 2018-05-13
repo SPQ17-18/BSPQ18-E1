@@ -152,7 +152,7 @@ public class LoginWindow extends JDialog {
 								messages.getString("greetings") + " " + tfUsernameE.getText().trim() + "! " + messages.getString("welcomeMessage") + " " + messages.getString("employee"),
 								"Login",
 								JOptionPane.INFORMATION_MESSAGE);
-						logger.info("Successfully logged as an employee.");
+						logger.info(messages.getString("successfullyLoggedEmployee"));
 						CMAWindow cmaWindow = new CMAWindow(controller, messages, tfUsernameE.getText().trim());
 						cmaWindow.centreWindow();
 						cmaWindow.setVisible(true);
@@ -163,7 +163,7 @@ public class LoginWindow extends JDialog {
 								messages.getString("wrongSignIn"),
 								messages.getString("badCredentials"),
 								JOptionPane.INFORMATION_MESSAGE);
-						logger.info("Wrong username or password: " + tfUsernameE.getText().trim() + " " +  String.valueOf(pfPasswordE.getPassword()));
+						logger.info(messages.getString("wrongUsernamePassword") + ": " + tfUsernameE.getText().trim() + " " +  String.valueOf(pfPasswordE.getPassword()));
 					}
 				}
 				else {
@@ -172,7 +172,7 @@ public class LoginWindow extends JDialog {
 								messages.getString("greetings") + " " + tfEmailM.getText().trim() + "! " + messages.getString("welcomeMessage") + " " + messages.getString("member"),
 								"Login",
 								JOptionPane.INFORMATION_MESSAGE);
-						logger.info("Successfully logged as a member.");
+						logger.info(messages.getString("successfullyLoggedMember"));
 						CMWindow cmWindow = new CMWindow(controller, messages, tfEmailM.getText().trim());
 						cmWindow.centreWindow();
 						cmWindow.setVisible(true);
@@ -183,7 +183,7 @@ public class LoginWindow extends JDialog {
 								messages.getString("wrongSignIn"),
 								messages.getString("badCredentials"),
 								JOptionPane.INFORMATION_MESSAGE);
-						logger.info("Wrong email or password: " + tfEmailM.getText().trim() + " " +  String.valueOf(pfPasswordM.getPassword()));
+						logger.info(messages.getString("wrongUsernamePassword") + ": " + tfEmailM.getText().trim() + " " +  String.valueOf(pfPasswordM.getPassword()));
 					}
 				}
 		    }
