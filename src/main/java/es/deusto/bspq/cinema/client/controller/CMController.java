@@ -52,7 +52,16 @@ public class CMController {
 		return updated;
 	}
 	
-	// public boolean deleteSession
+	public boolean deleteSession(SessionDTO sessionDTO) {
+		boolean deleted = false;
+		try {
+			deleted = cmsl.getService().deleteSession(sessionDTO);
+		} catch (RemoteException e) {
+			logger.error("Error deleting a session.");
+		}
+		return deleted;
+	}
+	
 	
 	public List<SessionDTO> getAllSessions() {
 		List<SessionDTO> sessions = null;
