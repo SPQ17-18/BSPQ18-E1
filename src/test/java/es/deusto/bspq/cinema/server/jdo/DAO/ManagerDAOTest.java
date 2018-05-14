@@ -288,14 +288,6 @@ public class ManagerDAOTest {
 		assertEquals(0, managerDAO.getRoom(2).getRoomNumber());
 	}
 	
-	//This test failed in my computer
-	@Test
-	@Required(max = 120, average = 30)
-	public void testDeleteFilm() throws Exception {
-		Film film = new Film("Inmersion", "Wim Wenders", 12, 111, "EE.UU.");
-		managerDAO.deleteFilm(film);
-		assertEquals(4, managerDAO.getFilms().size());
-	}
 	
 	@Test
 	@Required(max = 120, average = 30)
@@ -346,6 +338,23 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
+	@Required(average = 100)
+	public void testUpdateSession() throws Exception {
+		Session s = new Session("S1", "15-07-2018", "11:30", 15f);
+		s.setFilm(managerDAO.getFilm("Campeones"));
+		s.setRoom(managerDAO.getRoom(4));
+		
+		managerDAO.updateSession(s);
+		
+		Session sNew = managerDAO.getSession(s);
+		
+		assertEquals("15-07-2018", sNew.getDate());
+		assertEquals("11:30", sNew.getHour());
+		assertEquals(true,15f	==sNew.getPrice());
+		
+	}
+	
+	@Test
 	@Required(percentile90 = 3000)
 	public void testManageMember() throws Exception {
 		Member member = new Member("unaibermejofdez@opendeusto.es", "Unai", "Fernández", "test", "23-04-1997", 0);
@@ -373,6 +382,16 @@ public class ManagerDAOTest {
 		
 	
 	}
+	
+	//This test failed in my computer
+		@Test
+		@Required(max = 120, average = 30)
+		public void testDeleteFilm() throws Exception {
+			Film film = new Film("Inmersion", "Wim Wenders", 12, 111, "EE.UU.");
+			managerDAO.deleteFilm(film);
+			assertEquals(4, managerDAO.getFilms().size());
+		}
+		
 	
 	@AfterClass
 	public static void tearDownClass() {

@@ -427,6 +427,36 @@ public class CMControllerTest {
 		sessionDTO.setTitleFilm("Inmersion");
 		assertEquals(true, controller.insertSession(sessionDTO));
 	}
+	
+	@Test
+	@PerfTest(invocations = 5)
+	@Required(average = 450, max = 550)
+	public void testUpdateSession() {
+		logger.info("Test Update a session - Updating a session from the DB - Valid");
+		SessionDTO sessionDTO = new SessionDTO("05-05-2018", "17:05", 5f, 5, 22, "Campeones");
+		sessionDTO.setSession("S1");
+		assertEquals(true, controller.updateSession(sessionDTO));
+	}
+	
+	@Test
+	@PerfTest(invocations = 5)
+	@Required(totalTime = 5000, max = 550)
+	public void testUpdateSession2() {
+		logger.info("Test Update a session - Updating a session from the DB - Valid");
+		SessionDTO sessionDTO = new SessionDTO("05-05-2018", "17:05", 5f, 5, 22, "Campeones");
+		sessionDTO.setSession("S1");
+		assertEquals(true, controller.updateSession(sessionDTO));
+	}
+	
+	@Test
+	@PerfTest(invocations = 5)
+	@Required(median = 450, max = 550)
+	public void testUpdateSession3() {
+		logger.info("Test Update a session - Updating a session from the DB - Valid");
+		SessionDTO sessionDTO = new SessionDTO("05-05-2018", "17:05", 5f, 5, 22, "Campeones");
+		sessionDTO.setSession("S1");
+		assertEquals(true, controller.updateSession(sessionDTO));
+	}
 
 	//This test failed in my computer
 	@Test
@@ -466,22 +496,6 @@ public class CMControllerTest {
 		List<MemberDTO> members = null;
 		MemberDTO memberDTO = new MemberDTO("ariane.fernandez@opendeusto.es", "Paloma", "Fernandez", "ariane", "26-04-1997", 0);
 		controller.updateMember(memberDTO);
-		members = controller.getAllMembers();
-		for (int i=0;i<members.size();i++) {
-			if (members.get(i).getEmail().equals("ariane.fernandez@opendeusto.es")) {
-				assertEquals("Paloma", members.get(i).getName());
-			}
-		}
-	}
-	
-	@Test
-	@Required(max = 120, average = 30)
-	public void testUpdateSession() {
-		logger.info("Test Update a session - Updating a session from the DB - Valid");
-		List<MemberDTO> members = null;
-		SessionDTO sessionDTO = new SessionDTO("15-05-2018","18:00",10f,2,60,"Inmersion","S1");
-		//TODO
-		
 		members = controller.getAllMembers();
 		for (int i=0;i<members.size();i++) {
 			if (members.get(i).getEmail().equals("ariane.fernandez@opendeusto.es")) {

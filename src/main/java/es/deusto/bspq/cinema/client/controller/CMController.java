@@ -61,8 +61,7 @@ public class CMController {
 		}
 		return deleted;
 	}
-	
-	
+
 	public List<SessionDTO> getAllSessions() {
 		List<SessionDTO> sessions = null;
 		try {
