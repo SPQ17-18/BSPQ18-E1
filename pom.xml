@@ -19,6 +19,7 @@
 		<server.Name>CinemaManager</server.Name>
 		<policy.file>${basedir}/src/main/resources/security/java.policy</policy.file>
 		<config.files.dir>${basedir}/src/main/resources</config.files.dir>
+		<doxygen.config.file>${basedir}/src/main/resources/Doxyfile</doxygen.config.file>
 	</properties>
 
 	<!-- search for the latest version of dependencies in http://mvnrepository.com -->
@@ -65,11 +66,11 @@
 			<version>[1.2.17, )</version>
 		</dependency>
 		<dependency>
-		<groupId>org.databene</groupId>
-		<artifactId>contiperf</artifactId>
-		<version>2.3.4</version>
-		<scope>test</scope>
-	</dependency>
+			<groupId>org.databene</groupId>
+			<artifactId>contiperf</artifactId>
+			<version>2.3.4</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -127,6 +128,14 @@
 						<packageLineRate>50</packageLineRate>
 						<packageBranchRate>50</packageBranchRate>
 					</check>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.soebes.maven.plugins</groupId>
+				<artifactId>doxygen-maven-plugin</artifactId>
+				<version>1.1.0</version>
+				<configuration>
+					<configurationFile>${doxygen.config.file}</configurationFile> 
 				</configuration>
 			</plugin>
 		</plugins>
