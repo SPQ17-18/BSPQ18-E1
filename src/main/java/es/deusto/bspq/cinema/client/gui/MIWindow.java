@@ -90,7 +90,7 @@ public class MIWindow extends JFrame {
 		panelPoints.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		lblPoints = new JLabel(messages.getString("currentPoints"));
 		panelPoints.add(lblPoints);
-		lblPointsNumber = new JLabel("controller call here"); //TODO controller.getMemberPoints(loginUser);
+		lblPointsNumber = new JLabel(String.valueOf(controller.getMemberPoints(loginUser)));
 		panelPoints.add(lblPointsNumber);
 		
 		panelActions = new JPanel();

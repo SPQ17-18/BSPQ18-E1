@@ -319,7 +319,7 @@ public class MMWindow extends JFrame {
 		membersList.clear();
 		for (int i = 0; i < members.size(); i++) {
 			MemberDTO member = (MemberDTO) members.get(i);
-			membersList.addElement(member.getName() + " " + member.getSurname() + messages.getString("birthday") + " : " + member.getBirthday());
+			membersList.addElement(member.getName() + " " + member.getSurname() + " " + messages.getString("birthday") + " : " + member.getBirthday());
 		}
 		membersList1.setSelectedIndex(0);
 	}

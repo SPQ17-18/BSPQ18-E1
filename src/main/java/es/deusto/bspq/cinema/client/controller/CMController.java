@@ -16,20 +16,22 @@ public class CMController {
 	final static Logger logger = Logger.getLogger(CMController.class);
 
 	private CMServiceLocator cmsl;
+	
 	/**
-	   * Class Constructor.
-	   * @param args The command line arguments.
-	   * @throws RemoteExeption
-	   */
+	 * Class Constructor.
+	 * @param args Command line arguments.
+	 * @throws RemoteExeption
+	 */
 	public CMController(String[] args) throws RemoteException {
 		cmsl = new CMServiceLocator();
 		cmsl.setServices(args[0], args[1], args[2]);
 	}
+	
 	/**
-	   * Inserts a film to the DB.
-	   * @param filmDTO Data Container.
-	   * @return Successful or not.
-	   */
+	 * Inserts a film to the DB.
+	 * @param filmDTO Data Container.
+	 * @return Successful or not.
+	 */
 	public boolean insertFilm(FilmDTO filmDTO) {
 		boolean film = false;
 		try {
@@ -39,11 +41,12 @@ public class CMController {
 		}
 		return film;
 	}
+	
 	/**
-	   * Inserts a session to the DB.
-	   * @param sessionDTO Data Container.
-	   * @return Successful or not.
-	   */
+	 * Inserts a session to the DB.
+	 * @param sessionDTO Data Container.
+	 * @return Successful or not.
+	 */
 	public boolean insertSession(SessionDTO sessionDTO) {
 		boolean session = false;
 		try {
@@ -53,11 +56,12 @@ public class CMController {
 		}
 		return session;
 	}
+	
 	/**
-	   * Updates a session.
-	   * @param sessionDTO Data Container.
-	   * @return Successful or not.
-	   */
+	 * Updates a session.
+	 * @param sessionDTO Data Container.
+	 * @return Successful or not.
+	 */
 	public boolean updateSession(SessionDTO sessionDTO) {
 		boolean updated = false;
 		try {
@@ -67,11 +71,12 @@ public class CMController {
 		}
 		return updated;
 	}
+	
 	/**
-	   * Deletes a session.
-	   * @param sessionDTO Data Container.
-	   * @return Successful or not.
-	   */
+	 * Deletes a session.
+	 * @param sessionDTO Data Container.
+	 * @return Successful or not.
+	 */
 	public boolean deleteSession(SessionDTO sessionDTO) {
 		boolean deleted = false;
 		try {
@@ -81,10 +86,11 @@ public class CMController {
 		}
 		return deleted;
 	}
+	
 	/**
-	   * Gets all the sessions of the DB.
-	   * @return Successful or not.
-	   */
+	 * Gets all the sessions of the DB.
+	 * @return Sessions.
+	 */
 	public List<SessionDTO> getAllSessions() {
 		List<SessionDTO> sessions = null;
 		try {
@@ -94,10 +100,11 @@ public class CMController {
 		}
 		return sessions;
 	}
+	
 	/**
-	   * Gets all the films of the DB.
-	   * @return Successful or not.
-	   */
+	 * Gets all the films of the DB.
+	 * @return Films.
+	 */
 	public List<FilmDTO> getAllFilms() {
 		List<FilmDTO> films = null;
 		try {
@@ -107,11 +114,12 @@ public class CMController {
 		}
 		return films;
 	}
+	
 	/**
-	   * Buy a ticket.
-	   * @param sessionDTO Data Container.
-	   * @return Successful or not.
-	   */
+	 * Buy a ticket.
+	 * @param sessionDTO Data Container.
+	 * @return Successful or not.
+	 */
 	public boolean buyTicket(TicketDTO ticketDTO) {
 		boolean ticket = false;
 		try {
@@ -121,12 +129,13 @@ public class CMController {
 		}
 		return ticket;
 	}
+	
 	/**
-	   * Identifies a member.
-	   * @param email Email of the member.
-	   * @param password Password of the member.
-	   * @return Successful or not.
-	   */
+	 * Identifies a member.
+	 * @param email Email of the member.
+	 * @param password Password of the member.
+	 * @return Successful or not.
+	 */
 	public boolean identifyMember(String email, String password) {
 		boolean login = false;
 		try {
@@ -136,12 +145,13 @@ public class CMController {
 		}
 		return login;
 	}
+	
 	/**
-	   * Identifies a employee.
-	   * @param email Email of the employee.
-	   * @param password Password of the employee.
-	   * @return Successful or not.
-	   */
+	 * Identifies a employee.
+	 * @param email Email of the employee.
+	 * @param password Password of the employee.
+	 * @return Successful or not.
+	 */
 	public boolean identifyEmployee(String email, String password) {
 		boolean login = false;
 		try {
@@ -151,10 +161,11 @@ public class CMController {
 		}
 		return login;
 	}
+	
 	/**
-	   * Gets all the members from server.
-	   * @return Successful or not.
-	   */
+	 * Gets all the members from server.
+	 * @return Members.
+	 */
 	public List<MemberDTO> getAllMembers() {
 		List<MemberDTO> members = null;
 		try {
@@ -164,12 +175,13 @@ public class CMController {
 		}
 		return members;
 	}
+	
 	/**
-	   * Cancels a membership.
-	   * @param email Email of the member.
-	   * @param password Password of the member
-	   * @return Successful or not.
-	   */
+	 * Cancels a membership.
+	 * @param email Email of the member.
+	 * @param password Password of the member
+	 * @return Successful or not.
+	 */
 	public boolean cancelMembership(String email, String password) {
 		boolean cancel = false;
 		try {
@@ -179,11 +191,12 @@ public class CMController {
 		}
 		return cancel;
 	}
+	
 	/**
-	   * Updates a member.
-	   * @param memberDTO Data Container.
-	   * @return Successful or not.
-	   */
+	 * Updates a member.
+	 * @param memberDTO Data Container.
+	 * @return Successful or not.
+	 */
 	public boolean updateMember(MemberDTO memberDTO) {
 		boolean updated = false;
 		try {
@@ -193,11 +206,12 @@ public class CMController {
 		}
 		return updated;
 	}
+	
 	/**
-	   * Deletes a member.
-	   * @param memberDTO Data Container.
-	   * @return Successful or not.
-	   */
+	 * Deletes a member.
+	 * @param memberDTO Data Container.
+	 * @return Successful or not.
+	 */
 	public boolean deleteMember(MemberDTO memberDTO) {
 		boolean deleted = false;
 		try {
@@ -207,11 +221,12 @@ public class CMController {
 		}
 		return deleted;
 	}
+	
 	/**
-	   * Register a member.
-	   * @param memberDTO Data Container.
-	   * @return Successful or not.
-	   */
+	 * Registers a member.
+	 * @param memberDTO Data Container.
+	 * @return Successful or not.
+	 */
 	public boolean registerMember(MemberDTO memberDTO) {
 		boolean registered = false;
 		try {
@@ -221,9 +236,25 @@ public class CMController {
 		}
 		return registered;
 	}
+	
 	/**
-	   * Exits current program.
-	   */
+	 * Gets current points of a member.
+	 * @param email Email of the member.
+	 * @return Member points.
+	 */
+	public int getMemberPoints(String email) {
+		int points = -1;
+		try {
+			points = cmsl.getService().getMemberPoints(email);
+		} catch (RemoteException e) {
+			logger.error("Error getting points of a member.");
+		}
+		return points;
+	}
+	
+	/**
+	 * Exits current application.
+	 */
 	public void exit() {
 		System.exit(0);
 	}
