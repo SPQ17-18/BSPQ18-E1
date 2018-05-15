@@ -741,6 +741,7 @@ public class CMAWindow extends JFrame {
 		panelOptions.add(new JLabel(messages.getString("options") + ": "), BorderLayout.SOUTH);
 		panelOptions.add(btnManageMembers, BorderLayout.SOUTH);
 		
+		updateDeleteFilmComboBox();
 		updateSessionFilmsComboBox();
 		updateSessionSessionsComboBox();
 		
@@ -760,6 +761,7 @@ public class CMAWindow extends JFrame {
 					Integer.parseInt((String) comboBoxInsertFilmRating.getSelectedItem()), 
 					new Long((int) spinnerInsertFilmDuration.getValue()), 
 					textFieldInsertFilmCountry_Edit.getText()));
+			updateDeleteFilmComboBox();
 			updateSessionFilmsComboBox();
 			
 		} else {
@@ -859,7 +861,17 @@ public class CMAWindow extends JFrame {
 		String filmTitle = String.valueOf(comboBoxDeleteFilm.getSelectedItem());
 		controller.deleteFilm(filmTitle);
 		logger.info(messages.getString("deletedFilm"));
+		updateDeleteFilmComboBox();
 		updateSessionFilmsComboBox();
+	}
+	
+	private void updateDeleteFilmComboBox() {
+		comboBoxDeleteFilm.removeAllItems();
+		filmsDTO = new ArrayList<FilmDTO>();
+		filmsDTO = controller.getAllFilms();
+		for (FilmDTO filmDTO: filmsDTO) {
+			comboBoxDeleteFilm.addItem(filmDTO.getTitle());
+		}	
 	}
 	
 	private void cleanUpdateSessionDetails() {
