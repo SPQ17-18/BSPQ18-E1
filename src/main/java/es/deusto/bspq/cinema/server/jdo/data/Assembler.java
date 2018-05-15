@@ -40,6 +40,7 @@ public class Assembler {
 		m.setName(memberDTO.getName());
 		m.setPassword(memberDTO.getPassword());
 		m.setSurname(memberDTO.getSurname());
+		m.setPoints(memberDTO.getPoints());
 		return m;
 	}
 	
