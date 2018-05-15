@@ -8,9 +8,8 @@ public class Client {
 	
 	final static Logger logger = Logger.getLogger(Client.class);
 	 /**
-	   * This is the main method of the client side.
+	   * Main method of the client side.
 	   * @param args The command line arguments.
-	   * @return Nothing.
 	   */
 	public static void main(String[] args) {
 		if (args.length != 5) {

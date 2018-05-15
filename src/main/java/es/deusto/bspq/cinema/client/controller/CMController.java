@@ -17,9 +17,8 @@ public class CMController {
 
 	private CMServiceLocator cmsl;
 	/**
-	   * This constructs the CMController.
+	   * Class Constructor.
 	   * @param args The command line arguments.
-	   * @return Nothing.
 	   * @throws RemoteExeption
 	   */
 	public CMController(String[] args) throws RemoteException {
@@ -27,10 +26,9 @@ public class CMController {
 		cmsl.setServices(args[0], args[1], args[2]);
 	}
 	/**
-	   * This is for inserting a film.
-	   * @param FilmDTO filmDTO Contents attributes regarding to a film.
-	   * @return boolean film Returns weather inserting a film
-	   * was successful or not.
+	   * Inserts a film to the DB.
+	   * @param filmDTO Data Container.
+	   * @return Successful or not.
 	   */
 	public boolean insertFilm(FilmDTO filmDTO) {
 		boolean film = false;
@@ -42,10 +40,9 @@ public class CMController {
 		return film;
 	}
 	/**
-	   * This is for inserting a session.
-	   * @param SessionDTO sessionDTO Contents attributes regarding to a session.
-	   * @return boolean session Returns weather inserting a session was 
-	   * successful or not.
+	   * Inserts a session to the DB.
+	   * @param sessionDTO Data Container.
+	   * @return Successful or not.
 	   */
 	public boolean insertSession(SessionDTO sessionDTO) {
 		boolean session = false;
@@ -57,10 +54,9 @@ public class CMController {
 		return session;
 	}
 	/**
-	   * This is for updating a session.
-	   * @param SessionDTO sessionDTO Contents attributes regarding to a session.
-	   * @return boolean updated Returns weather updating a session was 
-	   * successful or not.
+	   * Updates a session.
+	   * @param sessionDTO Data Container.
+	   * @return Successful or not.
 	   */
 	public boolean updateSession(SessionDTO sessionDTO) {
 		boolean updated = false;
@@ -72,11 +68,9 @@ public class CMController {
 		return updated;
 	}
 	/**
-	   * This is for deleting a session.
-	   * @param SessionDTO sessionDTO Contents attributes regarding 
-	   * to a session.
-	   * @return boolean deleted Returns weather deleting a session was 
-	   * successful or not.
+	   * Deletes a session.
+	   * @param sessionDTO Data Container.
+	   * @return Successful or not.
 	   */
 	public boolean deleteSession(SessionDTO sessionDTO) {
 		boolean deleted = false;
@@ -88,10 +82,8 @@ public class CMController {
 		return deleted;
 	}
 	/**
-	   * This is for getting all the sessions.
-	   * @param Nothing.
-	   * @return List<SessionDTO> sessions Returns weather getting 
-	   * sessions from server was successful or not.
+	   * Gets all the sessions of the DB.
+	   * @return Successful or not.
 	   */
 	public List<SessionDTO> getAllSessions() {
 		List<SessionDTO> sessions = null;
@@ -103,10 +95,8 @@ public class CMController {
 		return sessions;
 	}
 	/**
-	   * This is for getting all the films.
-	   * @param Nothing.
-	   * @return List<FilmDTO> films Returns weather getting 
-	   * films from server was successful or not.  .
+	   * Gets all the films of the DB.
+	   * @return Successful or not.
 	   */
 	public List<FilmDTO> getAllFilms() {
 		List<FilmDTO> films = null;
@@ -118,11 +108,9 @@ public class CMController {
 		return films;
 	}
 	/**
-	   * This is for buying a ticket.
-	   * @param TicketDTO ticketDTO Contents attributes 
-	   * regarding to a ticket.
-	   * @return boolean ticket Returns weather buying a ticket
-	   * was successful or not.
+	   * Buy a ticket.
+	   * @param sessionDTO Data Container.
+	   * @return Successful or not.
 	   */
 	public boolean buyTicket(TicketDTO ticketDTO) {
 		boolean ticket = false;
@@ -134,11 +122,10 @@ public class CMController {
 		return ticket;
 	}
 	/**
-	   * This is for identifying a member.
-	   * @param String email Email of the member.
-	   * @param String password Password of the member.
-	   * @return boolean login Returns weather identifying
-	   * a member was successful or not.
+	   * Identifies a member.
+	   * @param email Email of the member.
+	   * @param password Password of the member.
+	   * @return Successful or not.
 	   */
 	public boolean identifyMember(String email, String password) {
 		boolean login = false;
@@ -150,11 +137,10 @@ public class CMController {
 		return login;
 	}
 	/**
-	   * This is for identifying a employee.
-	   * @param String email Email of the employee.
-	   * @param String password Password of the employee.
-	   * @return boolean login Returns weather identifying
-	   * a employee was successful or not.
+	   * Identifies a employee.
+	   * @param email Email of the employee.
+	   * @param password Password of the employee.
+	   * @return Successful or not.
 	   */
 	public boolean identifyEmployee(String email, String password) {
 		boolean login = false;
@@ -166,10 +152,8 @@ public class CMController {
 		return login;
 	}
 	/**
-	   * This is for getting all the members from the server.
-	   * @param Nothing.
-	   * @return List<MemberDTO> members Returns weather getting 
-	   * members from server was successful or not.
+	   * Gets all the members from server.
+	   * @return Successful or not.
 	   */
 	public List<MemberDTO> getAllMembers() {
 		List<MemberDTO> members = null;
@@ -181,11 +165,10 @@ public class CMController {
 		return members;
 	}
 	/**
-	   * This is for canceling a membership.
-	   * @param String email Email of the member.
-	   * @param String password Password of the member
-	   * @return boolean cancel Returns weather canceling
-	   * was successful or not.
+	   * Cancels a membership.
+	   * @param email Email of the member.
+	   * @param password Password of the member
+	   * @return Successful or not.
 	   */
 	public boolean cancelMembership(String email, String password) {
 		boolean cancel = false;
@@ -197,11 +180,9 @@ public class CMController {
 		return cancel;
 	}
 	/**
-	   * This is for updating a member.
-	   * @param MemberDTO memberDTO Contents attributes
-	   * regarding to a member.
-	   * @return boolean updated Returns weather updating
-	   * a member was successful or not.
+	   * Updates a member.
+	   * @param memberDTO Data Container.
+	   * @return Successful or not.
 	   */
 	public boolean updateMember(MemberDTO memberDTO) {
 		boolean updated = false;
@@ -213,11 +194,9 @@ public class CMController {
 		return updated;
 	}
 	/**
-	   * This is for deleting a member.
-	   * @param MemberDTO memberDTO Contents attributes
-	   * regarding to a member.
-	   * @return boolean deleted Returns weather deleting
-	   * a member was successful or not.
+	   * Deletes a member.
+	   * @param memberDTO Data Container.
+	   * @return Successful or not.
 	   */
 	public boolean deleteMember(MemberDTO memberDTO) {
 		boolean deleted = false;
@@ -229,11 +208,9 @@ public class CMController {
 		return deleted;
 	}
 	/**
-	   * This is for registering a member.
-	   * @param MemberDTO memberDTO Contents attributes
-	   * regarding to a member.
-	   * @return boolean registered Returns weather registering
-	   * a member was successful or not.
+	   * Register a member.
+	   * @param memberDTO Data Container.
+	   * @return Successful or not.
 	   */
 	public boolean registerMember(MemberDTO memberDTO) {
 		boolean registered = false;
@@ -245,10 +222,7 @@ public class CMController {
 		return registered;
 	}
 	/**
-	   * This exits current program by terminating running 
-	   * Java virtual machine.
-	   * @param Nothing .
-	   * @return Nothing .
+	   * Exits current program.
 	   */
 	public void exit() {
 		System.exit(0);
