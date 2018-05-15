@@ -222,6 +222,21 @@ public class CMController {
 		return registered;
 	}
 	/**
+	 * Deletes a film.
+	 * @param filmTitle Film title.
+	 * @return Successful or not.
+	 */
+	public boolean deleteFilm(String filmTitle) {
+		boolean deleted = false;
+		try {
+			deleted = cmsl.getService().deleteFilm(filmTitle);
+		} catch (RemoteException e) {
+			logger.error("Error deleting a film.");
+		}
+		return deleted;
+	}
+	
+	/**
 	   * Exits current program.
 	   */
 	public void exit() {
