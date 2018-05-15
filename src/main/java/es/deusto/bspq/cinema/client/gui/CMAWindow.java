@@ -22,8 +22,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.awt.GridBagLayout;
 import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
@@ -48,7 +51,6 @@ public class CMAWindow extends JFrame {
 	
 	final static Logger logger = Logger.getLogger(CMWindow.class);
 
-	private static String[] foo = {"1", "2", "3", "4", "5"};
 	private final int seatsPerSession = 25;
 	
 	// App controller
@@ -56,9 +58,6 @@ public class CMAWindow extends JFrame {
 	
 	// Login user
 	private String loginUser;
-	
-	private SessionDTO insertSessionDTO;
-	private FilmDTO insertFilmDTO;
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -70,10 +69,10 @@ public class CMAWindow extends JFrame {
 	private JPanel panelDelete = new JPanel();
 	private JTabbedPane tabbedPaneDelete = new JTabbedPane(JTabbedPane.TOP);
 	private JPanel panelDeleteSession = new JPanel();
-	private JComboBox comboBoxDeleteSession = new JComboBox(foo);
+	private JComboBox<String> comboBoxDeleteSession = new JComboBox<String>();
 	private JButton btnDeleteSession;
 	private JPanel panelDeleteFilm = new JPanel();
-	private JComboBox comboBoxDeleteFilm = new JComboBox(foo);
+	private JComboBox<String> comboBoxDeleteFilm = new JComboBox<String>();
 	private JButton btnDeleteFilm;
 	private JButton btnUpdate;
 	private JButton btnInsert;
@@ -83,7 +82,7 @@ public class CMAWindow extends JFrame {
 	private final JTextField textFieldInsertFilmDirector = new JTextField();
 	private final JTextField textFieldInsertFilmDirector_Edit = new JTextField();
 	private final JTextField textFieldInsertFilmRating = new JTextField();
-	private final JComboBox comboBoxInsertFilmRating = new JComboBox(foo);
+	private final JComboBox<String> comboBoxInsertFilmRating = new JComboBox<String>();
 	private final JTextField textFieldInsertFilmDuration = new JTextField();
 	private final JSpinner spinnerInsertFilmDuration = new JSpinner();
 	private final JTextField textFieldInsertFilmCountry = new JTextField();
@@ -98,11 +97,11 @@ public class CMAWindow extends JFrame {
 	private final JTextField textFieldInsertSessionHour = new JTextField();
 	private final JTextField textFieldInsertSessionPrice = new JTextField();
 	private final JPanel panelUpdateSession = new JPanel();
-	private final JComboBox<String> comboBoxUpdateSession_SelectSession = new JComboBox();
+	private final JComboBox<String> comboBoxUpdateSession_SelectSession = new JComboBox<String>();
 	private final JTextField textFieldUpdateSessionFilm = new JTextField();
-	private final JComboBox<String> comboBoxUpdateSession_SelectFilm = new JComboBox();
+	private final JComboBox<String> comboBoxUpdateSession_SelectFilm = new JComboBox<String>();
 	private final JTextField textFieldUpdateSessionRoom = new JTextField();
-	private final JComboBox<String> comboBoxUpdateSession_SelectRoom = new JComboBox(foo);
+	private final JComboBox<String> comboBoxUpdateSession_SelectRoom = new JComboBox<String>();
 	private final JTextField textFieldUpdateSessionDate = new JTextField();
 	private final JTextField textFieldUpdateSessionDate_Edit = new JTextField();
 	private final JTextField textFieldUpdateSessionHour = new JTextField();
@@ -110,13 +109,13 @@ public class CMAWindow extends JFrame {
 	private final JTextField textFieldUpdateSessionPrice = new JTextField();
 	private final JTextField textFieldUpdateSession_Price = new JTextField();
 	private final JPanel panelUpdateFilm = new JPanel();
-	private final JComboBox comboBoxUpdateFilm_SelectFilm = new JComboBox(foo);
+	private final JComboBox<String> comboBoxUpdateFilm_SelectFilm = new JComboBox<String>();
 	private final JTextField textFieldUpdateFilmTitle = new JTextField();
 	private final JTextField textFieldUpdateFilmTitle_Edit = new JTextField();
 	private final JTextField textFieldUpdateFilmDirector = new JTextField();
 	private final JTextField textFieldUpdateFilmDirector_Edit = new JTextField();
 	private final JTextField textFieldUpdateFilmRating = new JTextField();
-	private final JComboBox comboBoxUpdateFilmRating = new JComboBox(foo);
+	private final JComboBox<String> comboBoxUpdateFilmRating = new JComboBox<String>();
 	private final JTextField textFieldUpdateFilmDuration = new JTextField();
 	private final JSpinner spinnerUpdateFilmDuration = new JSpinner();
 	private final JTextField textFieldUpdateFilmCountry = new JTextField();
@@ -132,9 +131,10 @@ public class CMAWindow extends JFrame {
 	
 	private JPanel panelOptions = new JPanel();
 	private JButton btnManageMembers;
+	private JButton btnLoginWindow;
 	
 	private List<SessionDTO> sessionsDTO;
-	private List<FilmDTO> filmsDTO;
+    private List<FilmDTO> filmsDTO;
 	
 	ResourceBundle messages;
 
@@ -171,7 +171,6 @@ public class CMAWindow extends JFrame {
 				enableButtonInsert();
 			}
 		});
-		
 		panelInsert.add(tabbedPaneInsert);
 		panelInsertSession.setBorder(null);
 		
@@ -283,7 +282,7 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldInsertSessionPrice.insets = new Insets(0, 0, 0, 5);
 		gbc_textFieldInsertSessionPrice.gridx = 0;
 		gbc_textFieldInsertSessionPrice.gridy = 4;
-		textFieldInsertSessionPrice.setText("Price");
+		textFieldInsertSessionPrice.setText(messages.getString("price"));
 		textFieldInsertSessionPrice.setEditable(false);
 		textFieldInsertSessionPrice.setColumns(10);
 		panelInsertSession.add(textFieldInsertSessionPrice, gbc_textFieldInsertSessionPrice);
@@ -738,12 +737,20 @@ public class CMAWindow extends JFrame {
 				buttonManageMembersActionPerformed(evt);
 			}
 		});
+		btnLoginWindow = new JButton(messages.getString("goToLoginWindow"));
+		btnLoginWindow.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				buttonLoginWindowActionPerformed(evt);
+			}
+		});
 		panelOptions.add(new JLabel(messages.getString("options") + ": "), BorderLayout.SOUTH);
 		panelOptions.add(btnManageMembers, BorderLayout.SOUTH);
+		panelOptions.add(btnLoginWindow, BorderLayout.SOUTH);
 		
 		updateDeleteFilmComboBox();
 		updateSessionFilmsComboBox();
 		updateSessionSessionsComboBox();
+		updateDeleteSessionComboBox();
 		
 		pack();
 	}
@@ -752,34 +759,6 @@ public class CMAWindow extends JFrame {
 		Dimension dim = getToolkit().getScreenSize();
 		Rectangle abounds = getBounds();
 		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
-	}
-	
-	private void buttonInsertActionPerformed(ActionEvent evt) {
-		if (tabbedPaneInsert.getSelectedIndex() == 1) {
-			controller.insertFilm(new FilmDTO(textFieldInsertFilmTitle_Edit.getText(), 
-					textFieldInsertFilmDirector_Edit.getText(),
-					Integer.parseInt((String) comboBoxInsertFilmRating.getSelectedItem()), 
-					new Long((int) spinnerInsertFilmDuration.getValue()), 
-					textFieldInsertFilmCountry_Edit.getText()));
-			updateDeleteFilmComboBox();
-			updateSessionFilmsComboBox();
-			
-		} else {
-			controller.insertSession(new SessionDTO(textFieldInsertSessionDate_Edit.getText(),
-					spinnerInsertSessionHourHs.getValue()+":"+spinnerInsertSessionHourMins.getValue(),
-					(long) spinnerInsertFilmPrice.getValue(),
-					(int) spinnerInsertSessionRoom.getValue(),
-					seatsPerSession,
-					textFieldInsertSessionFilm_Edit.getText()));
-			updateSessionSessionsComboBox();
-		}
-	}
-	
-	private void buttonManageMembersActionPerformed(ActionEvent evt) {
-		MMWindow mmWindow = new MMWindow(controller, messages, loginUser);
-		mmWindow.centreWindow();
-		mmWindow.setVisible(true);
-		dispose();
 	}
 
 	private void enableButtonInsert() {
@@ -823,8 +802,64 @@ public class CMAWindow extends JFrame {
 		comboBoxUpdateSession_SelectSession.removeAllItems();
 		sessionsDTO = new ArrayList<SessionDTO>();
 		sessionsDTO = controller.getAllSessions();
+		HashSet<Integer> rooms = new HashSet<Integer>();
 		for (SessionDTO sessionDTO: sessionsDTO) {
 			comboBoxUpdateSession_SelectSession.addItem(sessionDTO.getSession());
+			rooms.add(sessionDTO.getRoom());
+		}
+		Iterator<Integer> roomNumbers = rooms.iterator();
+		while (roomNumbers.hasNext()) comboBoxUpdateSession_SelectRoom.addItem(roomNumbers.next().toString());
+	}
+	
+	private void updateDeleteSessionComboBox() {
+		comboBoxDeleteSession.removeAllItems();
+		sessionsDTO = new ArrayList<SessionDTO>();
+		sessionsDTO = controller.getAllSessions();
+		for (SessionDTO sessionDTO: sessionsDTO) {
+			comboBoxDeleteSession.addItem(sessionDTO.getSession());
+		}	
+	}
+		
+	private void updateDeleteFilmComboBox() {
+		comboBoxDeleteFilm.removeAllItems();
+		filmsDTO = new ArrayList<FilmDTO>();
+		filmsDTO = controller.getAllFilms();
+		for (FilmDTO filmDTO: filmsDTO) {
+			comboBoxDeleteFilm.addItem(filmDTO.getTitle());
+		}	
+	}
+	
+	private void buttonManageMembersActionPerformed(ActionEvent evt) {
+		MMWindow mmWindow = new MMWindow(controller, messages, loginUser);
+		mmWindow.centreWindow();
+		mmWindow.setVisible(true);
+		dispose();
+	}
+	
+	private void buttonLoginWindowActionPerformed(ActionEvent evt) {
+		LoginWindow loginWindow = new LoginWindow(controller, messages);
+		loginWindow.centreWindow();
+		loginWindow.setVisible(true);
+		dispose();
+	}
+	
+	private void buttonInsertActionPerformed(ActionEvent evt) {
+		if (tabbedPaneInsert.getSelectedIndex() == 1) {
+			controller.insertFilm(new FilmDTO(textFieldInsertFilmTitle_Edit.getText(), 
+					textFieldInsertFilmDirector_Edit.getText(),
+					Integer.parseInt((String) comboBoxInsertFilmRating.getSelectedItem()), 
+					new Long((int) spinnerInsertFilmDuration.getValue()), 
+					textFieldInsertFilmCountry_Edit.getText()));
+			updateSessionFilmsComboBox();
+			
+		} else {
+			controller.insertSession(new SessionDTO(textFieldInsertSessionDate_Edit.getText(),
+					spinnerInsertSessionHourHs.getValue()+":"+spinnerInsertSessionHourMins.getValue(),
+					(long) spinnerInsertFilmPrice.getValue(),
+					(int) spinnerInsertSessionRoom.getValue(),
+					seatsPerSession,
+					textFieldInsertSessionFilm_Edit.getText()));
+			updateSessionSessionsComboBox();
 		}
 	}
 	
@@ -839,22 +874,37 @@ public class CMAWindow extends JFrame {
 					sessionDTO.setPrice(Float.parseFloat(textFieldUpdateSession_Price.getText().trim()));
 					if (controller.updateSession(sessionDTO)) {
 						logger.info(messages.getString("updatedSession"));
-						updateSessionSessionsComboBox();
 					}
 				}
 			}
+			updateSessionSessionsComboBox();
+			updateDeleteSessionComboBox();
 			cleanUpdateSessionDetails();
 			btnUpdate.setEnabled(false);
 		}
 		else {
 			logger.info(messages.getString("updatedFilm")); //TODO
 			updateSessionFilmsComboBox();
+			updateDeleteSessionComboBox();
 		}
 	}
 	
 	private void buttonDeleteSessionActionPerformed(ActionEvent evt) {
-		logger.info(messages.getString("deletedSession")); //TODO
-		updateSessionSessionsComboBox();
+		if (tabbedPaneUpdate.getSelectedIndex() == 0) {
+			for (SessionDTO sessionDTO: sessionsDTO) {
+				if (sessionDTO.getSession().equals((String) comboBoxDeleteSession.getSelectedItem())) {
+					if (controller.deleteSession(sessionDTO)) {
+						logger.info(messages.getString("deletedSession"));
+					}
+				}
+			}
+			updateDeleteSessionComboBox();
+			updateSessionSessionsComboBox();
+		}
+		else {
+			updateDeleteSessionComboBox();
+			updateSessionSessionsComboBox();
+		}
 	}
 	
 	private void buttonDeleteFilmActionPerformed(ActionEvent evt) {
@@ -863,15 +913,6 @@ public class CMAWindow extends JFrame {
 		logger.info(messages.getString("deletedFilm"));
 		updateDeleteFilmComboBox();
 		updateSessionFilmsComboBox();
-	}
-	
-	private void updateDeleteFilmComboBox() {
-		comboBoxDeleteFilm.removeAllItems();
-		filmsDTO = new ArrayList<FilmDTO>();
-		filmsDTO = controller.getAllFilms();
-		for (FilmDTO filmDTO: filmsDTO) {
-			comboBoxDeleteFilm.addItem(filmDTO.getTitle());
-		}	
 	}
 	
 	private void cleanUpdateSessionDetails() {
