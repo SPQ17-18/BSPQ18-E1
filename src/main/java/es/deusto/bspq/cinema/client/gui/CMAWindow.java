@@ -22,8 +22,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.awt.GridBagLayout;
 import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
@@ -798,9 +801,13 @@ public class CMAWindow extends JFrame {
 		comboBoxUpdateSession_SelectSession.removeAllItems();
 		sessionsDTO = new ArrayList<SessionDTO>();
 		sessionsDTO = controller.getAllSessions();
+		HashSet<Integer> rooms = new HashSet<Integer>();
 		for (SessionDTO sessionDTO: sessionsDTO) {
 			comboBoxUpdateSession_SelectSession.addItem(sessionDTO.getSession());
+			rooms.add(sessionDTO.getRoom());
 		}
+		Iterator<Integer> roomNumbers = rooms.iterator();
+		while (roomNumbers.hasNext()) comboBoxUpdateSession_SelectRoom.addItem(roomNumbers.next().toString());
 	}
 	
 	private void updateDeleteSessionComboBox() {
@@ -857,16 +864,18 @@ public class CMAWindow extends JFrame {
 					sessionDTO.setPrice(Float.parseFloat(textFieldUpdateSession_Price.getText().trim()));
 					if (controller.updateSession(sessionDTO)) {
 						logger.info(messages.getString("updatedSession"));
-						updateSessionSessionsComboBox();
 					}
 				}
 			}
+			updateSessionSessionsComboBox();
+			updateDeleteSessionComboBox();
 			cleanUpdateSessionDetails();
 			btnUpdate.setEnabled(false);
 		}
 		else {
 			logger.info(messages.getString("updatedFilm")); //TODO
 			updateSessionFilmsComboBox();
+			updateDeleteSessionComboBox();
 		}
 	}
 	
@@ -876,14 +885,16 @@ public class CMAWindow extends JFrame {
 				if (sessionDTO.getSession().equals((String) comboBoxDeleteSession.getSelectedItem())) {
 					if (controller.deleteSession(sessionDTO)) {
 						logger.info(messages.getString("deletedSession"));
-						updateDeleteSessionComboBox();
 					}
 				}
 			}
+			updateDeleteSessionComboBox();
+			updateSessionSessionsComboBox();
 		}
 		else {
+			updateDeleteSessionComboBox();
+			updateSessionSessionsComboBox();
 		}
-		updateDeleteSessionComboBox();
 	}
 	
 	private void buttonDeleteFilmActionPerformed(ActionEvent evt) {
