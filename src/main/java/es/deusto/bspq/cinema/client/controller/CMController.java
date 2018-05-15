@@ -13,7 +13,7 @@ import es.deusto.bspq.cinema.server.jdo.data.TicketDTO;
 
 public class CMController {
 	
-	final static jdk.internal.instrumentation.Logger logger = Logger.getLogger(CMController.class);
+	final static Logger logger = Logger.getLogger(CMController.class);
 
 	private CMServiceLocator cmsl;
 	
