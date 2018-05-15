@@ -436,6 +436,7 @@ public class ManagerDAO implements IManagerDAO {
 			result.setName(member.getName());
 			result.setSurname(member.getSurname());
 			result.setPassword(member.getPassword());
+			result.setPoints(member.getPoints());
 
 			tx.commit();
 

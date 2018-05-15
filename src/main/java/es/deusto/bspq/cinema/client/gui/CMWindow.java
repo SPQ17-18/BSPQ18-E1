@@ -311,7 +311,7 @@ public class CMWindow extends JFrame {
 		sessionsList.clear();
 		for (int i = 0; i < sessions.size(); i++) {
 			SessionDTO session = (SessionDTO) sessions.get(i);
-			sessionsList.addElement(session.getTitleFilm() + messages.getString("hour") + " : " + session.getHour() + messages.getString("date") + " : " + session.getDate());
+			sessionsList.addElement(session.getTitleFilm() + " " + messages.getString("hour") + " : " + session.getHour() + " " + messages.getString("date") + " : " + session.getDate());
 		}
 		sessionsList1.setSelectedIndex(0);
 		seatList.clear();

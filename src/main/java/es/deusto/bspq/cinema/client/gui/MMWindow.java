@@ -53,10 +53,13 @@ public class MMWindow extends JFrame {
 	private JLabel jLabel4;
 	private JLabel jLabel5;
 	private JLabel jLabel6;
+	private JLabel lblPoints;
+	private JLabel lblPointsNumber;
 	private JTextField email;
 	private JList<String> membersList1;
 	private JTextField name;
 	private JTextField surname;
+	private JPanel panelManageMembers;
 	private JPanel panelButtons;
 	private JPanel panelMembers;
 	private JPanel panelControlM;
@@ -70,11 +73,15 @@ public class MMWindow extends JFrame {
 	private JTextField updateName;
 	private JTextField updateSurname;
 	private JTextField updateBirthday;
+	private JTextField updatePoints;
 	private JScrollPane scrollMembers;
 	private JTabbedPane tabsTable;
 	
 	private List<MemberDTO> members;
 	private DefaultListModel<String> membersList;
+	
+	private JPanel panelOptions = new JPanel();
+	private JButton buttonManageCinema;
 	
 	ResourceBundle messages;
 
@@ -95,6 +102,7 @@ public class MMWindow extends JFrame {
 			}
 		});
 		
+		panelManageMembers = new JPanel();
 		panelMembers = new JPanel();
 		panelListMembers = new JPanel();
 		scrollMembers = new JScrollPane();
@@ -114,6 +122,7 @@ public class MMWindow extends JFrame {
 		updateName = new JTextField();
 		updateSurname = new JTextField();
 		updateBirthday = new JTextField();
+		updatePoints = new JTextField();
 		panelButtons = new JPanel();
 		buttonSearch = new JButton();
 		buttonSearchAll = new JButton();
@@ -124,8 +133,22 @@ public class MMWindow extends JFrame {
 		jLabel6 = new JLabel();
 		panelFields = new JPanel();
 		panelPoints = new JPanel();
+		buttonManageCinema = new JButton();
 		
-		getContentPane().setLayout(new GridLayout(2, 1));
+		getContentPane().setLayout(new BorderLayout(0, 0));
+		
+		panelManageMembers.setLayout(new GridLayout(2, 1));
+		
+		buttonManageCinema = new JButton(messages.getString("goToManageCinemaWindow"));
+		buttonManageCinema.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				buttonManageCinemaActionPerformed(evt);
+			}
+		});
+		panelOptions.add(new JLabel(messages.getString("options") + ": "));
+		panelOptions.add(buttonManageCinema);
+		
+		getContentPane().add(panelOptions, BorderLayout.NORTH);
 
 		panelMembers.setLayout(new GridLayout(1, 2));
 		panelMembers.setBorder(new TitledBorder(new EtchedBorder(), messages.getString("memberSection")));
@@ -133,7 +156,11 @@ public class MMWindow extends JFrame {
 		membersList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		ListSelectionListener listSelectionListener = new ListSelectionListener() {
 		      public void valueChanged(ListSelectionEvent listSelectionEvent) {
-		    	 
+		    	  try {
+		    		  lblPointsNumber.setText(String.valueOf(controller.getMemberPoints(members.get(membersList1.getSelectedIndex()).getEmail())));
+		    	  } catch (Exception e) {
+		    		  
+		    	  }
 		      }
 		};
 		membersList1.addListSelectionListener(listSelectionListener);
@@ -210,7 +237,7 @@ public class MMWindow extends JFrame {
 		panelMembers.add(panelControlM);
 		
 		// Add members panel
-		getContentPane().add(panelMembers);
+		panelManageMembers.add(panelMembers);
 		
 		updateName.setColumns(7);
 		updateSurname.setColumns(7);
@@ -226,16 +253,23 @@ public class MMWindow extends JFrame {
 		panelFields.add(updateBirthday);
 		panelFields.setBorder(new TitledBorder(messages.getString("updateMemberFields")));
 		
-		//TODO
 		panelPoints.setBorder(new TitledBorder(messages.getString("updateMemberPoints")));
+		lblPoints = new JLabel(messages.getString("currentPoints"));
+		panelPoints.add(lblPoints);
+		lblPointsNumber = new JLabel("[Member not selected]");
+		panelPoints.add(lblPointsNumber);
+		updatePoints.setColumns(10);
+		panelPoints.add(updatePoints);
 		
-		panelUpdate.setBorder(new TitledBorder(messages.getString("update") + messages.getString("member")));
+		panelUpdate.setBorder(new TitledBorder(messages.getString("update") + " " + messages.getString("member")));
 		panelUpdate.setLayout(new GridLayout(1, 2));
 		panelUpdate.add(panelFields);
 		panelUpdate.add(panelPoints);
 		
 		// Add update panel
-		getContentPane().add(panelUpdate);
+		panelManageMembers.add(panelUpdate);
+		
+		getContentPane().add(panelManageMembers, BorderLayout.SOUTH);
 
 		membersList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		membersList1.setFocusable(false);
@@ -250,6 +284,13 @@ public class MMWindow extends JFrame {
 		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
 	}
 	
+	private void buttonManageCinemaActionPerformed(ActionEvent evt) {
+		CMAWindow cmaWindow = new CMAWindow(controller, messages, loginUser);
+		cmaWindow.centreWindow();
+		cmaWindow.setVisible(true);
+		dispose();
+	}
+	
 	private void buttonSearchActionPerformed(ActionEvent evt) {
 		
 	}
@@ -258,7 +299,7 @@ public class MMWindow extends JFrame {
 		members = controller.getAllMembers();
 		updateLists(members);
 		cleanSearchDetails();
-		logger.info("All members retrieved.");
+		logger.info(messages.getString("allMembersRetrieved"));
 	}
 	
 	private void buttonUpdateActionPerformed(ActionEvent evt) {
@@ -272,26 +313,29 @@ public class MMWindow extends JFrame {
 		if (!updateBirthday.getText().trim().isEmpty()) {
 			memberDTO.setBirthday(updateBirthday.getText().trim());
 		}
+		if (!updatePoints.getText().trim().isEmpty()) {
+			memberDTO.setPoints(Integer.parseInt(updatePoints.getText().trim()));
+		}
 		controller.updateMember(memberDTO);
 		members.set(membersList1.getSelectedIndex(), memberDTO);
 		updateLists(members);
 		cleanUpdateDetails();
 		cleanSearchDetails();
-		logger.info("Member updated.");
+		logger.info(messages.getString("memberUpdated"));
 	}
 	
 	private void buttonDeleteActionPerformed(ActionEvent evt) {
 		controller.deleteMember(members.get(membersList1.getSelectedIndex()));
 		members.remove(membersList1.getSelectedIndex());
 		updateLists(members);
-		logger.info("Member deleted.");
+		logger.info(messages.getString("memberDeleted"));
 	}
 
 	private void updateLists(List<MemberDTO> members) {
 		membersList.clear();
 		for (int i = 0; i < members.size(); i++) {
 			MemberDTO member = (MemberDTO) members.get(i);
-			membersList.addElement(member.getName() + " " + member.getSurname() + messages.getString("birthday") + " : " + member.getBirthday());
+			membersList.addElement(member.getName() + " " + member.getSurname() + " " + messages.getString("birthday") + " : " + member.getBirthday());
 		}
 		membersList1.setSelectedIndex(0);
 	}
@@ -306,6 +350,7 @@ public class MMWindow extends JFrame {
 		updateName.setText("");
 		updateSurname.setText("");
 		updateBirthday.setText("");
+		updatePoints.setText("");
 	}
 	
 	/** Exit the Application */
