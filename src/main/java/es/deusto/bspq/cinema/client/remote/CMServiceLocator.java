@@ -34,7 +34,7 @@ public class CMServiceLocator {
 	}
 
 	/**
-	 * Gets the Remote Facade to communicate with the server
+	 * Gets the Remote Facade to communicate with the server.
 	 * @return Remote Facade
 	 */
 	public IRemoteFacade getService() {

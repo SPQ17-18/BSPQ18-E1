@@ -18,7 +18,6 @@ public class AssemblerTest {
 	
 	@Rule public ContiPerfRule rule = new ContiPerfRule();
 	
-	
 	@BeforeClass
 	public static void setUpClass() {
 		assembler = new Assembler();
@@ -48,6 +47,7 @@ public class AssemblerTest {
 	}
 	
 	@Test
+	@PerfTest(duration = 5000)
 	@Required(max = 120, average = 30)
 	public void testAssembleEmployee() throws Exception {
 		Employee e = new Employee("e1", "Some", "Somer", "e1", 20000f);

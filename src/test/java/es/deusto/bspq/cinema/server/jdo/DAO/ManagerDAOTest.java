@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
+import org.databene.contiperf.PerfTest;
 import org.databene.contiperf.Required;
 import org.databene.contiperf.junit.ContiPerfRule;
 import org.junit.AfterClass;
@@ -214,8 +215,8 @@ public class ManagerDAOTest {
 		}
 	}
 	
-	//This test has to fulfil the maximum of 120 and the average 30
 	@Test
+	@PerfTest(duration = 5000)
     @Required(max = 120, average = 30)
 	public void testStoreRoom() throws Exception {
 		Room room = new Room(15, 55);
@@ -226,6 +227,7 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
+	@PerfTest(duration = 5000)
 	@Required(max = 120, average = 30)
 	public void testStoreFilm() throws Exception {
 		Film film = new Film("Test", "Testy Tester", 12, 111, "EE.UU.");
@@ -237,6 +239,7 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
+	@PerfTest(duration = 5000)
 	@Required(max = 120, average = 30)
 	public void testStoreEmployee() throws Exception {
 		Employee employee = new Employee("e10", "Laura", "García", "e10pass", 20000f);
@@ -249,6 +252,7 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
+	@PerfTest(duration = 5000)
 	@Required(max = 120, average = 30)
 	public void testStoreMember() throws Exception {
 		Member member = new Member("test@opendeusto.es", "Leire", "Rementeria", "leire", "05-12-1995", 0);
@@ -261,6 +265,7 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
+	@PerfTest(duration = 5000)
 	@Required(max = 120, average = 30)
 	public void testStoreTicket() throws Exception {
 		Seat s1 = new Seat("F3");
@@ -282,6 +287,7 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
+	@PerfTest(duration = 5000)
 	@Required(max = 120, average = 30)
 	public void testDeleteRoom() throws Exception {
 		managerDAO.deleteRoom(2);
@@ -290,6 +296,7 @@ public class ManagerDAOTest {
 	
 	
 	@Test
+	@PerfTest(duration = 5000)
 	@Required(max = 120, average = 30)
 	public void testDeleteEmployee() throws Exception {
 		Employee employee = new Employee("e1", "Juan", "Garcia Perez", "e1", 1500);
@@ -298,6 +305,7 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
+	@PerfTest(duration = 5000)
 	@Required(throughput = 20)
 	public void testDeleteMember() throws Exception {
 		Member member = new Member("unaibermejofdez@opendeusto.es", "Unai", "Bermejo", "unai", "23-08-1997", 0);
@@ -306,9 +314,9 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
+	@PerfTest(duration = 5000)
 	@Required(totalTime = 5000)
 	public void testDeleteSession() throws Exception {
-		
 		Session session = new Session("S4", "14-04-2018", "17:00", (float) 8.90);
 		assertEquals("S4",managerDAO.getSession(session).getSession());
 		managerDAO.deleteSession(session);
@@ -317,6 +325,7 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
+	@PerfTest(duration = 5000)
 	@Required(average = 100)
 	public void testInsertTicket() throws Exception {
 		// ------------- avoid e-mail spam -------------
@@ -338,6 +347,7 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
+	@PerfTest(duration = 5000)
 	@Required(average = 100)
 	public void testUpdateSession() throws Exception {
 		Session s = new Session("S1", "15-07-2018", "11:30", 15f);
@@ -351,18 +361,15 @@ public class ManagerDAOTest {
 		assertEquals("15-07-2018", sNew.getDate());
 		assertEquals("11:30", sNew.getHour());
 		assertEquals(true,15f	==sNew.getPrice());
-		
 	}
 
 	@Test
+	@PerfTest(duration = 5000)
 	@Required(average = 100)
 	public void testUpdateFilm() throws Exception {
-		
 		Film film = new Film("Campeones", "George Lucas", 2,189, "Malasia");
 		managerDAO.updateFilm(film);
-		
 		Film fNew = managerDAO.getFilm(film.getTitle());
-		
 		assertEquals("George Lucas", fNew.getDirector());
 		assertEquals(2, fNew.getRating());
 		assertEquals(189, fNew.getDuration());
@@ -370,7 +377,8 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
-	@Required(percentile90 = 3000)
+	@PerfTest(duration = 5000)
+	@Required(percentile90 = 250)
 	public void testManageMember() throws Exception {
 		Member member = new Member("unaibermejofdez@opendeusto.es", "Unai", "Fernández", "test", "23-04-1997", 0);
 		managerDAO.manageMember(member);
@@ -381,33 +389,29 @@ public class ManagerDAOTest {
 	}
 	
 	@Test
-	@Required(percentile90 = 3000)
+	@PerfTest(duration = 5000)
+	@Required(percentile90 = 250)
 	public void testGetSessionCode() throws Exception {
-
 		assertEquals("S15", managerDAO.getSessionCode("15-04-2018", "20:00", "Ready Player One"));
-	
 	}
 	
 	@Test
-	@Required(percentile90 = 3000)
+	@PerfTest(duration = 5000)
+	@Required(percentile90 = 250)
 	public void testGetMemberPoints() throws Exception {
-
 		assertEquals(20, managerDAO.getMemberPoints("ander.arguinano@opendeusto.es"));
 		assertEquals(0, managerDAO.getMemberPoints("unaibermejofdez@opendeusto.es"));
-		
-	
 	}
 	
-	//This test failed in my computer
-		@Test
-		@Required(max = 120, average = 30)
-		public void testDeleteFilm() throws Exception {
-			Film film = new Film("Inmersion", "Wim Wenders", 12, 111, "EE.UU.");
-			managerDAO.deleteFilm(film);
-			assertEquals(4, managerDAO.getFilms().size());
-		}
+	@Test
+	@PerfTest(duration = 5000)
+	@Required(max = 120, average = 30)
+	public void testDeleteFilm() throws Exception {
+		Film film = new Film("Inmersion", "Wim Wenders", 12, 111, "EE.UU.");
+		managerDAO.deleteFilm(film);
+		assertEquals(4, managerDAO.getFilms().size());
+	}
 		
-	
 	@AfterClass
 	public static void tearDownClass() {
 		// Clean the DB
