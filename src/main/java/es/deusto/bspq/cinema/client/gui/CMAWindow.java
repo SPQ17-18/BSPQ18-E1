@@ -752,7 +752,7 @@ public class CMAWindow extends JFrame {
 		panelOptions.add(btnManageMembers, BorderLayout.SOUTH);
 		panelOptions.add(btnLoginWindow, BorderLayout.SOUTH);
 		
-		updateDeleteFilmComboBox();
+		updateFilmComboBox();
 		updateSessionFilmsComboBox();
 		updateSessionSessionsComboBox();
 		updateDeleteSessionComboBox();
@@ -829,12 +829,13 @@ public class CMAWindow extends JFrame {
 		}	
 	}
 		
-	private void updateDeleteFilmComboBox() {
+	private void updateFilmComboBox() {
 		comboBoxDeleteFilm.removeAllItems();
 		filmsDTO = new ArrayList<FilmDTO>();
 		filmsDTO = controller.getAllFilms();
 		for (FilmDTO filmDTO: filmsDTO) {
 			comboBoxDeleteFilm.addItem(filmDTO.getTitle());
+			comboBoxUpdateFilm_SelectFilm.addItem(filmDTO.getTitle());
 		}	
 	}
 	
@@ -932,7 +933,7 @@ public class CMAWindow extends JFrame {
 		String filmTitle = String.valueOf(comboBoxDeleteFilm.getSelectedItem());
 		controller.deleteFilm(filmTitle);
 		logger.info(messages.getString("deletedFilm"));
-		updateDeleteFilmComboBox();
+		updateFilmComboBox();
 		updateSessionFilmsComboBox();
 	}
 	
