@@ -353,6 +353,21 @@ public class ManagerDAOTest {
 		assertEquals(true,15f	==sNew.getPrice());
 		
 	}
+
+	@Test
+	@Required(average = 100)
+	public void testUpdateFilm() throws Exception {
+		
+		Film film = new Film("Campeones", "George Lucas", 2,189, "Malasia");
+		managerDAO.updateFilm(film);
+		
+		Film fNew = managerDAO.getFilm(film.getTitle());
+		
+		assertEquals("George Lucas", fNew.getDirector());
+		assertEquals(2, fNew.getRating());
+		assertEquals(189, fNew.getDuration());
+		assertEquals("Malasia", fNew.getCountry());
+	}
 	
 	@Test
 	@Required(percentile90 = 3000)

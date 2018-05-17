@@ -34,6 +34,42 @@ public class ManagerDAO implements IManagerDAO {
 	}
 	
 	
+	public void updateFilm(Film film) throws Exception {
+		
+		PersistenceManager pm = pmf.getPersistenceManager();
+
+		Transaction tx = pm.currentTransaction();
+		
+		pm.getFetchPlan().setMaxFetchDepth(4);
+
+		try {
+			tx.begin();
+			
+			Query<?> query = pm
+					.newQuery("SELECT FROM " + Film.class.getName() + " WHERE  title== '" + film.getTitle() + "'");
+			query.setUnique(true);
+			Film result = (Film) query.execute();
+			
+			result.setCountry(film.getCountry());
+			result.setDirector(film.getDirector());
+			result.setDuration(film.getDuration());
+			result.setRating(film.getRating());
+			
+			tx.commit();
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			logger.error("Error updating a session: " + ex.getMessage());
+			throw new Exception();
+		} finally {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
+
+	
 	public void updateSession(Session session) throws Exception {
 		
 
@@ -1290,5 +1326,7 @@ public class ManagerDAO implements IManagerDAO {
 		logger.info( "DB filled completely");
 	}
 
+
+	
 	
 }

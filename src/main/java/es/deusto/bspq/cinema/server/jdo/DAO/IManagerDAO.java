@@ -37,6 +37,7 @@ public interface IManagerDAO {
 	public void updateEmployee(Employee employee);
 	public void updateSession(Session session) throws Exception;
 	public void manageMember(Member member) throws Exception;
+	public void updateFilm(Film film) throws Exception;
 	
 	public void deleteAllFilms();
 	public void deleteRoom(int room);
