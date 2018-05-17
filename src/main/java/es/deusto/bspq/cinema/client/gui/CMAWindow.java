@@ -675,6 +675,12 @@ public class CMAWindow extends JFrame {
 		gbc_spinnerUpdateFilmDuration.insets = new Insets(0, 0, 5, 0);
 		gbc_spinnerUpdateFilmDuration.gridx = 1;
 		gbc_spinnerUpdateFilmDuration.gridy = 4;
+		spinnerUpdateFilmDuration.setModel(new SpinnerNumberModel(1, 1, 360, 1));
+		spinnerUpdateFilmDuration.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				enableButtonInsert();
+			}
+		});
 		panelUpdateFilm.add(spinnerUpdateFilmDuration, gbc_spinnerUpdateFilmDuration);
 		
 		GridBagConstraints gbc_textFieldUpdateFilmCountry = new GridBagConstraints();
