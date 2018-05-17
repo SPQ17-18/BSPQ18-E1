@@ -898,6 +898,7 @@ public class CMAWindow extends JFrame {
 				}
 			updateSessionSessionsComboBox();
 			updateDeleteSessionComboBox();
+			cleanUpdateFilmDetails();
 			btnUpdate.setEnabled(false);
 			}
 		}
@@ -936,6 +937,14 @@ public class CMAWindow extends JFrame {
 		textFieldUpdateSessionDate_Edit.setText("");
 		textFieldUpdateSessionHour_Edit.setText("");
 		textFieldUpdateSession_Price.setText("");
+	}
+	
+	private void cleanUpdateFilmDetails() {
+		comboBoxUpdateFilm_SelectFilm.setSelectedIndex(0);
+		comboBoxUpdateFilmRating.setSelectedIndex(0);
+		textFieldUpdateFilmCountry_Edit.setText("");
+		textFieldUpdateFilmDirector_Edit.setText("");
+		textFieldUpdateFilmTitle_Edit.setText("");
 	}
 	
 	/** Exit the Application */
