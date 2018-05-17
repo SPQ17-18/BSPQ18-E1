@@ -784,7 +784,11 @@ public class CMAWindow extends JFrame {
 				btnUpdate.setEnabled(true);
 			}
 		} else if (tabbedPaneUpdate.getSelectedIndex() == 1) {
-			//TODO
+			if(textFieldUpdateFilmTitle_Edit.getText().equals("") || textFieldUpdateFilmDirector_Edit.getText().equals("") || textFieldUpdateFilmCountry_Edit.getText().equals("")) {
+				btnUpdate.setEnabled(false);
+			} else {
+				btnUpdate.setEnabled(true);
+			}
 		}
 	}
 	
