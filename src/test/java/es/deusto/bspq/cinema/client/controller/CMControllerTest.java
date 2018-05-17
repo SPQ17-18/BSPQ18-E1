@@ -405,6 +405,27 @@ public class CMControllerTest {
 		filmDTO.setTitle("Cuerpo de elite");
 		assertEquals(true, controller.insertFilm(filmDTO));
 	}
+	
+	@Test
+	@Required(max = 120)
+	public void testDeleteFilm() {
+		logger.info("Test Delete a film - Deleting a film from the DB - Valid");
+		String filmTitle = "Pacific Rim: Insurrecion";
+		controller.deleteFilm(filmTitle);
+		List<FilmDTO> films = controller.getAllFilms();
+		assertEquals(4, films.size());
+	}
+	
+	@Test
+	@PerfTest(invocations = 5)
+	@Required(totalTime = 550, average = 100)
+	public void testDeleteFilm2() {
+		logger.info("Test Delete a film - Deleting a film from the DB - Valid");
+		String filmTitle = "Ready Player One";
+		controller.deleteFilm(filmTitle);
+		List<FilmDTO> films = controller.getAllFilms();
+		assertEquals(4, films.size());
+	}
 
 	@Test
 	@Required(average = 100)
