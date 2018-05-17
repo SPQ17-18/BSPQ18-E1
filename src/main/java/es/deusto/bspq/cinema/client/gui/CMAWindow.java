@@ -884,11 +884,22 @@ public class CMAWindow extends JFrame {
 			updateDeleteSessionComboBox();
 			cleanUpdateSessionDetails();
 			btnUpdate.setEnabled(false);
-		}
-		else {
-			logger.info(messages.getString("updatedFilm")); //TODO
-			updateSessionFilmsComboBox();
+		} else {
+			for (FilmDTO filmDTO: filmsDTO) {
+				if (filmDTO.getTitle().equals((String) comboBoxUpdateFilm_SelectFilm.getSelectedItem())) {
+					filmDTO.setCountry(textFieldInsertFilmCountry_Edit.getText().trim());
+					filmDTO.setDirector(textFieldInsertFilmDirector_Edit.getText().trim());
+					filmDTO.setDuration(new Long((int) spinnerUpdateFilmDuration.getValue()));
+					filmDTO.setRating(Integer.parseInt((String) comboBoxUpdateFilmRating.getSelectedItem()));
+					filmDTO.setTitle((String) comboBoxUpdateFilm_SelectFilm.getSelectedItem());	
+					if (controller.updateFilm(filmDTO)) {
+						logger.info(messages.getString("updatedFilm"));
+					}
+				}
+			updateSessionSessionsComboBox();
 			updateDeleteSessionComboBox();
+			btnUpdate.setEnabled(false);
+			}
 		}
 	}
 	
