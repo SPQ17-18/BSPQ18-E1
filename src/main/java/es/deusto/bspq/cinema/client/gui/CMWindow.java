@@ -81,7 +81,7 @@ public class CMWindow extends JFrame {
 	
 	private JPanel panelOptions;
 	private JButton btnManageMembership;
-	private JLabel lblOptions;
+	private JButton btnLoginWindow;
 	
 	ResourceBundle messages;
 
@@ -246,9 +246,17 @@ public class CMWindow extends JFrame {
 				dispose();
 			}
 		});
+		btnLoginWindow = new JButton(messages.getString("goToLoginWindow"));
+		btnLoginWindow.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				buttonLoginWindowActionPerformed(evt);
+			}
+		});
+		panelOptions.add(new JLabel(messages.getString("options") + ": "), BorderLayout.SOUTH);
+		panelOptions.add(btnManageMembership, BorderLayout.SOUTH);
+		panelOptions.add(btnLoginWindow, BorderLayout.SOUTH);
 		
-		lblOptions = new JLabel(messages.getString("options") + ":");
-		panelOptions.add(lblOptions);
+		panelOptions.add(new JLabel(messages.getString("options") + ":"));
 		panelOptions.add(btnManageMembership);
 	
 		// Add options panel
@@ -294,6 +302,13 @@ public class CMWindow extends JFrame {
 		logger.info("Ticket bought with " + ticket.getListSeats().size() + " seats for film: " + ticket.getTitleFilm());
 		seatNumberList.clear();
 		seatList.clear();
+	}
+	
+	private void buttonLoginWindowActionPerformed(ActionEvent evt) {
+		LoginWindow loginWindow = new LoginWindow(controller, messages);
+		loginWindow.centreWindow();
+		loginWindow.setVisible(true);
+		dispose();
 	}
 
 	private void buttonSearchActionPerformed(ActionEvent evt) {

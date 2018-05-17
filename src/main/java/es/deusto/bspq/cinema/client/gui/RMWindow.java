@@ -18,7 +18,7 @@ public class RMWindow extends JFrame implements ActionListener {
 
 	private JLabel l1, l2, l3, l4, l5, l6, l7;
 	private JTextField tf1, tf2, tf3, tf4;
-	private JButton btn1, btn2;
+	private JButton btn1, btn2, btnLoginWindow;
 	private JPasswordField p1, p2;
 	private JPanel buttons;
 	private JPanel fields;
@@ -62,15 +62,18 @@ public class RMWindow extends JFrame implements ActionListener {
 		p2 = new JPasswordField();
 		btn1 = new JButton(messages.getString("submit"));
 		btn2 = new JButton(messages.getString("clear"));
+		btnLoginWindow = new JButton(messages.getString("goToLoginWindow"));
 
 		btn1.addActionListener(this);
 		btn2.addActionListener(this);
+		btnLoginWindow.addActionListener(this);
 
 		l1 = new JLabel(messages.getString("registerAsAMember"));
 		l1.setForeground(Color.black);
 		
 		buttons.add(btn1);
 		buttons.add(btn2);
+		buttons.add(btnLoginWindow);
 		
 		fields.add(l2);
 		tf1.setColumns(10);
@@ -143,6 +146,12 @@ public class RMWindow extends JFrame implements ActionListener {
 				}
 			}
 		} 
+		else if (e.getSource() == btnLoginWindow) {
+			LoginWindow loginWindow = new LoginWindow(controller, messages);
+			loginWindow.centreWindow();
+			loginWindow.setVisible(true);
+			dispose();
+		}
 		else {
 			tf1.setText("");
 			tf2.setText("");
