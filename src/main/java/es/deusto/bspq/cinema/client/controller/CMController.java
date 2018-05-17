@@ -268,6 +268,21 @@ public class CMController {
 	}
 	
 	/**
+	 * Updates a film.
+	 * @param filmDTO Data container.
+	 * @return Successful or not.
+	 */
+	public boolean updateFilm(FilmDTO filmDTO) {
+		boolean updated = false;
+		try {
+			updated = cmsl.getService().updateFilm(filmDTO);
+		} catch (RemoteException e) {
+			logger.error("Error updating a film.");
+		}
+		return updated;
+	}
+	
+	/**
 	 * Exits current program.
 	 */
 	public void exit() {
