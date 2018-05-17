@@ -37,6 +37,18 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		assembler = new Assembler();
 	}
 	
+	public boolean updateFilm(FilmDTO filmDTO) throws RemoteException {
+		try {
+			Film film = assembler.disassembleFilm(filmDTO);
+			dao.updateFilm(film);
+			logger.info("Updated the film with the title " +film.getTitle());
+			return true;
+		} catch (Exception e) {
+			logger.error("Error updating the film");
+			return false;
+		}
+	}
+
 
 	public boolean deleteFilm(String title) throws RemoteException {
 		try {
@@ -311,11 +323,6 @@ public class Server extends UnicastRemoteObject implements IRemoteFacade {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-
-
-
-	
+	}	
 
 }
