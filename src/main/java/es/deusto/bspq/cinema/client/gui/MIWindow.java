@@ -117,6 +117,10 @@ public class MIWindow extends JFrame {
 					if (controller.identifyMember(loginUser, String.valueOf(passwordField.getPassword()))) {
 						controller.cancelMembership(loginUser, String.valueOf(passwordField.getPassword()));
 						logger.info("Membership canceled for "+ loginUser);
+						LoginWindow loginWindow = new LoginWindow(controller, messages);
+						loginWindow.centreWindow();
+						loginWindow.setVisible(true);
+						dispose();
 					} else {
 						lblInfo.setText(messages.getString("wrongPassword"));
 						lblInfo.setVisible(true);

@@ -10,10 +10,19 @@ public class CMServiceLocator {
 
 	private IRemoteFacade cinemaManagerService;
 
+	/**
+	 * Class Constructor.
+	 */
 	public CMServiceLocator() {
 
 	}
 
+	/**
+	 * Sets the connection with the server.
+	 * @param args0 IP
+	 * @param args1 Port
+	 * @param args2 Name
+	 */
 	public void setServices(String args0, String args1, String args2) {
 		String service = "//" + args0 + ":" + args1 + "/" + args2;
 		try {
@@ -24,6 +33,10 @@ public class CMServiceLocator {
 		}
 	}
 
+	/**
+	 * Gets the Remote Facade to communicate with the server.
+	 * @return Remote Facade
+	 */
 	public IRemoteFacade getService() {
 		return cinemaManagerService;
 	}

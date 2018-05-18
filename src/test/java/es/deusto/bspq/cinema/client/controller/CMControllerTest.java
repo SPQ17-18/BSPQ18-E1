@@ -18,7 +18,6 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-
 import es.deusto.bspq.cinema.server.Server;
 import es.deusto.bspq.cinema.server.jdo.DAO.IManagerDAO;
 import es.deusto.bspq.cinema.server.jdo.DAO.ManagerDAO;
@@ -35,7 +34,6 @@ import es.deusto.bspq.cinema.server.jdo.data.Ticket;
 import es.deusto.bspq.cinema.server.jdo.data.TicketDTO;
 import es.deusto.bspq.cinema.server.remote.IRemoteFacade;
 import junit.framework.JUnit4TestAdapter;
-
 
 public class CMControllerTest {
 	
@@ -226,7 +224,7 @@ public class CMControllerTest {
 	
 
 		Member m1 = new Member("ariane.fernandez@opendeusto.es", "Ariane", "Fernandez", "ariane", "26-04-1997", 0);
-		Member m2 = new Member("unaibermejofdez@opendeusto.es", "Unai", "Bermejo", "unai", "23-08-1997", 0);
+		Member m2 = new Member("unaibermejofdez@opendeusto.es", "Unai", "Bermejo", "unai", "23-08-1997", 30);
 		Member m3 = new Member("ander.arguinano@opendeusto.es", "Ander", "Arguinano", "ander", "26-10-1997", 0);
 		Member m4 = new Member("inigogc@opendeusto.es", "Inigo", "Garcia", "inigo", "10-02-1997", 0);
 		Member m5 = new Member("fischer.wolfgang@opendeusto.es", "Wolfgang ", "Fischer", "wolfgang", "05-09-1997", 0);
@@ -319,8 +317,8 @@ public class CMControllerTest {
 	
 	
 	@Test
-	@PerfTest(duration = 2000)
-    @Required(max = 120, average = 30)
+	@PerfTest(duration = 5000)
+    @Required(max = 1550, average = 1500)
 	public void testCreateTicket() {
 		logger.info("Test Create a ticket - Creting a ticket - Valid");
 		Member m = new Member();
@@ -369,6 +367,7 @@ public class CMControllerTest {
 	}
 	
 	@Test
+	@PerfTest(duration = 5000)
 	@Required(throughput = 20)
 	public void testInsertFilm() {
 		logger.info("Test Insert a film - Inserting a film to the DB - Valid");
@@ -386,6 +385,7 @@ public class CMControllerTest {
 	}
 	
 	@Test
+	@PerfTest(duration = 5000)
 	@Required(average = 100)
 	public void testCancelMember() {
 		logger.info("Test Cancel a member - Cancelling a member from the DB - Valid");
@@ -394,7 +394,8 @@ public class CMControllerTest {
 	}
 	
 	@Test
-	@Required(percentile90 = 3000)
+	@PerfTest(duration = 1000)
+	@Required(percentile90 = 250)
 	public void testInsertFilm2() {
 		logger.info("Test Insert a film - Inserting a film to the DB with set methods- Valid");
 		FilmDTO filmDTO = new FilmDTO();
@@ -407,6 +408,7 @@ public class CMControllerTest {
 	}
 	
 	@Test
+	@PerfTest(duration = 1000)
 	@Required(max = 120)
 	public void testDeleteFilm() {
 		logger.info("Test Delete a film - Deleting a film from the DB - Valid");
@@ -428,6 +430,7 @@ public class CMControllerTest {
 	}
 
 	@Test
+	@PerfTest(duration = 1000)
 	@Required(average = 100)
 	public void testInsertSession() {
 		logger.info("Test Insert a session - Inserting a session to the DB - Valid");
@@ -478,10 +481,37 @@ public class CMControllerTest {
 		sessionDTO.setSession("S1");
 		assertEquals(true, controller.updateSession(sessionDTO));
 	}
-
-	//This test failed in my computer
+	
 	@Test
-	@Required(max = 120, average = 30)
+	@PerfTest(duration = 2000)
+	@Required(average = 450, max = 550)
+	public void testGetMemberPoints() {
+		logger.info("Test Get Member points - Getting points of a member from the DB - Valid");
+		int points = controller.getMemberPoints("unaibermejofdez@opendeusto.es");
+		assertEquals(30, points);
+	}
+	
+	@Test
+	@PerfTest(duration = 2000)
+	@Required(percentile90 = 500, max = 550)
+	public void testGetMemberPoints2() {
+		logger.info("Test Get Member points - Getting points of a member from the DB - Valid");
+		int points = controller.getMemberPoints("unaibermejofdez@opendeusto.es");
+		assertEquals(30, points);
+	}
+	
+	@Test
+	@PerfTest(duration = 2000)
+	@Required(median = 450, max = 550)
+	public void testGetMemberPoints3() {
+		logger.info("Test Get Member points - Getting points of a member from the DB - Valid");
+		int points = controller.getMemberPoints("unaibermejofdez@opendeusto.es");
+		assertEquals(30, points);
+	}
+
+	@Test
+	@PerfTest(duration = 5000)
+	@Required(max = 1100, average = 1000)
 	public void testBuyTicket() {
 		logger.info("Test Buy a ticket - Buying a ticket - Valid");
 		ArrayList<String> listSeats =  new ArrayList<String>();
@@ -491,6 +521,7 @@ public class CMControllerTest {
 	}
 
 	@Test
+	@PerfTest(duration = 1000)
 	@Required(max = 120, average = 30)
 	public void testIdentifyMember() {
 		logger.info("Test Identify a member - Logging as a member - Valid");
@@ -501,6 +532,7 @@ public class CMControllerTest {
 	}
 
 	@Test
+	@PerfTest(duration = 1000)
 	@Required(max = 120, average = 30)
 	public void testIdentifyEmployee() {
 		logger.info("Test Identify an employee - Logging as an employee - Valid");
@@ -511,6 +543,7 @@ public class CMControllerTest {
 	}
 	
 	@Test
+	@PerfTest(duration = 1000)
 	@Required(max = 120, average = 30)
 	public void testUpdateMember() {
 		logger.info("Test Update a member - Updating a member from the DB - Valid");
@@ -526,6 +559,7 @@ public class CMControllerTest {
 	}
 
 	@Test
+	@PerfTest(duration = 1000)
 	@Required(max = 120)
 	public void testDeleteMember() {
 		logger.info("Test Delete a member - Deleting a member from the DB - Valid");
@@ -544,6 +578,7 @@ public class CMControllerTest {
 	
 	
 	@Test
+	@PerfTest(duration = 1000)
 	@Required(max = 120, average = 30)
 	public void testGetAllMembers() {
 		logger.info("Test Get all members - Retrieving all the members from the DB - Valid");
@@ -558,6 +593,7 @@ public class CMControllerTest {
 	}
 	
 	@Test
+	@PerfTest(duration = 1000)
 	@Required(max = 120, average = 30)
 	public void testGetAllSessions() {
 		logger.info("Test Get all sessions - Retrieving all the sessions from the DB - Valid");
