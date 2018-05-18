@@ -367,6 +367,10 @@ public class CMAWindow extends JFrame {
 		gbc_comboBoxInsertFilmRating.insets = new Insets(0, 0, 5, 0);
 		gbc_comboBoxInsertFilmRating.gridx = 1;
 		gbc_comboBoxInsertFilmRating.gridy = 2;
+		comboBoxInsertFilmRating.addItem("0");
+		comboBoxInsertFilmRating.addItem("7");
+		comboBoxInsertFilmRating.addItem("13");
+		comboBoxInsertFilmRating.addItem("18");
 		panelInsertFilm.add(comboBoxInsertFilmRating, gbc_comboBoxInsertFilmRating);
 		
 		GridBagConstraints gbc_textFieldInsertFilmDuration = new GridBagConstraints();
