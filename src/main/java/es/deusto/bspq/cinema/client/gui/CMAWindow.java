@@ -675,6 +675,12 @@ public class CMAWindow extends JFrame {
 		gbc_spinnerUpdateFilmDuration.insets = new Insets(0, 0, 5, 0);
 		gbc_spinnerUpdateFilmDuration.gridx = 1;
 		gbc_spinnerUpdateFilmDuration.gridy = 4;
+		spinnerUpdateFilmDuration.setModel(new SpinnerNumberModel(1, 1, 360, 1));
+		spinnerUpdateFilmDuration.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				enableButtonInsert();
+			}
+		});
 		panelUpdateFilm.add(spinnerUpdateFilmDuration, gbc_spinnerUpdateFilmDuration);
 		
 		GridBagConstraints gbc_textFieldUpdateFilmCountry = new GridBagConstraints();
@@ -746,7 +752,7 @@ public class CMAWindow extends JFrame {
 		panelOptions.add(btnManageMembers, BorderLayout.SOUTH);
 		panelOptions.add(btnLoginWindow, BorderLayout.SOUTH);
 		
-		updateDeleteFilmComboBox();
+		updateFilmComboBox();
 		updateSessionFilmsComboBox();
 		updateSessionSessionsComboBox();
 		updateDeleteSessionComboBox();
@@ -784,7 +790,11 @@ public class CMAWindow extends JFrame {
 				btnUpdate.setEnabled(true);
 			}
 		} else if (tabbedPaneUpdate.getSelectedIndex() == 1) {
-			//TODO
+			if(textFieldUpdateFilmTitle_Edit.getText().equals("") || textFieldUpdateFilmDirector_Edit.getText().equals("") || textFieldUpdateFilmCountry_Edit.getText().equals("")) {
+				btnUpdate.setEnabled(false);
+			} else {
+				btnUpdate.setEnabled(true);
+			}
 		}
 	}
 	
@@ -819,12 +829,13 @@ public class CMAWindow extends JFrame {
 		}	
 	}
 		
-	private void updateDeleteFilmComboBox() {
+	private void updateFilmComboBox() {
 		comboBoxDeleteFilm.removeAllItems();
 		filmsDTO = new ArrayList<FilmDTO>();
 		filmsDTO = controller.getAllFilms();
 		for (FilmDTO filmDTO: filmsDTO) {
 			comboBoxDeleteFilm.addItem(filmDTO.getTitle());
+			comboBoxUpdateFilm_SelectFilm.addItem(filmDTO.getTitle());
 		}	
 	}
 	
@@ -880,11 +891,23 @@ public class CMAWindow extends JFrame {
 			updateDeleteSessionComboBox();
 			cleanUpdateSessionDetails();
 			btnUpdate.setEnabled(false);
-		}
-		else {
-			logger.info(messages.getString("updatedFilm")); //TODO
-			updateSessionFilmsComboBox();
+		} else {
+			for (FilmDTO filmDTO: filmsDTO) {
+				if (filmDTO.getTitle().equals((String) comboBoxUpdateFilm_SelectFilm.getSelectedItem())) {
+					filmDTO.setCountry(textFieldInsertFilmCountry_Edit.getText().trim());
+					filmDTO.setDirector(textFieldInsertFilmDirector_Edit.getText().trim());
+					filmDTO.setDuration(new Long((int) spinnerUpdateFilmDuration.getValue()));
+					filmDTO.setRating(Integer.parseInt((String) comboBoxUpdateFilmRating.getSelectedItem()));
+					filmDTO.setTitle((String) comboBoxUpdateFilm_SelectFilm.getSelectedItem());	
+					if (controller.updateFilm(filmDTO)) {
+						logger.info(messages.getString("updatedFilm"));
+					}
+				}
+			updateSessionSessionsComboBox();
 			updateDeleteSessionComboBox();
+			cleanUpdateFilmDetails();
+			btnUpdate.setEnabled(false);
+			}
 		}
 	}
 	
@@ -910,7 +933,7 @@ public class CMAWindow extends JFrame {
 		String filmTitle = String.valueOf(comboBoxDeleteFilm.getSelectedItem());
 		controller.deleteFilm(filmTitle);
 		logger.info(messages.getString("deletedFilm"));
-		updateDeleteFilmComboBox();
+		updateFilmComboBox();
 		updateSessionFilmsComboBox();
 	}
 	
@@ -921,6 +944,14 @@ public class CMAWindow extends JFrame {
 		textFieldUpdateSessionDate_Edit.setText("");
 		textFieldUpdateSessionHour_Edit.setText("");
 		textFieldUpdateSession_Price.setText("");
+	}
+	
+	private void cleanUpdateFilmDetails() {
+		comboBoxUpdateFilm_SelectFilm.setSelectedIndex(0);
+		comboBoxUpdateFilmRating.setSelectedIndex(0);
+		textFieldUpdateFilmCountry_Edit.setText("");
+		textFieldUpdateFilmDirector_Edit.setText("");
+		textFieldUpdateFilmTitle_Edit.setText("");
 	}
 	
 	/** Exit the Application */
