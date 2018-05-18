@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import es.deusto.bspq.cinema.client.controller.CMController;
+import es.deusto.bspq.cinema.client.controller.RemoteExeption;
 import es.deusto.bspq.cinema.server.jdo.data.FilmDTO;
 import es.deusto.bspq.cinema.server.jdo.data.SessionDTO;
 
@@ -136,14 +137,23 @@ public class CMAWindow extends JFrame {
     private List<FilmDTO> filmsDTO;
 	
 	ResourceBundle messages;
-
+	
+	/**
+	 * Class Constructor.
+	 * @param controller Controller of the application.
+ 	 * @param messages Strings of certain language. 
+	 * @param loginUser Email of the user logged in.
+	 */
 	public CMAWindow(CMController controller, ResourceBundle messages, String loginUser) {
 		this.controller = controller;
 		this.loginUser = loginUser;
 		this.messages = messages;
 		initComponents();
 	}
-
+	
+	/**
+	 * Initialize Components.
+	 */
 	private void initComponents() {
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
@@ -760,12 +770,18 @@ public class CMAWindow extends JFrame {
 		pack();
 	}
 	
+	/**
+	 * Center the CMAWindow.
+	 */
 	public void centreWindow() {
 		Dimension dim = getToolkit().getScreenSize();
 		Rectangle abounds = getBounds();
 		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
 	}
-
+	
+	/**
+	 * Enable Button for inserting.
+	 */
 	private void enableButtonInsert() {
 		if (tabbedPaneInsert.getSelectedIndex() == 0) {
 			if (textFieldInsertSessionDate_Edit.getText().equals("")) {
@@ -782,6 +798,9 @@ public class CMAWindow extends JFrame {
 		}
 	}
 	
+	/**
+	 * Enable Button for updating.
+	 */
 	private void enableButtonUpdate() {
 		if (tabbedPaneUpdate.getSelectedIndex() == 0) {
 			if (textFieldUpdateSessionDate_Edit.getText().equals("") || textFieldUpdateSessionHour_Edit.getText().equals("") || textFieldUpdateSession_Price.getText().equals("")) {
@@ -798,6 +817,9 @@ public class CMAWindow extends JFrame {
 		}
 	}
 	
+	/**
+	 * Update Session in Films ComboBox
+	 */
 	private void updateSessionFilmsComboBox() {
 		comboBoxUpdateSession_SelectFilm.removeAllItems();
 		filmsDTO = new ArrayList<FilmDTO>();
@@ -807,6 +829,9 @@ public class CMAWindow extends JFrame {
 		}
 	}
 	
+	/**
+	 * Update Session in Sessions ComboBox
+	 */
 	private void updateSessionSessionsComboBox() {
 		comboBoxUpdateSession_SelectSession.removeAllItems();
 		sessionsDTO = new ArrayList<SessionDTO>();
@@ -820,6 +845,9 @@ public class CMAWindow extends JFrame {
 		while (roomNumbers.hasNext()) comboBoxUpdateSession_SelectRoom.addItem(roomNumbers.next().toString());
 	}
 	
+	/**
+	 * Update Sessions in DeleteSession ComboBox
+	 */
 	private void updateDeleteSessionComboBox() {
 		comboBoxDeleteSession.removeAllItems();
 		sessionsDTO = new ArrayList<SessionDTO>();
@@ -828,7 +856,10 @@ public class CMAWindow extends JFrame {
 			comboBoxDeleteSession.addItem(sessionDTO.getSession());
 		}	
 	}
-		
+	
+	/**
+	 * Update Film ComboBox
+	 */
 	private void updateFilmComboBox() {
 		comboBoxDeleteFilm.removeAllItems();
 		filmsDTO = new ArrayList<FilmDTO>();
@@ -839,6 +870,10 @@ public class CMAWindow extends JFrame {
 		}	
 	}
 	
+	/**
+	 * Opens the ManageMembers Window
+	 * @param evt Action performed over Button 
+	 */
 	private void buttonManageMembersActionPerformed(ActionEvent evt) {
 		MMWindow mmWindow = new MMWindow(controller, messages, loginUser);
 		mmWindow.centreWindow();
@@ -846,6 +881,10 @@ public class CMAWindow extends JFrame {
 		dispose();
 	}
 	
+	/**
+	 * Opens the Login Window
+	 * @param evt Action performed over Button 
+	 */
 	private void buttonLoginWindowActionPerformed(ActionEvent evt) {
 		LoginWindow loginWindow = new LoginWindow(controller, messages);
 		loginWindow.centreWindow();
@@ -853,6 +892,10 @@ public class CMAWindow extends JFrame {
 		dispose();
 	}
 	
+	/**
+	 * Inserts a Session/Film in the DB by Button-click
+	 * @param evt Action performed over Button 
+	 */
 	private void buttonInsertActionPerformed(ActionEvent evt) {
 		if (tabbedPaneInsert.getSelectedIndex() == 1) {
 			controller.insertFilm(new FilmDTO(textFieldInsertFilmTitle_Edit.getText(), 
@@ -873,6 +916,11 @@ public class CMAWindow extends JFrame {
 		}
 	}
 	
+	/**
+	 * Updates a Session/Film in the DB by Button-click
+	 * @param evt Action performed over Button 
+
+	 */
 	private void buttonUpdateActionPerformed(ActionEvent evt) {
 		if (tabbedPaneUpdate.getSelectedIndex() == 0) {
 			for (SessionDTO sessionDTO: sessionsDTO) {
@@ -911,6 +959,10 @@ public class CMAWindow extends JFrame {
 		}
 	}
 	
+	/**
+	 * Deletes a Session in the DB by Button-click
+	 * @param evt Action performed over Button 
+	 */
 	private void buttonDeleteSessionActionPerformed(ActionEvent evt) {
 		if (tabbedPaneUpdate.getSelectedIndex() == 0) {
 			for (SessionDTO sessionDTO: sessionsDTO) {
@@ -929,6 +981,10 @@ public class CMAWindow extends JFrame {
 		}
 	}
 	
+	/**
+	 * Deletes a Film in the DB by Button-click
+	 * @param evt Action performed over Button 
+	 */
 	private void buttonDeleteFilmActionPerformed(ActionEvent evt) {
 		String filmTitle = String.valueOf(comboBoxDeleteFilm.getSelectedItem());
 		controller.deleteFilm(filmTitle);
@@ -937,6 +993,9 @@ public class CMAWindow extends JFrame {
 		updateSessionFilmsComboBox();
 	}
 	
+	/**
+	 * Cleans the user input in UpdateSession-panel.
+	 */
 	private void cleanUpdateSessionDetails() {
 		comboBoxUpdateSession_SelectSession.setSelectedIndex(0);
 		comboBoxUpdateSession_SelectFilm.setSelectedIndex(0);
@@ -946,6 +1005,9 @@ public class CMAWindow extends JFrame {
 		textFieldUpdateSession_Price.setText("");
 	}
 	
+	/**
+	 * Cleans the user input in UpdateFilm-panel.
+	 */
 	private void cleanUpdateFilmDetails() {
 		comboBoxUpdateFilm_SelectFilm.setSelectedIndex(0);
 		comboBoxUpdateFilmRating.setSelectedIndex(0);
@@ -954,7 +1016,10 @@ public class CMAWindow extends JFrame {
 		textFieldUpdateFilmTitle_Edit.setText("");
 	}
 	
-	/** Exit the Application */
+	/**
+	 *  Exit the Application 
+	 * @param evt Window event performed over Button 
+	 */
 	private void exitForm(WindowEvent evt) {
 		controller.exit();
 	}

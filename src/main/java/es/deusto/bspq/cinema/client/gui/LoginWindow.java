@@ -52,6 +52,10 @@ public class LoginWindow extends JDialog {
 	
 	ResourceBundle messages;
 	
+	/**
+	 * Class Constructor.
+	 * @param args[] Command line arguments.
+	 */
 	public LoginWindow(String args[]) {
 		try {
 			controller = new CMController(args);
@@ -66,12 +70,20 @@ public class LoginWindow extends JDialog {
 		initComponents();
 	}
 	
+	/**
+	 * Class Constructor.
+	 * @param controller Controller of the application.
+ 	 * @param messages Strings of certain language. 
+	 */
 	public LoginWindow(CMController controller, ResourceBundle messages) {
 		this.controller = controller;
 		this.messages = messages;
 		initComponents();
 	}
 	
+	/**
+	 * Initialize Components.
+	 */
 	private void initComponents() {
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
@@ -217,13 +229,19 @@ public class LoginWindow extends JDialog {
 		pack();
 	}
 	    
+	/**
+	 * Center the CMAWindow.
+	 */
 	public void centreWindow() {
 		Dimension dim = getToolkit().getScreenSize();
 		Rectangle abounds = getBounds();
 		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
 	}
 	
-	/** Exit the Application */
+	/** 
+	 * Exit the Application 
+ 	 * @param evt Window event performed over Button
+	 */
 	private void exitForm(WindowEvent evt) {
 		controller.exit();
 	}
