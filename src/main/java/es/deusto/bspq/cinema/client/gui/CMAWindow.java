@@ -109,8 +109,6 @@ public class CMAWindow extends JFrame {
 	private final JTextField textFieldUpdateSession_Price = new JTextField();
 	private final JPanel panelUpdateFilm = new JPanel();
 	private final JComboBox<String> comboBoxUpdateFilm_SelectFilm = new JComboBox<String>();
-	private final JTextField textFieldUpdateFilmTitle = new JTextField();
-	private final JTextField textFieldUpdateFilmTitle_Edit = new JTextField();
 	private final JTextField textFieldUpdateFilmDirector = new JTextField();
 	private final JTextField textFieldUpdateFilmDirector_Edit = new JTextField();
 	private final JTextField textFieldUpdateFilmRating = new JTextField();
@@ -611,23 +609,6 @@ public class CMAWindow extends JFrame {
 		gbc_comboBoxUpdateFilm_SelectFilm.gridy = 0;
 		panelUpdateFilm.add(comboBoxUpdateFilm_SelectFilm, gbc_comboBoxUpdateFilm_SelectFilm);
 		
-		GridBagConstraints gbc_textFieldUpdateFilmTitle = new GridBagConstraints();
-		gbc_textFieldUpdateFilmTitle.insets = new Insets(0, 0, 5, 5);
-		gbc_textFieldUpdateFilmTitle.gridx = 0;
-		gbc_textFieldUpdateFilmTitle.gridy = 1;
-		textFieldUpdateFilmTitle.setText(messages.getString("title"));
-		textFieldUpdateFilmTitle.setEditable(false);
-		textFieldUpdateFilmTitle.setColumns(10);
-		panelUpdateFilm.add(textFieldUpdateFilmTitle, gbc_textFieldUpdateFilmTitle);
-		
-		GridBagConstraints gbc_textFieldUpdateFilmTitle_Edit = new GridBagConstraints();
-		gbc_textFieldUpdateFilmTitle_Edit.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textFieldUpdateFilmTitle_Edit.insets = new Insets(0, 0, 5, 0);
-		gbc_textFieldUpdateFilmTitle_Edit.gridx = 1;
-		gbc_textFieldUpdateFilmTitle_Edit.gridy = 1;
-		textFieldUpdateFilmTitle_Edit.setColumns(10);
-		panelUpdateFilm.add(textFieldUpdateFilmTitle_Edit, gbc_textFieldUpdateFilmTitle_Edit);
-		
 		GridBagConstraints gbc_textFieldUpdateFilmDirector = new GridBagConstraints();
 		gbc_textFieldUpdateFilmDirector.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldUpdateFilmDirector.gridx = 0;
@@ -643,6 +624,17 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldUpdateFilmDirector_Edit.gridx = 1;
 		gbc_textFieldUpdateFilmDirector_Edit.gridy = 2;
 		textFieldUpdateFilmDirector_Edit.setColumns(10);
+		textFieldUpdateFilmDirector_Edit.addKeyListener(new KeyListener() {
+			public void keyTyped(KeyEvent e) {
+				enableButtonUpdate();
+			}
+			public void keyPressed(KeyEvent e) {
+				enableButtonUpdate();
+			}
+			public void keyReleased(KeyEvent e) {
+				enableButtonUpdate();
+			}
+		});
 		panelUpdateFilm.add(textFieldUpdateFilmDirector_Edit, gbc_textFieldUpdateFilmDirector_Edit);
 		
 		GridBagConstraints gbc_textFieldUpdateFilmRating = new GridBagConstraints();
@@ -659,6 +651,10 @@ public class CMAWindow extends JFrame {
 		gbc_comboBoxUpdateFilmRating.insets = new Insets(0, 0, 5, 0);
 		gbc_comboBoxUpdateFilmRating.gridx = 1;
 		gbc_comboBoxUpdateFilmRating.gridy = 3;
+		comboBoxUpdateFilmRating.addItem("0");
+		comboBoxUpdateFilmRating.addItem("7");
+		comboBoxUpdateFilmRating.addItem("13");
+		comboBoxUpdateFilmRating.addItem("18");
 		panelUpdateFilm.add(comboBoxUpdateFilmRating, gbc_comboBoxUpdateFilmRating);
 		
 		GridBagConstraints gbc_textFieldUpdateFilmDuration = new GridBagConstraints();
@@ -697,6 +693,17 @@ public class CMAWindow extends JFrame {
 		gbc_textFieldUpdateFilmCountry_Edit.gridx = 1;
 		gbc_textFieldUpdateFilmCountry_Edit.gridy = 5;
 		textFieldUpdateFilmCountry_Edit.setColumns(10);
+		textFieldUpdateFilmCountry_Edit.addKeyListener(new KeyListener() {
+			public void keyTyped(KeyEvent e) {
+				enableButtonUpdate();
+			}
+			public void keyPressed(KeyEvent e) {
+				enableButtonUpdate();
+			}
+			public void keyReleased(KeyEvent e) {
+				enableButtonUpdate();
+			}
+		});
 		panelUpdateFilm.add(textFieldUpdateFilmCountry_Edit, gbc_textFieldUpdateFilmCountry_Edit);
 		
 		panelUpdate.add(panelUpdateButton, BorderLayout.SOUTH);
@@ -790,7 +797,7 @@ public class CMAWindow extends JFrame {
 				btnUpdate.setEnabled(true);
 			}
 		} else if (tabbedPaneUpdate.getSelectedIndex() == 1) {
-			if(textFieldUpdateFilmTitle_Edit.getText().equals("") || textFieldUpdateFilmDirector_Edit.getText().equals("") || textFieldUpdateFilmCountry_Edit.getText().equals("")) {
+			if (textFieldUpdateFilmDirector_Edit.getText().equals("") || textFieldUpdateFilmCountry_Edit.getText().equals("")) {
 				btnUpdate.setEnabled(false);
 			} else {
 				btnUpdate.setEnabled(true);
@@ -894,20 +901,17 @@ public class CMAWindow extends JFrame {
 		} else {
 			for (FilmDTO filmDTO: filmsDTO) {
 				if (filmDTO.getTitle().equals((String) comboBoxUpdateFilm_SelectFilm.getSelectedItem())) {
-					filmDTO.setCountry(textFieldInsertFilmCountry_Edit.getText().trim());
-					filmDTO.setDirector(textFieldInsertFilmDirector_Edit.getText().trim());
+					filmDTO.setCountry(textFieldUpdateFilmCountry_Edit.getText().trim());
+					filmDTO.setDirector(textFieldUpdateFilmDirector_Edit.getText().trim());
 					filmDTO.setDuration(new Long((int) spinnerUpdateFilmDuration.getValue()));
 					filmDTO.setRating(Integer.parseInt((String) comboBoxUpdateFilmRating.getSelectedItem()));
-					filmDTO.setTitle((String) comboBoxUpdateFilm_SelectFilm.getSelectedItem());	
 					if (controller.updateFilm(filmDTO)) {
 						logger.info(messages.getString("updatedFilm"));
 					}
 				}
-			updateSessionSessionsComboBox();
-			updateDeleteSessionComboBox();
+			}
 			cleanUpdateFilmDetails();
 			btnUpdate.setEnabled(false);
-			}
 		}
 	}
 	
@@ -951,7 +955,6 @@ public class CMAWindow extends JFrame {
 		comboBoxUpdateFilmRating.setSelectedIndex(0);
 		textFieldUpdateFilmCountry_Edit.setText("");
 		textFieldUpdateFilmDirector_Edit.setText("");
-		textFieldUpdateFilmTitle_Edit.setText("");
 	}
 	
 	/** Exit the Application */
