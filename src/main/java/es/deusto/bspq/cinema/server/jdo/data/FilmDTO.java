@@ -4,11 +4,12 @@ import java.io.Serializable;
 
 /**
  * Class to send Film across the network
+ * 
  * @author anderarguinano
  *
  */
-public class FilmDTO implements Serializable{
-	
+public class FilmDTO implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 	private String title;
 	private String director;
@@ -18,11 +19,17 @@ public class FilmDTO implements Serializable{
 
 	/**
 	 * Constructor for the filmDTO
-	 * @param title Title of the film
-	 * @param director Director of the film
-	 * @param rating Rating of the film
-	 * @param duration Duration of the film	
-	 * @param country Country where the film was recorded
+	 * 
+	 * @param title
+	 *            Title of the film
+	 * @param director
+	 *            Director of the film
+	 * @param rating
+	 *            Rating of the film
+	 * @param duration
+	 *            Duration of the film
+	 * @param country
+	 *            Country where the film was recorded
 	 */
 	public FilmDTO(String title, String director, int rating, long duration, String country) {
 		super();
@@ -37,11 +44,12 @@ public class FilmDTO implements Serializable{
 	 * Empty constructor of the filmDTO
 	 */
 	public FilmDTO() {
-		
+
 	}
 
 	/**
 	 * Method for getting the title of the film
+	 * 
 	 * @return Returns the title of the film
 	 */
 	public String getTitle() {
@@ -50,7 +58,9 @@ public class FilmDTO implements Serializable{
 
 	/**
 	 * Method for setting the title
-	 * @param title Title of the film
+	 * 
+	 * @param title
+	 *            Title of the film
 	 */
 	public void setTitle(String title) {
 		this.title = title;
@@ -58,6 +68,7 @@ public class FilmDTO implements Serializable{
 
 	/**
 	 * Method for getting the director of the film
+	 * 
 	 * @return Returns the director of the film
 	 */
 	public String getDirector() {
@@ -66,7 +77,9 @@ public class FilmDTO implements Serializable{
 
 	/**
 	 * Method for setting the director
-	 * @param director Director of the film
+	 * 
+	 * @param director
+	 *            Director of the film
 	 */
 	public void setDirector(String director) {
 		this.director = director;
@@ -74,6 +87,7 @@ public class FilmDTO implements Serializable{
 
 	/**
 	 * Method for getting the rating of the film
+	 * 
 	 * @return Returns the rating of the film
 	 */
 	public int getRating() {
@@ -82,7 +96,9 @@ public class FilmDTO implements Serializable{
 
 	/**
 	 * Method for setting the rating
-	 * @param rating Rating of the film
+	 * 
+	 * @param rating
+	 *            Rating of the film
 	 */
 	public void setRating(int rating) {
 		this.rating = rating;
@@ -90,6 +106,7 @@ public class FilmDTO implements Serializable{
 
 	/**
 	 * Method for getting the duration of the film
+	 * 
 	 * @return Returns the duration of the film
 	 */
 	public long getDuration() {
@@ -98,7 +115,9 @@ public class FilmDTO implements Serializable{
 
 	/**
 	 * Method for setting the duration
-	 * @param duration Duration of the film
+	 * 
+	 * @param duration
+	 *            Duration of the film
 	 */
 	public void setDuration(long duration) {
 		this.duration = duration;
@@ -106,6 +125,7 @@ public class FilmDTO implements Serializable{
 
 	/**
 	 * Method for getting the country
+	 * 
 	 * @return Returns the country where the film was produced
 	 */
 	public String getCountry() {
@@ -114,7 +134,9 @@ public class FilmDTO implements Serializable{
 
 	/**
 	 * Method for setting the country
-	 * @param country Country of the film
+	 * 
+	 * @param country
+	 *            Country of the film
 	 */
 	public void setCountry(String country) {
 		this.country = country;

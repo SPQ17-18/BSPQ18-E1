@@ -10,6 +10,7 @@ import javax.jdo.annotations.PrimaryKey;
 
 /**
  * Class for the films
+ * 
  * @author anderarguinano
  *
  */
@@ -18,7 +19,7 @@ public class Film {
 
 	@PrimaryKey
 	private String title;
-	
+
 	private String director;
 	private int rating;
 	private long duration;
@@ -27,21 +28,27 @@ public class Film {
 	@Persistent(defaultFetchGroup = "true", mappedBy = "film", dependentElement = "true")
 	@Join
 	private List<Session> sessions = new ArrayList<>();
-	
+
 	/**
 	 * Empty constructor
 	 */
 	public Film() {
 
 	}
-	
+
 	/**
 	 * Constructor for the film
-	 * @param title Title of the film
-	 * @param director Director of the film
-	 * @param rating Minimum age for watching the film
-	 * @param duration Duration of the film
-	 * @param country Country where the film was recorded
+	 * 
+	 * @param title
+	 *            Title of the film
+	 * @param director
+	 *            Director of the film
+	 * @param rating
+	 *            Minimum age for watching the film
+	 * @param duration
+	 *            Duration of the film
+	 * @param country
+	 *            Country where the film was recorded
 	 */
 	public Film(String title, String director, int rating, long duration, String country) {
 		super();
@@ -54,6 +61,7 @@ public class Film {
 
 	/**
 	 * Method for getting the title of the film
+	 * 
 	 * @return Returns the title of the film
 	 */
 	public String getTitle() {
@@ -62,7 +70,9 @@ public class Film {
 
 	/**
 	 * Method for setting the title of the film
-	 * @param title Title of the film
+	 * 
+	 * @param title
+	 *            Title of the film
 	 */
 	public void setTitle(String title) {
 		this.title = title;
@@ -70,6 +80,7 @@ public class Film {
 
 	/**
 	 * Method for getting the director of the film
+	 * 
 	 * @return Returns the director of the film
 	 */
 	public String getDirector() {
@@ -78,7 +89,9 @@ public class Film {
 
 	/**
 	 * Method for setting the director of the film
-	 * @param director Director of the film
+	 * 
+	 * @param director
+	 *            Director of the film
 	 */
 	public void setDirector(String director) {
 		this.director = director;
@@ -86,6 +99,7 @@ public class Film {
 
 	/**
 	 * Method for getting the rating of the film
+	 * 
 	 * @return Returns the rating of the film
 	 */
 	public int getRating() {
@@ -93,8 +107,10 @@ public class Film {
 	}
 
 	/**
-	 * Method for setting the rating 
-	 * @param rating Rating of the film
+	 * Method for setting the rating
+	 * 
+	 * @param rating
+	 *            Rating of the film
 	 */
 	public void setRating(int rating) {
 		this.rating = rating;
@@ -102,6 +118,7 @@ public class Film {
 
 	/**
 	 * Method for getting the duration of the film
+	 * 
 	 * @return Returns the duration of the film
 	 */
 	public long getDuration() {
@@ -110,7 +127,9 @@ public class Film {
 
 	/**
 	 * Method for setting the duration of the film
-	 * @param duration Duration of the film
+	 * 
+	 * @param duration
+	 *            Duration of the film
 	 */
 	public void setDuration(long duration) {
 		this.duration = duration;
@@ -118,6 +137,7 @@ public class Film {
 
 	/**
 	 * Method for getting the country
+	 * 
 	 * @return Returns the country of the film
 	 */
 	public String getCountry() {
@@ -126,7 +146,9 @@ public class Film {
 
 	/**
 	 * Method for setting the country of the film
-	 * @param country Country of the film
+	 * 
+	 * @param country
+	 *            Country of the film
 	 */
 	public void setCountry(String country) {
 		this.country = country;
@@ -134,6 +156,7 @@ public class Film {
 
 	/**
 	 * Method for getting the list of the sessions
+	 * 
 	 * @return Returns the list of sessions
 	 */
 	public List<Session> getSessions() {
@@ -142,23 +165,30 @@ public class Film {
 
 	/**
 	 * Method for setting the list of sessions
-	 * @param sessions List of sessions
+	 * 
+	 * @param sessions
+	 *            List of sessions
 	 */
 	public void setSessions(List<Session> sessions) {
 		this.sessions = sessions;
 	}
+
 	/**
 	 * Method for adding the sessions
-	 * @param session Session we want to add
+	 * 
+	 * @param session
+	 *            Session we want to add
 	 */
 	public void addSession(Session session) {
 		sessions.add(session);
 		session.setFilm(this);
 	}
-	
+
 	/**
 	 * Method for copying the film to the DB
-	 * @param f Film we want to copy
+	 * 
+	 * @param f
+	 *            Film we want to copy
 	 */
 	public void copyFilm(Film f) {
 		this.title = f.getTitle();

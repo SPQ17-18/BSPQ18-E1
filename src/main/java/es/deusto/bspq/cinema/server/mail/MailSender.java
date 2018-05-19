@@ -14,27 +14,30 @@ import org.apache.log4j.Logger;
 
 /**
  * Class to send the emails
+ * 
  * @author anderarguinano
  *
  */
 
 public class MailSender {
-	
+
 	private static final Logger logger = Logger.getLogger(MailSender.class);
-	
+
 	private final String from = "deusto.sd@gmail.com";
 	private final String password = "softwaredesign";
-	
+
 	private final String host = "smtp.gmail.com";
 	private final String port = "587";
-	
+
 	private String to;
-	
+
 	private Properties props;
 
 	/**
 	 * Constructor for the mail sender
-	 * @param destination String with the email of the destination
+	 * 
+	 * @param destination
+	 *            String with the email of the destination
 	 */
 	public MailSender(String destination) {
 		to = destination;
@@ -46,11 +49,14 @@ public class MailSender {
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.debug", "false");
 	}
-	
+
 	/**
 	 * Method for sending the message
-	 * @param text String with the message we would like to send
-	 * @param subject Subject for the email
+	 * 
+	 * @param text
+	 *            String with the message we would like to send
+	 * @param subject
+	 *            Subject for the email
 	 * @return Returns true when the message is succesfully send
 	 */
 
@@ -76,6 +82,7 @@ public class MailSender {
 
 	/**
 	 * Authenticator for the email account
+	 * 
 	 * @author anderarguinano
 	 *
 	 */
@@ -84,5 +91,5 @@ public class MailSender {
 			return new PasswordAuthentication(from, password);
 		}
 	}
-	
+
 }
