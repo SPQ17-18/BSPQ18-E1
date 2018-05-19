@@ -19,3 +19,4 @@ Order of the commands to execute the server and client
 6) To generate Cobertura report: mvn cobertura:cobertura
 		To consult the percentage tested: mvn cobertura:check
 7) To generate Doxygen documentation: mvn doxygen:report
+8) Github Page: https://spq17-18.github.io/BSPQ18-E1/
