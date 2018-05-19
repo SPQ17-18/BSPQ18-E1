@@ -84,7 +84,13 @@ public class CMWindow extends JFrame {
 	private JButton btnLoginWindow;
 	
 	ResourceBundle messages;
-
+	
+	/**
+	 * Class Constructor.
+	 * @param controller Controller of the application.
+ 	 * @param messages Strings of certain language. 
+	 * @param loginEmail Email of the user logged in.
+	 */
 	public CMWindow(CMController controller, ResourceBundle messages, String loginEmail) {
 		this.controller = controller;
 		this.loginEmail = loginEmail;
@@ -96,6 +102,9 @@ public class CMWindow extends JFrame {
 		seatList1.setModel(seatList);
 	}
 
+	/**
+	 * Initialize Components.
+	 */
 	private void initComponents() {
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
@@ -281,12 +290,19 @@ public class CMWindow extends JFrame {
 		pack();
 	}
 	
+	/**
+	 * Center the CMWindow.
+	 */
 	public void centreWindow() {
 		Dimension dim = getToolkit().getScreenSize();
 		Rectangle abounds = getBounds();
 		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
 	}
 	
+	/**
+	 * Adds a Seat to a ticket that will be bought
+	 * @param evt Action performed over Button 
+	 */
 	private void buttonAddSeatActionPerformed(ActionEvent evt) {
 		seatNumberList.add(seatList.get(seatList1.getSelectedIndex()));
 		sessions.get(sessionsList1.getSelectedIndex()).getRemainingSeatsCode().remove(seatList.get(seatList1.getSelectedIndex()));
@@ -294,6 +310,10 @@ public class CMWindow extends JFrame {
 		logger.info("Seat added.");
 	}
 	
+	/**
+	 * Buy a ticket for a certain Session
+	 * @param evt Action performed over Button 
+	 */
 	private void buttonBuyActionPerformed(ActionEvent evt) {
 		SessionDTO session = sessions.get(sessionsList1.getSelectedIndex());
 		TicketDTO ticket = new TicketDTO(loginEmail, session.getTitleFilm(),
@@ -304,6 +324,10 @@ public class CMWindow extends JFrame {
 		seatList.clear();
 	}
 	
+	/**
+	 * Opens the LoginWindow
+	 * @param evt Action performed over Button 
+	 */
 	private void buttonLoginWindowActionPerformed(ActionEvent evt) {
 		LoginWindow loginWindow = new LoginWindow(controller, messages);
 		loginWindow.centreWindow();
@@ -315,6 +339,10 @@ public class CMWindow extends JFrame {
 		
 	}
 	
+	/**
+	 * Searches for all Sessions
+	 * @param evt Action performed over Button 
+	 */
 	private void buttonSearchAllActionPerformed(ActionEvent evt) {
 		sessions = controller.getAllSessions();
 		updateLists(sessions);
@@ -322,6 +350,10 @@ public class CMWindow extends JFrame {
 		logger.info("All sessions retrieved.");
 	}
 
+	/**
+	 * Updates Lists with Sessions
+	 * @param evt Action performed over Button
+	 */
 	private void updateLists(List<SessionDTO> sessions) {
 		sessionsList.clear();
 		for (int i = 0; i < sessions.size(); i++) {
@@ -335,14 +367,20 @@ public class CMWindow extends JFrame {
 		}
 		seatList1.setSelectedIndex(0);
 	}
-
+	
+	/**
+	 * Cleans search text fields
+	 */
 	private void cleanSearchDetails() {
 		film.setText("");
 		hour.setText("");
 		date.setText("");
 	}
 	
-	/** Exit the Application */
+	/** 
+	 * Exit the Application 
+	 * @param evt Window event performed over Button 
+	 */
 	private void exitForm(WindowEvent evt) {
 		controller.exit();
 	}

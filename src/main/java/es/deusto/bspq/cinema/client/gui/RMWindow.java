@@ -29,12 +29,20 @@ public class RMWindow extends JFrame implements ActionListener {
 	
 	ResourceBundle messages;
 
+	/**
+	 * Class Constructor.
+	 * @param controller Controller of the application.
+ 	 * @param messages Strings of certain language. 
+	 */
 	public RMWindow(CMController controller, ResourceBundle messages) {
 		this.controller = controller;
 		this.messages = messages;
 		initComponents();
 	}
 	
+	/**
+	 * Initialize Components.
+	 */
 	private void initComponents() {
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
@@ -101,12 +109,19 @@ public class RMWindow extends JFrame implements ActionListener {
 		pack();
 	}
 	
+	/**
+	 * Center the CMWindow.
+	 */
 	public void centreWindow() {
 		Dimension dim = getToolkit().getScreenSize();
 		Rectangle abounds = getBounds();
 		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
 	}
 
+	/**
+	 * Creates a Window for register as a Member.
+	 * @param e Action performed over Button 
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btn1) {
 			String s1 = tf1.getText();
@@ -162,7 +177,10 @@ public class RMWindow extends JFrame implements ActionListener {
 		}
 	}
 	
-	/** Exit the Application */
+	/** 
+	 * Exit the Application 
+	 * @param evt Window event performed over Button 
+	 */
 	private void exitForm(WindowEvent evt) {
 		controller.exit();
 	}
