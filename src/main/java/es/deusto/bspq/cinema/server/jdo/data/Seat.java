@@ -3,6 +3,11 @@ package es.deusto.bspq.cinema.server.jdo.data;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 
+/**
+ * Class for the seats
+ * @author anderarguinano
+ *
+ */
 @PersistenceCapable(detachable = "true")
 public class Seat {
 	
