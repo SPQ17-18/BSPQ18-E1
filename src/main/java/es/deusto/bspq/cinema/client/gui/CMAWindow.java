@@ -7,7 +7,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import es.deusto.bspq.cinema.client.controller.CMController;
-import es.deusto.bspq.cinema.client.controller.RemoteExeption;
 import es.deusto.bspq.cinema.server.jdo.data.FilmDTO;
 import es.deusto.bspq.cinema.server.jdo.data.SessionDTO;
 
