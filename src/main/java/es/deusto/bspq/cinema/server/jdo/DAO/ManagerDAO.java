@@ -1,6 +1,5 @@
 package es.deusto.bspq.cinema.server.jdo.DAO;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -23,40 +22,57 @@ import es.deusto.bspq.cinema.server.jdo.data.Seat;
 import es.deusto.bspq.cinema.server.jdo.data.Session;
 import es.deusto.bspq.cinema.server.jdo.data.Ticket;
 
+/**
+ * Class for the manager of the DB
+ * 
+ * @author anderarguinano
+ *
+ */
 public class ManagerDAO implements IManagerDAO {
 
 	private static final Logger logger = Logger.getLogger(ManagerDAO.class);
 
 	private PersistenceManagerFactory pmf;
 
+	/**
+	 * Constructor for the manager
+	 */
 	public ManagerDAO() {
 		pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
 	}
-	
-	
+
+	/**
+	 * Method to update the film from the DB
+	 * 
+	 * @param film
+	 *            Film to update
+	 * @throws Exception
+	 *             Throws an exception when an error occurs
+	 */
+
 	public void updateFilm(Film film) throws Exception {
-		
+
 		PersistenceManager pm = pmf.getPersistenceManager();
 
 		Transaction tx = pm.currentTransaction();
-		
+
 		pm.getFetchPlan().setMaxFetchDepth(4);
 
 		try {
 			tx.begin();
-			
+
 			Query<?> query = pm
 					.newQuery("SELECT FROM " + Film.class.getName() + " WHERE  title== '" + film.getTitle() + "'");
 			query.setUnique(true);
 			Film result = (Film) query.execute();
-			
+
 			result.setCountry(film.getCountry());
 			result.setDirector(film.getDirector());
 			result.setDuration(film.getDuration());
 			result.setRating(film.getRating());
-			
+
 			tx.commit();
-			
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			logger.error("Error updating a session: " + ex.getMessage());
@@ -69,56 +85,62 @@ public class ManagerDAO implements IManagerDAO {
 		}
 	}
 
-	
+	/**
+	 * Method to update the session from the DB
+	 * 
+	 * @param session
+	 *            Session to update
+	 * @throws Exception
+	 *             Throws an exception when an error occurs
+	 */
 	public void updateSession(Session session) throws Exception {
-		
 
 		PersistenceManager pm = pmf.getPersistenceManager();
 
 		Transaction tx = pm.currentTransaction();
-		
+
 		pm.getFetchPlan().setMaxFetchDepth(4);
 
 		try {
 			tx.begin();
-			
-			Query<?> query = pm
-					.newQuery("SELECT FROM " + Session.class.getName() + " WHERE  session== '" + session.getSession() + "'");
+
+			Query<?> query = pm.newQuery(
+					"SELECT FROM " + Session.class.getName() + " WHERE  session== '" + session.getSession() + "'");
 			query.setUnique(true);
 			Session result = (Session) query.execute();
-			
+
 			Session s = new Session(session.getSession(), session.getDate(), session.getHour(), session.getPrice());
-			
-			Query<?> query2 = pm
-					.newQuery("SELECT FROM " + Film.class.getName() + " WHERE  title== '" + session.getFilm().getTitle()+ "'");
+
+			Query<?> query2 = pm.newQuery(
+					"SELECT FROM " + Film.class.getName() + " WHERE  title== '" + session.getFilm().getTitle() + "'");
 			query2.setUnique(true);
 			Film result2 = (Film) query2.execute();
 
-			Query<?> query3 = pm
-					.newQuery("SELECT FROM " + Room.class.getName() + " WHERE  roomNumber== " + session.getRoom().getRoomNumber() + "");
+			Query<?> query3 = pm.newQuery("SELECT FROM " + Room.class.getName() + " WHERE  roomNumber== "
+					+ session.getRoom().getRoomNumber() + "");
 			query3.setUnique(true);
 			Room result3 = (Room) query3.execute();
-			
-			Query<?> query4 = pm
-					.newQuery("SELECT FROM " + Film.class.getName() + " WHERE  title=='" + result.getFilm().getTitle()+ "'");
+
+			Query<?> query4 = pm.newQuery(
+					"SELECT FROM " + Film.class.getName() + " WHERE  title=='" + result.getFilm().getTitle() + "'");
 			query4.setUnique(true);
 			Film result4 = (Film) query4.execute();
-			
-			int i=0;
+
+			int i = 0;
 			for (Session ses : result4.getSessions()) {
 				if (ses.getSession().equals(session.getSession())) {
 					result4.getSessions().remove(i);
 					i++;
 				}
 			}
-			
+
 			s.setRoom(result3);
 			s.setFilm(result2);
-			
+
 			result2.addSession(s);
-			
+
 			tx.commit();
-			
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			logger.error("Error updating a session: " + ex.getMessage());
@@ -131,7 +153,16 @@ public class ManagerDAO implements IManagerDAO {
 		}
 
 	}
-	
+
+	/**
+	 * Method to get the points of a member from the DB
+	 * 
+	 * @param email
+	 *            Email of the member
+	 * @throws Exception
+	 *             Throws an exception when an error occurs
+	 * @return Returns the points of the member
+	 */
 	public int getMemberPoints(String email) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -141,26 +172,33 @@ public class ManagerDAO implements IManagerDAO {
 
 		try {
 			tx.begin();
-			Query<?> q = pm.newQuery("SELECT FROM " + Member.class.getName() +  " WHERE email == '" + 
-					email+ "'");
+			Query<?> q = pm.newQuery("SELECT FROM " + Member.class.getName() + " WHERE email == '" + email + "'");
 			@SuppressWarnings("unchecked")
 			List<Member> result = (List<Member>) q.execute();
-			
+
 			points = result.get(0).getPoints();
 			tx.commit();
 		} catch (Exception ex) {
-			logger.error("Error obtaining the points of the member with email: "+email + ex.getMessage());
+			logger.error("Error obtaining the points of the member with email: " + email + ex.getMessage());
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
 			}
 			pm.close();
 		}
-	
+
 		return points;
 	}
 
-	private void storeObject(Object object) throws Exception{
+	/**
+	 * Method to store objects in the DB
+	 * 
+	 * @param object
+	 *            Object to store
+	 * @throws Exception
+	 *             Throws an exception when an error occurs
+	 */
+	private void storeObject(Object object) throws Exception {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
@@ -179,6 +217,9 @@ public class ManagerDAO implements IManagerDAO {
 		}
 	}
 
+	/**
+	 * Method to get the films from the DB
+	 */
 	@SuppressWarnings("unchecked")
 	public ArrayList<Film> getFilms() {
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -211,6 +252,9 @@ public class ManagerDAO implements IManagerDAO {
 		return films;
 	}
 
+	/**
+	 * Method to delete all the films
+	 */
 	public void deleteAllFilms() {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -234,6 +278,12 @@ public class ManagerDAO implements IManagerDAO {
 		}
 	}
 
+	/**
+	 * Method to delete a film
+	 * 
+	 * @param film
+	 *            Film to delete
+	 */
 	public void deleteFilm(Film film) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -254,8 +304,8 @@ public class ManagerDAO implements IManagerDAO {
 
 			tx.commit();
 		} catch (Exception ex) {
-			logger.error( "Error cleaning a film: " + ex.getMessage());
-		
+			logger.error("Error cleaning a film: " + ex.getMessage());
+
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -266,6 +316,12 @@ public class ManagerDAO implements IManagerDAO {
 		}
 	}
 
+	/**
+	 * Method to delete a film
+	 * 
+	 * @param title
+	 *            Title of the film to delete
+	 */
 	public void deleteFilm(String title) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -286,8 +342,8 @@ public class ManagerDAO implements IManagerDAO {
 
 			tx.commit();
 		} catch (Exception ex) {
-			logger.error( "Error cleaning a film: " + ex.getMessage());
-		
+			logger.error("Error cleaning a film: " + ex.getMessage());
+
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -298,6 +354,13 @@ public class ManagerDAO implements IManagerDAO {
 		}
 	}
 
+	/**
+	 * Method to get a film from the DB
+	 * 
+	 * @param name
+	 *            Title of the film
+	 * @return Returns a film from the DB
+	 */
 	public Film getFilm(String name) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -327,29 +390,73 @@ public class ManagerDAO implements IManagerDAO {
 		return film;
 	}
 
-	public void storeFilm(Film film) throws Exception{
-		logger.info( "Storing a film called "+film.getTitle());
+	/**
+	 * Method to store a film in the DB
+	 * 
+	 * @param film
+	 *            Film to insert
+	 * @throws Exception
+	 *             Throws an exception when an error occurs
+	 */
+	public void storeFilm(Film film) throws Exception {
+		logger.info("Storing a film called " + film.getTitle());
 		this.storeObject(film);
 	}
 
+	/**
+	 * Method to store a session in the DB
+	 * 
+	 * @param session
+	 *            Session to insert
+	 * @throws Exception
+	 *             Throws an exception when an error occurs
+	 */
 	public void storeSession(Session session) throws Exception {
-		logger.info( "Storing a session: " + session.getRoom().getRoomNumber() + " - "
-				+ session.getDate().toString() + " " + session.getHour().toString());
+		logger.info("Storing a session: " + session.getRoom().getRoomNumber() + " - " + session.getDate().toString()
+				+ " " + session.getHour().toString());
 		this.storeObject(session);
 	}
 
-	public void storeTicket(Ticket ticket) throws Exception{
+	/**
+	 * Method to store a ticket in the DB
+	 * 
+	 * @param ticket
+	 *            Ticket to insert
+	 * @throws Exception
+	 *             Throws an exception when an error occurs
+	 */
+	public void storeTicket(Ticket ticket) throws Exception {
 		logger.info("Storing a ticket: " + ticket.getMember().getEmail() + "");
 		this.storeObject(ticket);
 	}
 
-	public void storeMember(Member member)throws Exception {
+	/**
+	 * Method to store a member in the DB
+	 * 
+	 * @param member
+	 *            Member to insert
+	 * @throws Exception
+	 *             Throws an exception when an error occurs
+	 */
+	public void storeMember(Member member) throws Exception {
 		logger.info("Storing a member: " + member.getEmail());
 		this.storeObject(member);
 
 	}
 
-	public void insertSession(Session session,String film, int room) {
+	/**
+	 * Method to store a session in the DB
+	 * 
+	 * @param session
+	 *            Session to insert
+	 * @param film
+	 *            Film for the session
+	 * @param room
+	 *            Room for the session
+	 * @throws Exception
+	 *             Throws an exception when an error occurs
+	 */
+	public void insertSession(Session session, String film, int room) {
 
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -357,8 +464,7 @@ public class ManagerDAO implements IManagerDAO {
 
 		try {
 			tx.begin();
-			Query<?> query = pm
-					.newQuery("SELECT FROM " + Film.class.getName() + " WHERE title == '" + film + "'");
+			Query<?> query = pm.newQuery("SELECT FROM " + Film.class.getName() + " WHERE title == '" + film + "'");
 			query.setUnique(true);
 			Film result = (Film) query.execute();
 
@@ -379,7 +485,7 @@ public class ManagerDAO implements IManagerDAO {
 			tx.commit();
 
 		} catch (Exception ex) {
-			logger.error( "   $ Error updating a film: " + ex.getMessage());
+			logger.error("   $ Error updating a film: " + ex.getMessage());
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -389,15 +495,27 @@ public class ManagerDAO implements IManagerDAO {
 
 	}
 
-	public void insertTicket(Ticket t,String session, String email) {
+	/**
+	 * Method to store a ticket in the DB
+	 * 
+	 * @param t
+	 *            Ticket to insert
+	 * @param session
+	 *            Session of the ticket
+	 * @param email
+	 *            Email of the member who bought the ticket
+	 * @throws Exception
+	 *             Throws an exception when an error occurs
+	 */
+	public void insertTicket(Ticket t, String session, String email) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
 		Transaction tx = pm.currentTransaction();
 
 		try {
 			tx.begin();
-			Query<?> query = pm.newQuery(
-					"SELECT FROM " + Session.class.getName() + " WHERE session == '" + session + "'");
+			Query<?> query = pm
+					.newQuery("SELECT FROM " + Session.class.getName() + " WHERE session == '" + session + "'");
 			query.setUnique(true);
 			Session result = (Session) query.execute();
 
@@ -414,11 +532,11 @@ public class ManagerDAO implements IManagerDAO {
 			Member result2 = (Member) query2.execute();
 			t.setMember(result2);
 			result2.addTicket(t);
-			result2.setPoints(result2.getPoints()+(t.getSeats().size()*3));
+			result2.setPoints(result2.getPoints() + (t.getSeats().size() * 3));
 			tx.commit();
 
 		} catch (Exception ex) {
-			logger.error( "Error updating a session: " + ex.getMessage());
+			logger.error("Error updating a session: " + ex.getMessage());
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -428,6 +546,16 @@ public class ManagerDAO implements IManagerDAO {
 
 	}
 
+	/**
+	 * Method to update a member in the DB
+	 * 
+	 * @param member
+	 *            Member to update
+	 * @param t
+	 *            Ticket to update
+	 * @throws Exception
+	 *             Throws an exception when an error occurs
+	 */
 	public void updateMember(Member member, Ticket t) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -441,7 +569,7 @@ public class ManagerDAO implements IManagerDAO {
 			Member result = (Member) query.execute();
 
 			result.addTicket(t);
-			
+
 			tx.commit();
 
 		} catch (Exception ex) {
@@ -454,9 +582,17 @@ public class ManagerDAO implements IManagerDAO {
 		}
 
 	}
-	
+
+	/**
+	 * Method to manage a member in the DB
+	 * 
+	 * @param member
+	 *            Member to manage
+	 * @throws Exception
+	 *             Throws an exception when an error occurs
+	 */
 	public void manageMember(Member member) throws Exception {
-		
+
 		PersistenceManager pm = pmf.getPersistenceManager();
 
 		Transaction tx = pm.currentTransaction();
@@ -488,6 +624,9 @@ public class ManagerDAO implements IManagerDAO {
 
 	}
 
+	/**
+	 * Method to delete all sessions from the DB
+	 */
 	public void deleteAllSessions() {
 
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -501,7 +640,7 @@ public class ManagerDAO implements IManagerDAO {
 			tx.commit();
 		} catch (Exception ex) {
 			logger.error("Error cleaning the DB: " + ex.getMessage());
-			
+
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -513,9 +652,14 @@ public class ManagerDAO implements IManagerDAO {
 
 	}
 
-	//Method for deleting the session 
+	/**
+	 * Method to delete a session from the DB
+	 * 
+	 * @param session
+	 *            Session to delete
+	 */
 	public void deleteSession(Session session) {
-		
+
 		PersistenceManager pm = pmf.getPersistenceManager();
 
 		Transaction tx = pm.currentTransaction();
@@ -528,7 +672,7 @@ public class ManagerDAO implements IManagerDAO {
 			Collection<?> result = (Collection<?>) query.execute();
 
 			Session s = (Session) result.iterator().next();
-			
+
 			query.close(result);
 
 			pm.deletePersistent(s);
@@ -536,7 +680,7 @@ public class ManagerDAO implements IManagerDAO {
 			tx.commit();
 		} catch (Exception ex) {
 			logger.error("Error cleaning a session: " + ex.getMessage());
-			
+
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -548,6 +692,9 @@ public class ManagerDAO implements IManagerDAO {
 
 	}
 
+	/**
+	 * Method to delete all the members
+	 */
 	public void deleteAllMembers() {
 
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -561,7 +708,7 @@ public class ManagerDAO implements IManagerDAO {
 			tx.commit();
 		} catch (Exception ex) {
 			logger.error("Error cleaning the DB: " + ex.getMessage());
-			
+
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -573,6 +720,14 @@ public class ManagerDAO implements IManagerDAO {
 
 	}
 
+	/**
+	 * Method to delete a member from the DB
+	 * 
+	 * @param member
+	 *            Member to delete
+	 * @throws Exception
+	 *             Throws an exception when an error occurs
+	 */
 	public void deleteMember(Member member) throws Exception {
 
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -607,16 +762,37 @@ public class ManagerDAO implements IManagerDAO {
 
 	}
 
-	public void storeEmployee(Employee employee) throws Exception{
+	/**
+	 * Method to store an employee in the DB
+	 * 
+	 * @param employee
+	 *            Employee to insert
+	 * @throws Exception
+	 *             Throws an exception when an error occurs
+	 */
+	public void storeEmployee(Employee employee) throws Exception {
 		logger.info("* Storing an employee: " + employee.getUsername());
 		this.storeObject(employee);
 	}
 
-	public void storeRoom(Room room) throws Exception{
+	/**
+	 * Method to store a room in the DB
+	 * 
+	 * @param room
+	 *            Room to insert
+	 * @throws Exception
+	 *             Throws an exception when an error occurs
+	 */
+	public void storeRoom(Room room) throws Exception {
 		logger.info("* Storing a room: " + room.getRoomNumber());
 		this.storeObject(room);
 	}
 
+	/**
+	 * Method to get the members from the DB
+	 * 
+	 * @return Returns a list of members
+	 */
 	public ArrayList<Member> getMembers() {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -651,6 +827,13 @@ public class ManagerDAO implements IManagerDAO {
 		return members;
 	}
 
+	/**
+	 * Method to get the member from the DB
+	 * 
+	 * @param email
+	 *            Email of the member
+	 * @return Returns a member from the DB
+	 */
 	public Member getMember(String email) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -678,6 +861,11 @@ public class ManagerDAO implements IManagerDAO {
 		return member;
 	}
 
+	/**
+	 * Method to get the sessions from the DB
+	 * 
+	 * @return Returns a list of sessions
+	 */
 	@SuppressWarnings("unchecked")
 	public ArrayList<Session> getSessions() {
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -703,7 +891,7 @@ public class ManagerDAO implements IManagerDAO {
 			tx.commit();
 		} catch (Exception ex) {
 			logger.error("Error retrieving all sessions: " + ex.getMessage());
-		
+
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -714,6 +902,17 @@ public class ManagerDAO implements IManagerDAO {
 		return sessionsA;
 	}
 
+	/**
+	 * Method to get a session from the DB
+	 * 
+	 * @param film
+	 *            Film of the session
+	 * @param date
+	 *            Date of the session
+	 * @param hour
+	 *            Hour of the session
+	 * @return Returns a session from the DB
+	 */
 	@Override
 	public Session getSession(String film, String date, String hour) {
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -743,6 +942,11 @@ public class ManagerDAO implements IManagerDAO {
 		return session;
 	}
 
+	/**
+	 * Method to get all the employees from the DB
+	 * 
+	 * @return Returns a list of employees
+	 */
 	public ArrayList<Employee> getEmployees() {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -777,6 +981,13 @@ public class ManagerDAO implements IManagerDAO {
 		return employees;
 	}
 
+	/**
+	 * Method to get an employee from the DB
+	 * 
+	 * @param username
+	 *            Username of the employee
+	 * @return Returns an employee from the DB
+	 */
 	public Employee getEmployee(String username) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -805,6 +1016,12 @@ public class ManagerDAO implements IManagerDAO {
 		return employee;
 	}
 
+	/**
+	 * Method to update an employee in the DB
+	 * 
+	 * @param employee
+	 *            Employee to update
+	 */
 	public void updateEmployee(Employee employee) {
 
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -825,6 +1042,9 @@ public class ManagerDAO implements IManagerDAO {
 		}
 	}
 
+	/**
+	 * Method to delete all the employees from the DB
+	 */
 	public void deleteAllEmployees() {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -848,6 +1068,14 @@ public class ManagerDAO implements IManagerDAO {
 
 	}
 
+	/**
+	 * Method to delete an employee from the DB
+	 * 
+	 * @param employee
+	 *            Employee to delete
+	 * @throws Exception
+	 *             Throws an exception when an error occurs
+	 */
 	public void deleteEmployee(Employee employee) throws Exception {
 
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -882,6 +1110,13 @@ public class ManagerDAO implements IManagerDAO {
 
 	}
 
+	/**
+	 * Method to get a session of a film from the DB
+	 * 
+	 * @param film
+	 *            Film to get session
+	 * @return Returns a list of sessions
+	 */
 	public ArrayList<Session> getSessions(String film) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -917,6 +1152,13 @@ public class ManagerDAO implements IManagerDAO {
 
 	}
 
+	/**
+	 * Method to get a session from the DB
+	 * 
+	 * @param s
+	 *            Session to retrieve
+	 * @return Returns a session from the DB
+	 */
 	public Session getSession(Session s) {
 
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -947,6 +1189,13 @@ public class ManagerDAO implements IManagerDAO {
 
 	}
 
+	/**
+	 * Method to get room from the DB
+	 * 
+	 * @param number
+	 *            Number of the room
+	 * @return Returns the room from the DB
+	 */
 	public Room getRoom(int number) {
 
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -978,6 +1227,12 @@ public class ManagerDAO implements IManagerDAO {
 
 	}
 
+	/**
+	 * Method to delete a room from the DB
+	 * 
+	 * @param room
+	 *            Number of the room
+	 */
 	public void deleteRoom(int room) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -1001,7 +1256,7 @@ public class ManagerDAO implements IManagerDAO {
 			logger.info("Cleaned the room: " + room);
 		} catch (Exception ex) {
 			logger.error("Error cleaning a room: " + ex.getMessage());
-			
+
 		} finally {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
@@ -1012,7 +1267,10 @@ public class ManagerDAO implements IManagerDAO {
 		}
 
 	}
-	
+
+	/**
+	 * Method to delete all the rooms from the DB
+	 */
 	public void deleteAllRooms() {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -1036,6 +1294,11 @@ public class ManagerDAO implements IManagerDAO {
 		}
 	}
 
+	/**
+	 * Method to get the last session code from the DB
+	 * 
+	 * @return Returns a string with the last session code
+	 */
 	public String getLastSessionCode() {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -1071,7 +1334,18 @@ public class ManagerDAO implements IManagerDAO {
 
 		return sessionCode;
 	}
-	
+
+	/**
+	 * Method to get the session code
+	 * 
+	 * @param date
+	 *            Date of the session
+	 * @param hour
+	 *            Hour of the session
+	 * @param film
+	 *            Film associated with the session
+	 * @return Returns a string with the session code
+	 */
 	public String getSessionCode(String date, String hour, String film) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -1081,11 +1355,11 @@ public class ManagerDAO implements IManagerDAO {
 
 		try {
 			tx.begin();
-			Query<?> q = pm.newQuery("SELECT FROM " + Session.class.getName() +  " WHERE date == '" + date
-					+ "' && hour=='" + hour + "'"+"&& film.title=='" + film + "'");
+			Query<?> q = pm.newQuery("SELECT FROM " + Session.class.getName() + " WHERE date == '" + date
+					+ "' && hour=='" + hour + "'" + "&& film.title=='" + film + "'");
 			@SuppressWarnings("unchecked")
 			List<Session> result = (List<Session>) q.execute();
-			
+
 			sessionCode = result.get(0).getSession();
 			tx.commit();
 		} catch (Exception ex) {
@@ -1096,10 +1370,13 @@ public class ManagerDAO implements IManagerDAO {
 			}
 			pm.close();
 		}
-	
+
 		return sessionCode;
 	}
-	
+
+	/**
+	 * Method to delete all tickets from the DB
+	 */
 	public void deleteAllTickets() {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -1122,7 +1399,10 @@ public class ManagerDAO implements IManagerDAO {
 			}
 		}
 	}
-	
+
+	/**
+	 * Method to delete all seats from the DB
+	 */
 	public void deleteAllSeats() {
 		PersistenceManager pm = pmf.getPersistenceManager();
 
@@ -1311,22 +1591,19 @@ public class ManagerDAO implements IManagerDAO {
 		f5.addSession(sD);
 		f5.addSession(sE);
 		f5.addSession(sF);
-		
+
 		try {
 			dao.storeFilm(f1);
-	
+
 			dao.storeEmployee(e1);
 			dao.storeEmployee(e2);
 			dao.storeEmployee(e3);
 			dao.storeEmployee(e4);
 			dao.storeEmployee(e5);
-		} catch(Exception e) {
-			
+		} catch (Exception e) {
+
 		}
-		logger.info( "DB filled completely");
+		logger.info("DB filled completely");
 	}
 
-
-	
-	
 }
