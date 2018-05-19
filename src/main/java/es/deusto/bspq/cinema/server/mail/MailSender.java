@@ -12,6 +12,11 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
 
+/**
+ * Class to send the emails
+ * @author anderarguinano
+ *
+ */
 
 public class MailSender {
 	
@@ -27,6 +32,10 @@ public class MailSender {
 	
 	private Properties props;
 
+	/**
+	 * Constructor for the mail sender
+	 * @param destination String with the email of the destination
+	 */
 	public MailSender(String destination) {
 		to = destination;
 		props = new Properties();
@@ -37,6 +46,13 @@ public class MailSender {
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.debug", "false");
 	}
+	
+	/**
+	 * Method for sending the message
+	 * @param text String with the message we would like to send
+	 * @param subject Subject for the email
+	 * @return Returns true when the message is succesfully send
+	 */
 
 	public boolean sendMessage(String text, String subject) {
 		try {
@@ -58,6 +74,11 @@ public class MailSender {
 		return true;
 	}
 
+	/**
+	 * Authenticator for the email account
+	 * @author anderarguinano
+	 *
+	 */
 	private class SMTPAuthenticator extends javax.mail.Authenticator {
 		public PasswordAuthentication getPasswordAuthentication() {
 			return new PasswordAuthentication(from, password);
