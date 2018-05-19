@@ -65,6 +65,12 @@ public class MIWindow extends JFrame {
 	
 	ResourceBundle messages;
 	
+	/**
+	 * Class Constructor.
+	 * @param controller Controller of the application.
+ 	 * @param messages Strings of certain language. 
+	 * @param loginUser Email of the user logged in.
+	 */
 	public MIWindow(CMController controller, ResourceBundle messages, String loginUser) {
 		this.controller = controller;
 		this.loginUser = loginUser;
@@ -72,6 +78,9 @@ public class MIWindow extends JFrame {
 		initComponents();
 	}
 
+	/**
+	 * Initialize Components.
+	 */
 	private void initComponents() {
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
@@ -231,13 +240,19 @@ public class MIWindow extends JFrame {
 		pack();
 	}
 	
+	/**
+	 * Center the CMAWindow.
+	 */
 	public void centreWindow() {
 		Dimension dim = getToolkit().getScreenSize();
 		Rectangle abounds = getBounds();
 		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
 	}
 	
-	/** Exit the Application */
+	/** 
+	 * Exit the Application 
+	 * @param evt Window event performed over Button
+	 */
 	private void exitForm(WindowEvent evt) {
 		controller.exit();
 	}

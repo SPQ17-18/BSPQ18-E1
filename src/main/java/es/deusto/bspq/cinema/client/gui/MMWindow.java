@@ -85,6 +85,12 @@ public class MMWindow extends JFrame {
 	
 	ResourceBundle messages;
 
+	/**
+	 * Class Constructor.
+	 * @param controller Controller of the application.
+ 	 * @param messages Strings of certain language. 
+	 * @param loginUser Email of the user logged in.
+	 */
 	public MMWindow(CMController controller, ResourceBundle messages, String loginUser) {
 		this.controller = controller;
 		this.loginUser = loginUser;
@@ -94,6 +100,9 @@ public class MMWindow extends JFrame {
 		membersList1.setModel(membersList);
 	}
 
+	/**
+	 * Initialize Components.
+	 */
 	private void initComponents() {
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
@@ -278,12 +287,19 @@ public class MMWindow extends JFrame {
 		pack();
 	}
 	
+	/**
+	 * Center the CMAWindow.
+	 */
 	public void centreWindow() {
 		Dimension dim = getToolkit().getScreenSize();
 		Rectangle abounds = getBounds();
 		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
 	}
 	
+	/**
+	 * Opens CMAWindow.
+	 * @param evt Action performed over Button 
+	 */
 	private void buttonManageCinemaActionPerformed(ActionEvent evt) {
 		CMAWindow cmaWindow = new CMAWindow(controller, messages, loginUser);
 		cmaWindow.centreWindow();
@@ -295,6 +311,10 @@ public class MMWindow extends JFrame {
 		
 	}
 	
+	/**
+	 * Searches for Members.
+	 * @param evt Action performed over Button 
+	 */
 	private void buttonSearchAllActionPerformed(ActionEvent evt) {
 		members = controller.getAllMembers();
 		updateLists(members);
@@ -302,6 +322,10 @@ public class MMWindow extends JFrame {
 		logger.info(messages.getString("allMembersRetrieved"));
 	}
 	
+	/**
+	 * Updates attributes of Members.
+	 * @param evt Action performed over Button 
+	 */
 	private void buttonUpdateActionPerformed(ActionEvent evt) {
 		MemberDTO memberDTO = members.get(membersList1.getSelectedIndex());
 		if (!updateName.getText().trim().isEmpty()) {
@@ -324,6 +348,10 @@ public class MMWindow extends JFrame {
 		logger.info(messages.getString("memberUpdated"));
 	}
 	
+	/**
+	 * Deletes Members from DB.
+	 * @param evt Action performed over Button 
+	 */
 	private void buttonDeleteActionPerformed(ActionEvent evt) {
 		controller.deleteMember(members.get(membersList1.getSelectedIndex()));
 		members.remove(membersList1.getSelectedIndex());
@@ -331,6 +359,10 @@ public class MMWindow extends JFrame {
 		logger.info(messages.getString("memberDeleted"));
 	}
 
+	/**
+	 * Updates Lists of Members.
+	 * @param members Data Container.
+	 */
 	private void updateLists(List<MemberDTO> members) {
 		membersList.clear();
 		for (int i = 0; i < members.size(); i++) {
@@ -340,12 +372,18 @@ public class MMWindow extends JFrame {
 		membersList1.setSelectedIndex(0);
 	}
 
+	/**
+	 * Cleans search text fields
+	 */
 	private void cleanSearchDetails() {
 		email.setText("");
 		name.setText("");
 		surname.setText("");
 	}
 	
+	/**
+	 * Cleans update text fields
+	 */
 	private void cleanUpdateDetails() {
 		updateName.setText("");
 		updateSurname.setText("");
@@ -353,7 +391,10 @@ public class MMWindow extends JFrame {
 		updatePoints.setText("");
 	}
 	
-	/** Exit the Application */
+	/** 
+	 * Exit the Application 
+	 * @param evt Window event performed over Button
+	 */
 	private void exitForm(WindowEvent evt) {
 		controller.exit();
 	}
