@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import es.deusto.bspq.cinema.server.jdo.DAO.ManagerDAO;
 
+/**
+ * Class destinated o transform DTO objects
+ * @author anderarguinano
+ *
+ */
 public class Assembler {
 	/**
 	 * Manager for the DB
