@@ -428,6 +428,20 @@ public class CMControllerTest {
 		List<FilmDTO> films = controller.getAllFilms();
 		assertEquals(4, films.size());
 	}
+	
+	@Test
+	@PerfTest(duration = 1000)
+	@Required(max = 120, average = 100)
+	public void testDeleteSession() {
+		logger.info("Test Delete a session - Deleting a session from the DB - Valid");
+		SessionDTO sessionDTO = new SessionDTO();
+		sessionDTO.setSession("S2");
+		sessionDTO.setRating(7);
+		sessionDTO.setCountry("EE.UU");
+		controller.deleteSession(sessionDTO);
+		List<SessionDTO> sessions = controller.getAllSessions();
+		assertEquals(14, sessions.size());
+	}
 
 	@Test
 	@PerfTest(duration = 1000)
@@ -480,6 +494,15 @@ public class CMControllerTest {
 		SessionDTO sessionDTO = new SessionDTO("05-05-2018", "17:05", 5f, 5, 22, "Campeones");
 		sessionDTO.setSession("S1");
 		assertEquals(true, controller.updateSession(sessionDTO));
+	}
+	
+	@Test
+	@PerfTest(duration = 2000)
+	@Required(max = 200, average = 185)
+	public void testUpdateFilm() {
+		logger.info("Test Update a film - Updating a film from the DB - Valid");
+		FilmDTO filmDTO = new FilmDTO("Inmersion", "Wim Wenders Test", 12, 111, "EE.UU.");
+		assertEquals(true, controller.updateFilm(filmDTO));
 	}
 	
 	@Test
